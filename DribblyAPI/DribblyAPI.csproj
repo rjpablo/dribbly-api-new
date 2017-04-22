@@ -200,9 +200,16 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="AuthContext.cs" />
+    <Compile Include="Entities\ApplicationDbContext.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CourtController.cs" />
+    <Compile Include="Controllers\FileUploadController.cs" />
+    <Compile Include="Controllers\GamesController.cs" />
+    <Compile Include="Controllers\PlayerController.cs" />
+    <Compile Include="Controllers\SettingsController.cs" />
+    <Compile Include="Entities\CourtPhoto.cs" />
+    <Compile Include="Entities\Game.cs" />
+    <Compile Include="Entities\Player.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -215,6 +222,10 @@
     <Compile Include="Migrations\201704221731553_AddedCourtRefreshTokenAndClient.Designer.cs">
       <DependentUpon>201704221731553_AddedCourtRefreshTokenAndClient.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201704221854495_AddedGamePlayerAndCourtPhotoEntities.cs" />
+    <Compile Include="Migrations\201704221854495_AddedGamePlayerAndCourtPhotoEntities.Designer.cs">
+      <DependentUpon>201704221854495_AddedGamePlayerAndCourtPhotoEntities.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Entities\Court.cs" />
     <Compile Include="Models\Client.cs" />
@@ -225,6 +236,7 @@
     <Compile Include="Providers\AuthorizationServerProvider.cs" />
     <Compile Include="Providers\RefreshTokenProvider.cs" />
     <Compile Include="Repositories\AuthRepository.cs" />
+    <Compile Include="Repositories\FileRepository.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -254,6 +266,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201704221731553_AddedCourtRefreshTokenAndClient.resx">
       <DependentUpon>201704221731553_AddedCourtRefreshTokenAndClient.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704221854495_AddedGamePlayerAndCourtPhotoEntities.resx">
+      <DependentUpon>201704221854495_AddedGamePlayerAndCourtPhotoEntities.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

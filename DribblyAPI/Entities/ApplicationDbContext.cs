@@ -19,6 +19,7 @@ namespace DribblyAPI
 
         public DbSet<Client> Clients { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
-        public DbSet<Court> Courts { get; internal set; }
+        public DbSet<Court> Courts { get; set; }
+        public DbSet<Game> Games { get; set; }
     }
 }

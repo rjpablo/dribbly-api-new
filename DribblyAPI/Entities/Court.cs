@@ -25,7 +25,7 @@ namespace DribblyAPI.Entities
         public string email { get; set; }
 
         /// <summary>
-        /// The path of the primary photo.
+        /// The filename of the primary photo (with extension).
         /// </summary>
         public string imagePath { get; set; }
 
@@ -42,7 +42,7 @@ namespace DribblyAPI.Entities
 
         public DateTime dateRegistered { get; set; }
 
-        //public List<CourtPhoto> photos { get; set; }
+        public List<CourtPhoto> photos { get; set; }
 
     }
 }
