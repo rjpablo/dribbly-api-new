@@ -12,6 +12,7 @@ using DribblyAPI.Entities;
 using System.Web.Configuration;
 using Newtonsoft.Json;
 using DribblyAPI.Repositories;
+using DribblyAPI.Models;
 
 namespace DribblyAPI.Controllers
 {
@@ -50,10 +51,72 @@ namespace DribblyAPI.Controllers
 
                 return Ok();
             }
-            catch (Exception ex)
+            catch (DribblyException ex)
             {
+                ex.UserMessage = "Failed to delete court. Please try again later.";
                 Console.WriteLine(ex.Message);
-                return InternalServerError();
+                return InternalServerError(ex);
+            }
+        }
+
+        [Authorize]
+        [HttpPut]
+        [Route("setPrimaryPhoto")]
+        public IHttpActionResult setPrimaryPhoto([FromUri] int courtId,[FromUri] string fileName)
+        {
+            try
+            {
+                using (ApplicationDbContext db = new ApplicationDbContext())
+                {
+                    Court court = db.Courts.SingleOrDefault(c => c.id == courtId);
+
+                    if (court == null)
+                    {
+                        return BadRequest("Could not find court record.");
+                    }
+
+                    court.imagePath = fileName;
+
+                    db.SaveChanges();
+
+                    return Ok(court);
+
+                }
+            }
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "Unable to update court's primary photo. Please try again later.";
+                return InternalServerError(ex);
+            }
+        }
+
+
+        [Route("update")]
+        public IHttpActionResult PUT(Court CourtDetails)
+        {
+            try
+            {
+                using (ApplicationDbContext db = new ApplicationDbContext())
+                {
+                    var court = db.Courts.SingleOrDefault(c => c.id == CourtDetails.id);
+
+                    if (court == null)
+                    {
+                        return BadRequest("Could not find court record.");
+                    }
+
+                    db.Entry(court).CurrentValues.SetValues(CourtDetails);
+
+                    db.SaveChanges();
+
+                    return Ok(court);
+
+                }
+            }
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "Court registration failed. Please try again later.";
+                return InternalServerError(ex);
             }
         }
 
@@ -71,10 +134,10 @@ namespace DribblyAPI.Controllers
 
                 return Ok(CourtDetails);
             }
-            catch (Exception ex)
+            catch (DribblyException ex)
             {
-                Console.WriteLine(ex.Message);
-                return InternalServerError();
+                ex.UserMessage = "Court registration failed. Please try again later.";
+                return InternalServerError(ex);
             }
         }
 
@@ -111,8 +174,9 @@ namespace DribblyAPI.Controllers
                     }
                 }
             }
-            catch (Exception ex)
+            catch (DribblyException ex)
             {
+                ex.UserMessage = "Unable to find requested court details.";
                 return InternalServerError(ex);
             }
 
@@ -194,8 +258,9 @@ namespace DribblyAPI.Controllers
                     return Ok(courts);
                 }
             }
-            catch (Exception ex)
+            catch (DribblyException ex)
             {
+                ex.UserMessage = "Failed to retrieve list of courts. Please try again later.";
                 return InternalServerError(ex);
             }
 

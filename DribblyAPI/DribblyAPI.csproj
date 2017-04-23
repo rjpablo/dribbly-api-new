@@ -229,6 +229,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Entities\Court.cs" />
     <Compile Include="Models\Client.cs" />
+    <Compile Include="Models\DribblyException.cs" />
     <Compile Include="Models\Enums.cs" />
     <Compile Include="Models\RefreshToken.cs" />
     <Compile Include="Models\UserModel.cs" />
