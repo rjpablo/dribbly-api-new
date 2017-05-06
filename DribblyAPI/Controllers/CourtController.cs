@@ -182,16 +182,27 @@ namespace DribblyAPI.Controllers
 
         }
 
-        [Route("~/api/courts/{useTestData:bool?}")]
-        public IHttpActionResult GetCourts(bool useTestData = false)
+        [Route("~/api/courts")]
+        public IHttpActionResult GetCourts(CourtSearchCriteria criteria)
         {
+            bool useTestData = false;
+
             try
             {
                 if (!useTestData)
                 {
                     using (ApplicationDbContext dbContext = new ApplicationDbContext())
                     {
-                        List<Court> courts = dbContext.Courts.ToList<Court>();
+                        List<Court> courts = new List<Court>();
+
+                        if (criteria == null)
+                        {
+
+                        }
+                        else
+                        {
+                            courts = dbContext.Courts.ToList<Court>();
+                        }
 
                         return Ok(courts);
                     }
@@ -199,6 +210,8 @@ namespace DribblyAPI.Controllers
                 else
                 {
                     string imageUploadPath = WebConfigurationManager.AppSettings["imageUploadPath"];
+
+                    #region Creating dummy courts
 
                     courts.Add(new Court()
                     {
@@ -255,6 +268,8 @@ namespace DribblyAPI.Controllers
                         imagePath = "5.jpg"
                     });
 
+                    #endregion
+                    
                     return Ok(courts);
                 }
             }
@@ -346,5 +361,7 @@ namespace DribblyAPI.Controllers
             }
 
         }
+
+        
     }
 }

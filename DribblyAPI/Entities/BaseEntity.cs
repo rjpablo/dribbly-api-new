@@ -5,11 +5,8 @@ using System.Web;
 
 namespace DribblyAPI.Entities
 {
-    public class Player : BaseEntity
+    public abstract class BaseEntity
     {
-        public int Id { get; set; }
-
-        public List<Game> Games { get; set; }
 
     }
 }
