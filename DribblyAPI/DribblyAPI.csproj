@@ -243,6 +243,7 @@
     <Compile Include="Providers\RefreshTokenProvider.cs" />
     <Compile Include="Repositories\AuthRepository.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
+    <Compile Include="Repositories\CourtRepository.cs" />
     <Compile Include="Repositories\FileRepository.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

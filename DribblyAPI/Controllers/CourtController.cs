@@ -13,18 +13,21 @@ using System.Web.Configuration;
 using Newtonsoft.Json;
 using DribblyAPI.Repositories;
 using DribblyAPI.Models;
+using DribblyAPI.Interfaces;
 
 namespace DribblyAPI.Controllers
 {
     [RoutePrefix("api/court")]
-    public class CourtController : ApiController
+    public class CourtController : BaseController
     {
         private List<Court> courts = new List<Court>();
         private FileRepository fileRepo;
+        private CourtRepository repo;
 
         public CourtController()
         {
             fileRepo = new FileRepository();
+            repo = new CourtRepository(new ApplicationDbContext());
         }
 
         [HttpPost]
@@ -126,11 +129,8 @@ namespace DribblyAPI.Controllers
         {
             try
             {
-                ApplicationDbContext DbContext = new ApplicationDbContext();
-
-                DbContext.Courts.Add(CourtDetails);
-
-                DbContext.SaveChanges();
+                repo.Add(CourtDetails);
+                repo.Save();
 
                 return Ok(CourtDetails);
             }
@@ -148,30 +148,14 @@ namespace DribblyAPI.Controllers
             {
                 using (ApplicationDbContext DbContext = new ApplicationDbContext())
                 {
-                    DbContext.Configuration.LazyLoadingEnabled = false;
-                    DbContext.Configuration.ProxyCreationEnabled = false;
-
-                    DbContext.Configuration.LazyLoadingEnabled = false;
-                    DbContext.Configuration.ProxyCreationEnabled = false;
-
-                    if (courtId > -1)
+                    Court court = repo.GetCourtFullDetails(courtId);
+                    if(court != null)
                     {
-                        try
-                        {
-                            Court court = DbContext.Courts.Include(c => c.photos).Single(c => c.id == courtId);
-                            return Ok(court);
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine(ex.Message);
-                            return BadRequest("Could not find requested court details.");
-                        }
-                    }
-                    else
+                        return Ok(court);
+                    }else
                     {
-                        List<Court> courts = DbContext.Courts.Include(c => c.photos).ToList<Court>();
-                        return Ok(courts);
-                    }
+                        return BadRequest("Court details not found.");
+                    }                    
                 }
             }
             catch (DribblyException ex)
@@ -182,6 +166,7 @@ namespace DribblyAPI.Controllers
 
         }
 
+        [HttpPost]
         [Route("~/api/courts")]
         public IHttpActionResult GetCourts(CourtSearchCriteria criteria)
         {
@@ -193,15 +178,16 @@ namespace DribblyAPI.Controllers
                 {
                     using (ApplicationDbContext dbContext = new ApplicationDbContext())
                     {
-                        List<Court> courts = new List<Court>();
+                        IEnumerable<Court> courts;
 
-                        if (criteria == null)
+                        if (criteria != null)
                         {
-
+                            courts = repo.Search(criteria);
                         }
                         else
                         {
-                            courts = dbContext.Courts.ToList<Court>();
+                            //courts = dbContext.Courts.ToList<Court>();
+                            courts = repo.GetAll().OrderBy(x => x.dateRegistered).ToList<Court>();
                         }
 
                         return Ok(courts);
@@ -269,7 +255,7 @@ namespace DribblyAPI.Controllers
                     });
 
                     #endregion
-                    
+
                     return Ok(courts);
                 }
             }
@@ -278,7 +264,6 @@ namespace DribblyAPI.Controllers
                 ex.UserMessage = "Failed to retrieve list of courts. Please try again later.";
                 return InternalServerError(ex);
             }
-
         }
 
         [Route("createTestData")]
