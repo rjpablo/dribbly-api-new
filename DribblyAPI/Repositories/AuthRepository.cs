@@ -1,4 +1,5 @@
-﻿using DribblyAPI.Models;
+﻿using DribblyAPI.Entities;
+using DribblyAPI.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
@@ -29,6 +30,21 @@ namespace DribblyAPI.Repositories
             };
 
             var result = await _userManager.CreateAsync(user, userModel.Password);
+
+            if (result != null && result.Succeeded)
+            {
+                using (UserProfileRepository userProfileRepository = new UserProfileRepository(new ApplicationDbContext()))
+                {
+                    UserProfile userProfile = new UserProfile()
+                    {
+                        dateJoined = DateTime.Now,
+                        userId = user.Id
+                    };
+
+                    userProfileRepository.Add(userProfile);
+                    userProfileRepository.Save();
+                }
+            }
 
             return result;
         }

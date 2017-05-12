@@ -1,4 +1,5 @@
-﻿using DribblyAPI.Models;
+﻿using DribblyAPI.Entities;
+using DribblyAPI.Models;
 using DribblyAPI.Repositories;
 using Microsoft.AspNet.Identity;
 using System;

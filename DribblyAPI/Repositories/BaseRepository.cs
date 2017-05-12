@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 
 namespace DribblyAPI.Repositories
 {
-    public class BaseRepository<T>: IBaseRepository<T> where T:BaseEntity
+    public class BaseRepository<T>: IDisposable, IBaseRepository<T> where T: BaseEntity
     {
         protected DbContext ctx;
         protected readonly IDbSet<T> _dbset;
@@ -49,6 +49,11 @@ namespace DribblyAPI.Repositories
         public IEnumerable<T> GetAll()
         {
             return _dbset.AsEnumerable<T>();
+        }
+
+        public void Dispose()
+        {
+            ctx.Dispose();
         }
     }
 }
