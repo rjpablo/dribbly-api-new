@@ -212,6 +212,7 @@
     <Compile Include="Entities\CourtPhoto.cs" />
     <Compile Include="Entities\Game.cs" />
     <Compile Include="Entities\Player.cs" />
+    <Compile Include="Entities\User.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

@@ -21,5 +21,6 @@ namespace DribblyAPI
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<Court> Courts { get; set; }
         public DbSet<Game> Games { get; set; }
+        public DbSet<UserProfile> UserProfiles { get; set; }
     }
 }
