@@ -7,7 +7,7 @@ using System.Web;
 
 namespace DribblyAPI.Entities
 {
-    public class Player : BaseEntity
+    public class PlayerProfile : BaseEntity
     {
         [Key, ForeignKey("userProfile")]
         public string   userId { get; set; }

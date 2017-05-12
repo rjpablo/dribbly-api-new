@@ -231,6 +231,10 @@
     <Compile Include="Migrations\201704221854495_AddedGamePlayerAndCourtPhotoEntities.Designer.cs">
       <DependentUpon>201704221854495_AddedGamePlayerAndCourtPhotoEntities.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201705120616278_AddedUserProfileClassAndUpdatedPlayerClass.cs" />
+    <Compile Include="Migrations\201705120616278_AddedUserProfileClassAndUpdatedPlayerClass.Designer.cs">
+      <DependentUpon>201705120616278_AddedUserProfileClassAndUpdatedPlayerClass.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Entities\Court.cs" />
     <Compile Include="Models\BindingModels.cs" />
@@ -279,6 +283,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201704221854495_AddedGamePlayerAndCourtPhotoEntities.resx">
       <DependentUpon>201704221854495_AddedGamePlayerAndCourtPhotoEntities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705120616278_AddedUserProfileClassAndUpdatedPlayerClass.resx">
+      <DependentUpon>201705120616278_AddedUserProfileClassAndUpdatedPlayerClass.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
