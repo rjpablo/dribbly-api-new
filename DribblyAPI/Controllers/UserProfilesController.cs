@@ -44,31 +44,25 @@ namespace DribblyAPI.Controllers
             }
         }
 
-        /**
-
         // PUT: api/UserProfiles/5
+        [Route("Update")]
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutUserProfile(string id, UserProfile userProfile)
+        public IHttpActionResult PutUserProfile(UserProfile userProfile)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != userProfile.userId)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(userProfile).State = EntityState.Modified;
+            _repo.Edit(userProfile);
 
             try
             {
-                db.SaveChanges();
+                _repo.Save();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DribblyException ex)
             {
-                if (!UserProfileExists(id))
+                if (!_repo.Exists(userProfile.userId))
                 {
                     return NotFound();
                 }
@@ -78,8 +72,10 @@ namespace DribblyAPI.Controllers
                 }
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return Ok();
         }
+
+        /**
 
         // POST: api/UserProfiles
         [ResponseType(typeof(UserProfile))]

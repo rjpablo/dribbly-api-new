@@ -28,6 +28,7 @@ namespace DribblyAPI.Repositories
             try
             {
                 var identityUser = ctx.Set<IdentityUser>().SingleOrDefault<IdentityUser>(u=>u.UserName == userName);
+                var allUsers = ctx.Set<IdentityUser>().ToList<IdentityUser>();
 
                 return FindBy(u => u.userId == identityUser.Id).SingleOrDefault();
             }
@@ -35,6 +36,11 @@ namespace DribblyAPI.Repositories
             {
                 throw;
             }
+        }
+
+        public bool Exists(string userId)
+        {
+            return ctx.Set<UserProfile>().Count(u => u.userId == userId) > 0;
         }
     }
 }

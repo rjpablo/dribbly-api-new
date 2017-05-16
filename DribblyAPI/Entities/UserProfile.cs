@@ -11,7 +11,7 @@ namespace DribblyAPI.Entities
         [Key]
         public string   userId { get; set; }
 
-        public char sex { get; set; }
+        public string sex { get; set; }
 
         public string profilePic { get; set; }
 
