@@ -39,5 +39,10 @@ namespace DribblyAPI.Repositories
             return courts.ToList<Court>();
 
         }
+
+        public bool Exists(string userId)
+        {
+            return ctx.Set<Court>().Count(u => u.userId == userId) > 0;
+        }
     }
 }

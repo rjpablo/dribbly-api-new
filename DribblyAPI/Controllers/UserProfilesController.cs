@@ -12,6 +12,7 @@ using DribblyAPI;
 using DribblyAPI.Entities;
 using DribblyAPI.Repositories;
 using DribblyAPI.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace DribblyAPI.Controllers
 {
@@ -35,7 +36,6 @@ namespace DribblyAPI.Controllers
             {
                 UserProfile userProfile = _repo.FindSingleByUserName(userName);
                 return Ok(userProfile);
-
             }
             catch (DribblyException ex)
             {

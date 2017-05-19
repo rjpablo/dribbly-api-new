@@ -34,7 +34,7 @@ namespace DribblyAPI.Controllers
             {
                 try
                 {
-                    uploadedFilePath = _repo.UploadCourtPhoto(files[0], userId);
+                    uploadedFilePath = _repo.Upload(files[0], userId + "/courtPhotos/");
                     return Ok(uploadedFilePath);
                 }
                 catch (Exception ex)
@@ -48,10 +48,9 @@ namespace DribblyAPI.Controllers
             }
         }
 
-        [Route("upload")]
-        public IHttpActionResult Upload()
+        [Route("UploadProfilePic/{userId}")]
+        public IHttpActionResult UploadProfilePic([FromUri]string userId)
         {
-            
             string uploadedFilePath = "";
 
             System.Web.HttpFileCollection files = System.Web.HttpContext.Current.Request.Files;
@@ -60,24 +59,8 @@ namespace DribblyAPI.Controllers
             {
                 try
                 {
-                    if (!Directory.Exists(uploadPath))
-                    {
-                        Directory.CreateDirectory(uploadPath);
-                    }
-
-                    string ext = System.IO.Path.GetExtension(files[0].FileName);
-                    string uploadedFileName;
-
-                    do
-                    {
-                        uploadedFileName = DateTime.Now.ToString("yyyyMMddHHmmssfffffff") + ext;
-                        uploadedFilePath = uploadPath + uploadedFileName;
-                    } while (File.Exists(uploadedFilePath));
-
-                    files[0].SaveAs(uploadedFilePath);
-
-                    return Ok(uploadedFileName);
-
+                    uploadedFilePath = _repo.Upload(files[0], userId + "/profilePic/");
+                    return Ok(uploadedFilePath);
                 }
                 catch (Exception ex)
                 {
@@ -87,8 +70,50 @@ namespace DribblyAPI.Controllers
             else
             {
                 return BadRequest("No files to upload.");
-            }                        
+            }
         }
+
+        //[Route("upload")]
+        //public IHttpActionResult Upload()
+        //{
+
+        //    string uploadedFilePath = "";
+
+        //    System.Web.HttpFileCollection files = System.Web.HttpContext.Current.Request.Files;
+
+        //    if (files.Count > 0)
+        //    {
+        //        try
+        //        {
+        //            if (!Directory.Exists(uploadPath))
+        //            {
+        //                Directory.CreateDirectory(uploadPath);
+        //            }
+
+        //            string ext = System.IO.Path.GetExtension(files[0].FileName);
+        //            string uploadedFileName;
+
+        //            do
+        //            {
+        //                uploadedFileName = DateTime.Now.ToString("yyyyMMddHHmmssfffffff") + ext;
+        //                uploadedFilePath = uploadPath + uploadedFileName;
+        //            } while (File.Exists(uploadedFilePath));
+
+        //            files[0].SaveAs(uploadedFilePath);
+
+        //            return Ok(uploadedFileName);
+
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            return InternalServerError(ex);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        return BadRequest("No files to upload.");
+        //    }
+        //}
 
         [Route("deleteCourtPhoto/{fileName}/{userId}")]
         public IHttpActionResult delete(string fileName, string userId)

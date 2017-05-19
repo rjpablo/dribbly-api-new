@@ -101,25 +101,25 @@ namespace DribblyAPI.Controllers
             {
                 using (ApplicationDbContext db = new ApplicationDbContext())
                 {
-                    var court = db.Courts.SingleOrDefault(c => c.id == CourtDetails.id);
+                    repo.Edit(CourtDetails);
 
-                    if (court == null)
-                    {
-                        return BadRequest("Could not find court record.");
-                    }
+                    repo.Save();
 
-                    db.Entry(court).CurrentValues.SetValues(CourtDetails);
-
-                    db.SaveChanges();
-
-                    return Ok(court);
+                    return Ok(CourtDetails);
 
                 }
             }
             catch (DribblyException ex)
             {
-                ex.UserMessage = "Court registration failed. Please try again later.";
-                return InternalServerError(ex);
+                if (!repo.Exists(CourtDetails.userId))
+                {
+                    return BadRequest("Could not find court record");
+                }
+                else
+                {
+                    ex.UserMessage = "Court registration failed. Please try again later.";
+                    return InternalServerError(ex);
+                }
             }
         }
 
