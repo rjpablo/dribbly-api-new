@@ -201,13 +201,13 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\PlayerProfilesController.cs" />
     <Compile Include="Controllers\UserProfilesController.cs" />
     <Compile Include="Entities\ApplicationDbContext.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CourtController.cs" />
     <Compile Include="Controllers\FileUploadController.cs" />
     <Compile Include="Controllers\GamesController.cs" />
-    <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\CourtPhoto.cs" />
@@ -244,6 +244,14 @@
     <Compile Include="Migrations\201705191812392_AddedOwnerPropertyToCourt.Designer.cs">
       <DependentUpon>201705191812392_AddedOwnerPropertyToCourt.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201705210529582_RenamedPlayerProfileMpvsToMvps.cs" />
+    <Compile Include="Migrations\201705210529582_RenamedPlayerProfileMpvsToMvps.Designer.cs">
+      <DependentUpon>201705210529582_RenamedPlayerProfileMpvsToMvps.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705210842059_AddedPropertiesToPlayerProfile.cs" />
+    <Compile Include="Migrations\201705210842059_AddedPropertiesToPlayerProfile.Designer.cs">
+      <DependentUpon>201705210842059_AddedPropertiesToPlayerProfile.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Entities\Court.cs" />
     <Compile Include="Models\BindingModels.cs" />
@@ -259,6 +267,7 @@
     <Compile Include="Repositories\BaseRepository.cs" />
     <Compile Include="Repositories\CourtRepository.cs" />
     <Compile Include="Repositories\FileRepository.cs" />
+    <Compile Include="Repositories\PlayerRepository.cs" />
     <Compile Include="Repositories\UserProfileRepository.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -302,6 +311,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705191812392_AddedOwnerPropertyToCourt.resx">
       <DependentUpon>201705191812392_AddedOwnerPropertyToCourt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705210529582_RenamedPlayerProfileMpvsToMvps.resx">
+      <DependentUpon>201705210529582_RenamedPlayerProfileMpvsToMvps.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705210842059_AddedPropertiesToPlayerProfile.resx">
+      <DependentUpon>201705210842059_AddedPropertiesToPlayerProfile.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

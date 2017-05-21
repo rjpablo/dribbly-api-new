@@ -37,8 +37,6 @@ namespace DribblyAPI.Entities
         /// </summary>
         public int heightIn { get; set; }
 
-        public PlayerProfile playerProfile { get; set; }
-
         public DateTime dateJoined { get; set; }
 
     }

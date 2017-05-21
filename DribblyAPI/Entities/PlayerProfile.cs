@@ -9,18 +9,24 @@ namespace DribblyAPI.Entities
 {
     public class PlayerProfile : BaseEntity
     {
-        [Key, ForeignKey("userProfile")]
+        [Key]
         public string   userId { get; set; }
 
-        public int mpvs { get; set; }
+        public int mvps { get; set; }
 
         public double winRate { get; set; }
 
         public double rating { get; set; }
 
-        public List<Game> Games { get; set; }
+        public double dribblingSkills { get; set; }
 
-        public virtual UserProfile userProfile { get; set; }
+        public double passingSkills { get; set; }
+
+        public double threePointsSkills { get; set; }
+
+        public double blockingSkills { get; set; }
+
+        public DateTime dateCreated { get; set; }
 
     }
 }
