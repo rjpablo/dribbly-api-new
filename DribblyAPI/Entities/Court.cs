@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -38,7 +40,10 @@ namespace DribblyAPI.Entities
         /// <summary>
         /// The id of the user who registered this court.
         /// </summary>
+        [ForeignKey("owner")]
         public string userId { get; set; }
+
+        public IdentityUser owner { get; set; }
 
         public DateTime dateRegistered { get; set; }
 

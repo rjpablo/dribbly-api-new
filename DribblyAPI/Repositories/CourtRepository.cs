@@ -17,7 +17,19 @@ namespace DribblyAPI.Repositories
 
         public Court GetCourtFullDetails(int courtId)
         {
-            return ctx.Set<Court>().Include(x => x.photos).FirstOrDefault(x => x.id == courtId);
+            Court court = ctx.Set<Court>().Include(x => x.photos).Include(x => x.owner).FirstOrDefault(x => x.id == courtId);
+            if (court != null && court.owner != null)
+            {
+                //remove sensitive data
+                court.owner.Claims.Clear();
+                court.owner.PasswordHash = "";
+                court.owner.SecurityStamp = "";
+                court.owner.Logins.Clear();
+                court.owner.PhoneNumber = "";
+                court.owner.Email = "";
+                court.owner.Roles.Clear();
+            }
+            return court;
         }
 
         public IEnumerable<Court> Search(CourtSearchCriteria criteria)

@@ -240,6 +240,10 @@
     <Compile Include="Migrations\201705160916054_changeSexFileTypeToStringFromChar.Designer.cs">
       <DependentUpon>201705160916054_changeSexFileTypeToStringFromChar.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201705191812392_AddedOwnerPropertyToCourt.cs" />
+    <Compile Include="Migrations\201705191812392_AddedOwnerPropertyToCourt.Designer.cs">
+      <DependentUpon>201705191812392_AddedOwnerPropertyToCourt.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Entities\Court.cs" />
     <Compile Include="Models\BindingModels.cs" />
@@ -295,6 +299,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705160916054_changeSexFileTypeToStringFromChar.resx">
       <DependentUpon>201705160916054_changeSexFileTypeToStringFromChar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705191812392_AddedOwnerPropertyToCourt.resx">
+      <DependentUpon>201705191812392_AddedOwnerPropertyToCourt.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -155,7 +155,7 @@ namespace DribblyAPI.Controllers
                     }else
                     {
                         return BadRequest("Court details not found.");
-                    }                    
+                    }
                 }
             }
             catch (DribblyException ex)

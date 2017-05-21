@@ -245,4 +245,4 @@ ModelManifest.xml
 # FAKE - F# Make
 .fake/
 
-*DribblyAPI/files/uploads/images/**/*
+DribblyAPI/files/uploads/*
