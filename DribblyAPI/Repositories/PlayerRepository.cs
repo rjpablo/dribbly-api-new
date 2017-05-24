@@ -13,5 +13,15 @@ namespace DribblyAPI.Repositories
         {
 
         }
+
+        public IEnumerable<PlayerProfile> GetTopPlayers(int count = 10)
+        {
+            IEnumerable<PlayerProfile> players;
+
+            players = GetAll().Take(count);
+
+            return players;
+
+        }
     }
 }
