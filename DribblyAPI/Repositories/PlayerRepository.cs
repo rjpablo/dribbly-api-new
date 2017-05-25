@@ -23,5 +23,10 @@ namespace DribblyAPI.Repositories
             return players;
 
         }
+
+        public IEnumerable<PlayerListItem> SearchPlayers()
+        {
+            return ctx.Set<PlayerListItem>();
+        }
     }
 }

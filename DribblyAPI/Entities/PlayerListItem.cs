@@ -7,16 +7,23 @@ using System.Web;
 
 namespace DribblyAPI.Entities
 {
-    public class PlayerProfile : BaseEntity
+    [Table("PlayerListItem")]
+    public class PlayerListItem
     {
         [Key]
-        public string   userId { get; set; }
+        public string userId { get; set; }
 
-        public int mvps { get; set; }
+        public string userName { get; set; }
+
+        public string profilePic { get; set; }
+
+        public DateTime dateCreated { get; set; }
 
         public double winRate { get; set; }
 
         public double rating { get; set; }
+
+        public int mvps { get; set; }
 
         public double dribblingSkill { get; set; }
 
@@ -25,10 +32,5 @@ namespace DribblyAPI.Entities
         public double threePointSkill { get; set; }
 
         public double blockingSkill { get; set; }
-
-        public DateTime dateCreated { get; set; }
-
-        public bool isActive { get; set; }
-
     }
 }

@@ -212,6 +212,7 @@
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\CourtPhoto.cs" />
     <Compile Include="Entities\Game.cs" />
+    <Compile Include="Entities\PlayerListItem.cs" />
     <Compile Include="Entities\PlayerProfile.cs" />
     <Compile Include="Entities\UserProfile.cs" />
     <Compile Include="Global.asax.cs">
@@ -251,6 +252,18 @@
     <Compile Include="Migrations\201705210842059_AddedPropertiesToPlayerProfile.cs" />
     <Compile Include="Migrations\201705210842059_AddedPropertiesToPlayerProfile.Designer.cs">
       <DependentUpon>201705210842059_AddedPropertiesToPlayerProfile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705251136032_AddedPlayerListItemClass.cs" />
+    <Compile Include="Migrations\201705251136032_AddedPlayerListItemClass.Designer.cs">
+      <DependentUpon>201705251136032_AddedPlayerListItemClass.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705251154058_AddedIsActivePropertyToPlayerProfileClass.cs" />
+    <Compile Include="Migrations\201705251154058_AddedIsActivePropertyToPlayerProfileClass.Designer.cs">
+      <DependentUpon>201705251154058_AddedIsActivePropertyToPlayerProfileClass.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705251317075_RenamedSomeColumnsOfPlayerProfileAndPlayerListItem.cs" />
+    <Compile Include="Migrations\201705251317075_RenamedSomeColumnsOfPlayerProfileAndPlayerListItem.Designer.cs">
+      <DependentUpon>201705251317075_RenamedSomeColumnsOfPlayerProfileAndPlayerListItem.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Entities\Court.cs" />
@@ -317,6 +330,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705210842059_AddedPropertiesToPlayerProfile.resx">
       <DependentUpon>201705210842059_AddedPropertiesToPlayerProfile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705251136032_AddedPlayerListItemClass.resx">
+      <DependentUpon>201705251136032_AddedPlayerListItemClass.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705251154058_AddedIsActivePropertyToPlayerProfileClass.resx">
+      <DependentUpon>201705251154058_AddedIsActivePropertyToPlayerProfileClass.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705251317075_RenamedSomeColumnsOfPlayerProfileAndPlayerListItem.resx">
+      <DependentUpon>201705251317075_RenamedSomeColumnsOfPlayerProfileAndPlayerListItem.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
