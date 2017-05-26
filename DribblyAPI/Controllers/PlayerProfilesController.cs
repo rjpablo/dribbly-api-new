@@ -50,14 +50,13 @@ namespace DribblyAPI.Controllers
             }
         }
 
-        [Route("TopPlayers{count}")]
+        [Route("TopPlayers/{count}")]
         //[ResponseType(typeof(PlayerProfile))]
         public IHttpActionResult GetTopPlayers(int count = 10)
         {
             try
             {
-                //return Ok(repo.GetTopPlayers(count));
-                return Ok(repo.SearchPlayers());
+                return Ok(repo.GetTopPlayers(count));
             }
             catch (DribblyException ex)
             {
