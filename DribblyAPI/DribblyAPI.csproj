@@ -265,6 +265,10 @@
     <Compile Include="Migrations\201705251317075_RenamedSomeColumnsOfPlayerProfileAndPlayerListItem.Designer.cs">
       <DependentUpon>201705251317075_RenamedSomeColumnsOfPlayerProfileAndPlayerListItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201705261057058_AddedHeightSexAndIsActiveToPlayerListItemView.cs" />
+    <Compile Include="Migrations\201705261057058_AddedHeightSexAndIsActiveToPlayerListItemView.Designer.cs">
+      <DependentUpon>201705261057058_AddedHeightSexAndIsActiveToPlayerListItemView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Entities\Court.cs" />
     <Compile Include="Models\BindingModels.cs" />
@@ -339,6 +343,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705251317075_RenamedSomeColumnsOfPlayerProfileAndPlayerListItem.resx">
       <DependentUpon>201705251317075_RenamedSomeColumnsOfPlayerProfileAndPlayerListItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705261057058_AddedHeightSexAndIsActiveToPlayerListItemView.resx">
+      <DependentUpon>201705261057058_AddedHeightSexAndIsActiveToPlayerListItemView.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
