@@ -26,6 +26,10 @@ namespace DribblyAPI.Entities
 
         public double blockingSkill { get; set; }
 
+        public double defensiveSkill { get; set; }
+
+        public double shootingSkill { get; set; }
+
         public DateTime dateCreated { get; set; }
 
         public bool isActive { get; set; }

@@ -7,7 +7,8 @@ namespace DribblyAPI.Migrations
     {
         public override void Up()
         {
-            string sql = @"SELECT a.userId, a.winRate, a.rating, a.mvps, a.dribblingSkill, a.passingSkill,
+            string sql = @"ALTER VIEW PlayerListItem
+                    AS SELECT a.userId, a.winRate, a.rating, a.mvps, a.dribblingSkill, a.passingSkill,
                     a.threePointSkill, a.blockingSkill, a.dateCreated, b.UserName, c.profilePic, c.heightFt,
                     c.heightIn, c.sex, a.isActive
                     FROM dbo.PlayerProfiles AS a INNER JOIN

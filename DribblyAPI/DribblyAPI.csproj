@@ -269,6 +269,14 @@
     <Compile Include="Migrations\201705261057058_AddedHeightSexAndIsActiveToPlayerListItemView.Designer.cs">
       <DependentUpon>201705261057058_AddedHeightSexAndIsActiveToPlayerListItemView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201705261141103_ChangedTypeOfPlayerListItemIsActiveToBool.cs" />
+    <Compile Include="Migrations\201705261141103_ChangedTypeOfPlayerListItemIsActiveToBool.Designer.cs">
+      <DependentUpon>201705261141103_ChangedTypeOfPlayerListItemIsActiveToBool.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705270805348_AddedDefensiveAndShootingSkillsRenamedDateCreatedToDateJoined.cs" />
+    <Compile Include="Migrations\201705270805348_AddedDefensiveAndShootingSkillsRenamedDateCreatedToDateJoined.Designer.cs">
+      <DependentUpon>201705270805348_AddedDefensiveAndShootingSkillsRenamedDateCreatedToDateJoined.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Entities\Court.cs" />
     <Compile Include="Models\BindingModels.cs" />
@@ -346,6 +354,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705261057058_AddedHeightSexAndIsActiveToPlayerListItemView.resx">
       <DependentUpon>201705261057058_AddedHeightSexAndIsActiveToPlayerListItemView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705261141103_ChangedTypeOfPlayerListItemIsActiveToBool.resx">
+      <DependentUpon>201705261141103_ChangedTypeOfPlayerListItemIsActiveToBool.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705270805348_AddedDefensiveAndShootingSkillsRenamedDateCreatedToDateJoined.resx">
+      <DependentUpon>201705270805348_AddedDefensiveAndShootingSkillsRenamedDateCreatedToDateJoined.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

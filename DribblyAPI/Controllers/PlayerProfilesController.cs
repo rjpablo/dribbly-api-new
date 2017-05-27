@@ -35,7 +35,7 @@ namespace DribblyAPI.Controllers
             }
         }
 
-        [Route("{userId}")]
+        [Route("GetProfile/{userId}")]
         [ResponseType(typeof(PlayerProfile))]
         public IHttpActionResult GetPlayerProfile(string userId)
         {
@@ -46,6 +46,20 @@ namespace DribblyAPI.Controllers
             catch (DribblyException ex)
             {
                 ex.UserMessage = "An error occurred while retrieving player profile.";
+                return InternalServerError(ex);
+            }
+        }
+
+        [Route("Search")]
+        public IHttpActionResult SearchPlayers()
+        {
+            try
+            {
+                return Ok(repo.SearchPlayers());
+            }
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "An error occurred while searching players.";
                 return InternalServerError(ex);
             }
         }
@@ -132,7 +146,7 @@ namespace DribblyAPI.Controllers
             }
         }
 
-        // DELETE: api/PlayerProfiles/5
+        [Route("Delete/{id}")]
         [ResponseType(typeof(PlayerProfile))]
         public IHttpActionResult DeletePlayerProfile(string id)
         {

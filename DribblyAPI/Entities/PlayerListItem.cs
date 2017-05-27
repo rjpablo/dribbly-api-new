@@ -17,7 +17,7 @@ namespace DribblyAPI.Entities
 
         public string profilePic { get; set; }
 
-        public DateTime dateCreated { get; set; }
+        public DateTime dateJoined { get; set; }
 
         public string sex { get; set; }
 
@@ -25,7 +25,7 @@ namespace DribblyAPI.Entities
 
         public int heightIn { get; set; }
 
-        public int isActive { get; set; }
+        public bool isActive { get; set; }
 
         public double winRate { get; set; }
 
@@ -40,6 +40,10 @@ namespace DribblyAPI.Entities
         public double threePointSkill { get; set; }
 
         public double blockingSkill { get; set; }
+
+        public double defensiveSkill { get; set; }
+
+        public double shootingSkill { get; set; }
 
 
     }
