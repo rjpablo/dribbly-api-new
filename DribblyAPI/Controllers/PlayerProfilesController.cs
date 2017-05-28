@@ -51,11 +51,11 @@ namespace DribblyAPI.Controllers
         }
 
         [Route("Search")]
-        public IHttpActionResult SearchPlayers()
+        public IHttpActionResult SearchPlayers(PlayerSearchCriteria criteria)
         {
             try
             {
-                return Ok(repo.SearchPlayers());
+                return Ok(repo.SearchPlayers(criteria));
             }
             catch (DribblyException ex)
             {

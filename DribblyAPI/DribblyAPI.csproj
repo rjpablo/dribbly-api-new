@@ -283,6 +283,7 @@
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\DribblyException.cs" />
     <Compile Include="Models\Enums.cs" />
+    <Compile Include="Models\PlayerSearchCriteria.cs" />
     <Compile Include="Models\RefreshToken.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
