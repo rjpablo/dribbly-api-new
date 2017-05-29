@@ -21,6 +21,7 @@ namespace DribblyAPI.Controllers
     {
         private ApplicationDbContext djb = new ApplicationDbContext();
         private UserProfileRepository _repo = new UserProfileRepository(new ApplicationDbContext());
+        private CityRepository _cityRepo = new CityRepository(new ApplicationDbContext());
 
         // GET: api/UserProfiles
         public IHttpActionResult GetUserProfiles()
@@ -54,11 +55,38 @@ namespace DribblyAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            _repo.Edit(userProfile);
+            if(userProfile.city != null)
+            {
+                if (userProfile.city.longName == "" || userProfile.city.shortName == "")
+                {
+                    return BadRequest("invalid city");
+                }
+
+                if (userProfile.city.country != null)
+                {
+                    if (userProfile.city.country.longName == "" || userProfile.city.country.shortName == "")
+                    {
+                        return BadRequest("city has invalid country details");
+                    }
+                }else
+                {
+                    return BadRequest("country is missing");
+                }
+            }
+            else
+            {
+                userProfile.cityId = null;
+            }
 
             try
             {
+                City tmpCity;
+                tmpCity = _cityRepo.AddOrGet(userProfile.city);
+                userProfile.cityId = tmpCity.cityId;
+                userProfile.city = null;
+                _repo.Edit(userProfile);
                 _repo.Save();
+                userProfile.city = tmpCity;
             }
             catch (DribblyException ex)
             {
@@ -72,7 +100,7 @@ namespace DribblyAPI.Controllers
                 }
             }
 
-            return Ok();
+            return Ok(userProfile);
         }
 
         /**

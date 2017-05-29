@@ -284,6 +284,10 @@
     <Compile Include="Migrations\201705290827502_AddedCityAndCountryClasses.Designer.cs">
       <DependentUpon>201705290827502_AddedCityAndCountryClasses.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201705291343200_AddedCityIdPropertyToUserProfileClass.cs" />
+    <Compile Include="Migrations\201705291343200_AddedCityIdPropertyToUserProfileClass.Designer.cs">
+      <DependentUpon>201705291343200_AddedCityIdPropertyToUserProfileClass.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Entities\Court.cs" />
     <Compile Include="Models\BindingModels.cs" />
@@ -373,6 +377,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705290827502_AddedCityAndCountryClasses.resx">
       <DependentUpon>201705290827502_AddedCityAndCountryClasses.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705291343200_AddedCityIdPropertyToUserProfileClass.resx">
+      <DependentUpon>201705291343200_AddedCityIdPropertyToUserProfileClass.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
