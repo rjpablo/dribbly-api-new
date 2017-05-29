@@ -210,6 +210,8 @@
     <Compile Include="Controllers\GamesController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
+    <Compile Include="Entities\Cities.cs" />
+    <Compile Include="Entities\Country.cs" />
     <Compile Include="Entities\CourtPhoto.cs" />
     <Compile Include="Entities\Game.cs" />
     <Compile Include="Entities\PlayerListItem.cs" />
@@ -276,6 +278,10 @@
     <Compile Include="Migrations\201705270805348_AddedDefensiveAndShootingSkillsRenamedDateCreatedToDateJoined.cs" />
     <Compile Include="Migrations\201705270805348_AddedDefensiveAndShootingSkillsRenamedDateCreatedToDateJoined.Designer.cs">
       <DependentUpon>201705270805348_AddedDefensiveAndShootingSkillsRenamedDateCreatedToDateJoined.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705290827502_AddedCityAndCountryClasses.cs" />
+    <Compile Include="Migrations\201705290827502_AddedCityAndCountryClasses.Designer.cs">
+      <DependentUpon>201705290827502_AddedCityAndCountryClasses.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Entities\Court.cs" />
@@ -361,6 +367,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705270805348_AddedDefensiveAndShootingSkillsRenamedDateCreatedToDateJoined.resx">
       <DependentUpon>201705270805348_AddedDefensiveAndShootingSkillsRenamedDateCreatedToDateJoined.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705290827502_AddedCityAndCountryClasses.resx">
+      <DependentUpon>201705290827502_AddedCityAndCountryClasses.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
