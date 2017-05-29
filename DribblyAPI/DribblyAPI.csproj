@@ -283,6 +283,10 @@
     <Compile Include="Migrations\201705290827502_AddedCityAndCountryClasses.Designer.cs">
       <DependentUpon>201705290827502_AddedCityAndCountryClasses.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201705290845335_RenamedCitiesClassToCity.cs" />
+    <Compile Include="Migrations\201705290845335_RenamedCitiesClassToCity.Designer.cs">
+      <DependentUpon>201705290845335_RenamedCitiesClassToCity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Entities\Court.cs" />
     <Compile Include="Models\BindingModels.cs" />
@@ -370,6 +374,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705290827502_AddedCityAndCountryClasses.resx">
       <DependentUpon>201705290827502_AddedCityAndCountryClasses.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705290845335_RenamedCitiesClassToCity.resx">
+      <DependentUpon>201705290845335_RenamedCitiesClassToCity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

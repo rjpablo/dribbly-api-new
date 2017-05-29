@@ -24,7 +24,7 @@ namespace DribblyAPI
         public DbSet<UserProfile> UserProfiles { get; set; }
         public DbSet<PlayerListItem> PlayerListItem { get; set; }
         public DbSet<Country> Countries { get; set; }
-        public DbSet<Cities> Cities { get; set; }
+        public DbSet<City> Cities { get; set; }
 
         public System.Data.Entity.DbSet<DribblyAPI.Entities.PlayerProfile> PlayerProfiles { get; set; }
     }
