@@ -201,6 +201,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\CitiesController.cs" />
     <Compile Include="Controllers\PlayerProfilesController.cs" />
     <Compile Include="Controllers\UserProfilesController.cs" />
     <Compile Include="Entities\ApplicationDbContext.cs" />
@@ -283,10 +284,6 @@
     <Compile Include="Migrations\201705290827502_AddedCityAndCountryClasses.Designer.cs">
       <DependentUpon>201705290827502_AddedCityAndCountryClasses.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201705290845335_RenamedCitiesClassToCity.cs" />
-    <Compile Include="Migrations\201705290845335_RenamedCitiesClassToCity.Designer.cs">
-      <DependentUpon>201705290845335_RenamedCitiesClassToCity.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Entities\Court.cs" />
     <Compile Include="Models\BindingModels.cs" />
@@ -301,6 +298,8 @@
     <Compile Include="Providers\RefreshTokenProvider.cs" />
     <Compile Include="Repositories\AuthRepository.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
+    <Compile Include="Repositories\CityRepository.cs" />
+    <Compile Include="Repositories\CountryRepository.cs" />
     <Compile Include="Repositories\CourtRepository.cs" />
     <Compile Include="Repositories\FileRepository.cs" />
     <Compile Include="Repositories\PlayerRepository.cs" />
@@ -374,9 +373,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705290827502_AddedCityAndCountryClasses.resx">
       <DependentUpon>201705290827502_AddedCityAndCountryClasses.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201705290845335_RenamedCitiesClassToCity.resx">
-      <DependentUpon>201705290845335_RenamedCitiesClassToCity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

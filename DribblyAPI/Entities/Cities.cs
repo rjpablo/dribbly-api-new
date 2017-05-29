@@ -7,7 +7,7 @@ using System.Web;
 
 namespace DribblyAPI.Entities
 {
-    public class City
+    public class City : BaseEntity
     {
         [Key]
         public int cityId { get; set; }
