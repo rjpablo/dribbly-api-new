@@ -24,9 +24,11 @@ namespace DribblyAPI.Repositories
                 if (tmpCountry != null)
                 {
                     city.countryId = tmpCountry.countryId;
+                    City tempCity = GetCity(city.shortName, city.longName, city.countryId);
 
-                    if (Exists(city))
+                    if (tempCity!=null)
                     {
+                        city.cityId = tempCity.cityId;
                         return city;
                     }
 
@@ -47,6 +49,12 @@ namespace DribblyAPI.Repositories
                 throw;
             }
 
+            return city;
+        }
+
+        public City GetCity(string shortName, string longName, int countryId)
+        {
+            City city = ctx.Set<City>().SingleOrDefault(c => c.shortName == shortName && c.longName == longName && c.countryId ==countryId);
             return city;
         }
 
