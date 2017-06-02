@@ -44,7 +44,7 @@ namespace DribblyAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (id != game.id)
+            if (id != game.gameId)
             {
                 return BadRequest();
             }
@@ -82,7 +82,7 @@ namespace DribblyAPI.Controllers
             db.Games.Add(game);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = game.id }, game);
+            return CreatedAtRoute("DefaultApi", new { id = game.gameId }, game);
         }
 
         // DELETE: api/Games/5
@@ -112,7 +112,7 @@ namespace DribblyAPI.Controllers
 
         private bool GameExists(int id)
         {
-            return db.Games.Count(e => e.id == id) > 0;
+            return db.Games.Count(e => e.gameId == id) > 0;
         }
     }
 }

@@ -217,6 +217,8 @@
     <Compile Include="Entities\Game.cs" />
     <Compile Include="Entities\PlayerListItem.cs" />
     <Compile Include="Entities\PlayerProfile.cs" />
+    <Compile Include="Entities\Team.cs" />
+    <Compile Include="Entities\TeamPlayer.cs" />
     <Compile Include="Entities\UserProfile.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -287,6 +289,10 @@
     <Compile Include="Migrations\201705291343200_AddedCityIdPropertyToUserProfileClass.cs" />
     <Compile Include="Migrations\201705291343200_AddedCityIdPropertyToUserProfileClass.Designer.cs">
       <DependentUpon>201705291343200_AddedCityIdPropertyToUserProfileClass.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706021546401_addedPropertiesToGameClassAddedTeamAndTeamPlayerClasses.cs" />
+    <Compile Include="Migrations\201706021546401_addedPropertiesToGameClassAddedTeamAndTeamPlayerClasses.Designer.cs">
+      <DependentUpon>201706021546401_addedPropertiesToGameClassAddedTeamAndTeamPlayerClasses.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Entities\Court.cs" />
@@ -380,6 +386,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705291343200_AddedCityIdPropertyToUserProfileClass.resx">
       <DependentUpon>201705291343200_AddedCityIdPropertyToUserProfileClass.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706021546401_addedPropertiesToGameClassAddedTeamAndTeamPlayerClasses.resx">
+      <DependentUpon>201706021546401_addedPropertiesToGameClassAddedTeamAndTeamPlayerClasses.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
