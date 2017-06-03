@@ -312,6 +312,7 @@
     <Compile Include="Repositories\CountryRepository.cs" />
     <Compile Include="Repositories\CourtRepository.cs" />
     <Compile Include="Repositories\FileRepository.cs" />
+    <Compile Include="Repositories\GameRepository.cs" />
     <Compile Include="Repositories\PlayerRepository.cs" />
     <Compile Include="Repositories\UserProfileRepository.cs" />
     <Compile Include="Startup.cs" />

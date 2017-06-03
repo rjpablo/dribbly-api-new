@@ -9,33 +9,57 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using DribblyAPI.Entities;
+using DribblyAPI.Repositories;
+using DribblyAPI.Models;
 
 namespace DribblyAPI.Controllers
 {
+    [RoutePrefix("api/Games")]
     public class GamesController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private GameRepository _repo = new GameRepository(new ApplicationDbContext());
 
         // GET: api/Games
-        public IQueryable<Game> GetGames()
+        public IHttpActionResult GetGames()
         {
-            return db.Games;
+            
+            try
+            {
+                return Ok(_repo.GetAll());
+            }
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "Failed to retrieve list of games. Please try again later.";
+                return InternalServerError(ex);
+            }
         }
 
-        // GET: api/Games/5
+        [Route("{id:int}")]
         [ResponseType(typeof(Game))]
         public IHttpActionResult GetGame(int id)
         {
-            Game game = db.Games.Find(id);
-            if (game == null)
+            try
             {
-                return NotFound();
-            }
+                Game game = _repo.FindBy(g => g.gameId == id).SingleOrDefault();
+                if (game == null)
+                {
+                    return NotFound();
+                }
 
-            return Ok(game);
+                return Ok(game);
+            }
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "Failed to retrieve game details. Please try again later.";
+                return InternalServerError(ex);
+            }
+            
+
         }
 
         // PUT: api/Games/5
+        [Route("Update/{id:int}")]
         [ResponseType(typeof(void))]
         public IHttpActionResult PutGame(int id, Game game)
         {
@@ -71,7 +95,7 @@ namespace DribblyAPI.Controllers
         }
 
         // POST: api/Games
-        [ResponseType(typeof(Game))]
+        [Route("Add")]
         public IHttpActionResult PostGame(Game game)
         {
             if (!ModelState.IsValid)
@@ -79,13 +103,19 @@ namespace DribblyAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            db.Games.Add(game);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = game.gameId }, game);
+            try
+            {
+                _repo.Add(game);
+                return Ok();
+            }
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "An internal error occurred while trying to same game details. Please try again later.";
+                return InternalServerError(ex);
+            }
         }
 
-        // DELETE: api/Games/5
+        [Route("Delete/{id:int}")]
         [ResponseType(typeof(Game))]
         public IHttpActionResult DeleteGame(int id)
         {
