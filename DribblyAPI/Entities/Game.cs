@@ -12,6 +12,8 @@ namespace DribblyAPI.Entities
         [Key]
         public int gameId { get; set; }
 
+        public string creatorId { get; set; }
+
         [Required]
         [MinLength(5, ErrorMessage ="Title must be at least 5 characters.")]
         public string title { get; set; }
@@ -35,6 +37,8 @@ namespace DribblyAPI.Entities
 
         [ForeignKey("winningTeam")]
         public int? winningTeamId { get; set; }
+
+        public DateTime dateCreated { get; set; }
 
         public virtual Court court { get; set; }
 

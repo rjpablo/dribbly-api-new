@@ -7,13 +7,18 @@ using System.Web;
 
 namespace DribblyAPI.Entities
 {
-    public class Team : BaseEntity
+    /// <summary>
+    /// This class is mapped to a database view
+    /// </summary>
+    public class FullDetailedTeam
     {
+
+        /** Fields from Team class - Start **/
+
         [Key]
         public int teamId { get; set; }
 
         [Required]
-        [StringLength(15,MinimumLength = 5,ErrorMessage ="Team Name must be 5 to 15 characters long.")]
         public string teamName { get; set; }
 
         public bool isTemporary { get; set; }
@@ -22,13 +27,27 @@ namespace DribblyAPI.Entities
 
         public DateTime dateCreated { get; set; }
         
-        [Required(ErrorMessage ="Creator Id is required but is missing.")]
+        [ForeignKey("creator")]
         public string creatorId { get; set; }
 
-        [Required(ErrorMessage = "Manager Id is required but is missing.")]
+        [ForeignKey("manager")]
         public string managerId { get; set; }
 
         public bool isActive { get; set; }
+
+        /** Fields from Team class - End **/
+
+        public int winCount { get; set; }
+
+        public int lossCount { get; set; }
+
+        public int gameCount { get; set; }
+
+        public double winningRate { get; set; }
+
+        public UserView creator { get; set; }
+
+        public UserView manager { get; set; }
 
     }
 }

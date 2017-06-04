@@ -215,11 +215,15 @@
     <Compile Include="Entities\Country.cs" />
     <Compile Include="Entities\CourtPhoto.cs" />
     <Compile Include="Entities\Game.cs" />
+    <Compile Include="Entities\GameTeam.cs" />
+    <Compile Include="Entities\PlayerGame.cs" />
     <Compile Include="Entities\PlayerListItem.cs" />
     <Compile Include="Entities\PlayerProfile.cs" />
     <Compile Include="Entities\Team.cs" />
+    <Compile Include="Entities\TeamFullDetails.cs" />
     <Compile Include="Entities\TeamPlayer.cs" />
     <Compile Include="Entities\UserProfile.cs" />
+    <Compile Include="Entities\UserView.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -293,6 +297,18 @@
     <Compile Include="Migrations\201706021546401_addedPropertiesToGameClassAddedTeamAndTeamPlayerClasses.cs" />
     <Compile Include="Migrations\201706021546401_addedPropertiesToGameClassAddedTeamAndTeamPlayerClasses.Designer.cs">
       <DependentUpon>201706021546401_addedPropertiesToGameClassAddedTeamAndTeamPlayerClasses.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706031857555_AddedSomePropertiesToTeamClass.cs" />
+    <Compile Include="Migrations\201706031857555_AddedSomePropertiesToTeamClass.Designer.cs">
+      <DependentUpon>201706031857555_AddedSomePropertiesToTeamClass.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706041529066_AddedSomePropertiesToGameAndTeamClassesAddedGamePlayerAndGameTeamClasses.cs" />
+    <Compile Include="Migrations\201706041529066_AddedSomePropertiesToGameAndTeamClassesAddedGamePlayerAndGameTeamClasses.Designer.cs">
+      <DependentUpon>201706041529066_AddedSomePropertiesToGameAndTeamClassesAddedGamePlayerAndGameTeamClasses.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706041542046_AddedClassesUserViewAndFullDetailedTeam.cs" />
+    <Compile Include="Migrations\201706041542046_AddedClassesUserViewAndFullDetailedTeam.Designer.cs">
+      <DependentUpon>201706041542046_AddedClassesUserViewAndFullDetailedTeam.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Entities\Court.cs" />
@@ -390,6 +406,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706021546401_addedPropertiesToGameClassAddedTeamAndTeamPlayerClasses.resx">
       <DependentUpon>201706021546401_addedPropertiesToGameClassAddedTeamAndTeamPlayerClasses.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706031857555_AddedSomePropertiesToTeamClass.resx">
+      <DependentUpon>201706031857555_AddedSomePropertiesToTeamClass.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706041529066_AddedSomePropertiesToGameAndTeamClassesAddedGamePlayerAndGameTeamClasses.resx">
+      <DependentUpon>201706041529066_AddedSomePropertiesToGameAndTeamClassesAddedGamePlayerAndGameTeamClasses.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706041542046_AddedClassesUserViewAndFullDetailedTeam.resx">
+      <DependentUpon>201706041542046_AddedClassesUserViewAndFullDetailedTeam.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
