@@ -8,31 +8,26 @@ namespace DribblyAPI.Migrations
         public override void Up()
         {
             string str1 = @"CREATE VIEW dbo.FullDetailedTeams
-                AS SELECT a.teamId, b.gameCount, c.winCount, d.lossCount, CAST(c.winCount as float)/(c.winCount + d.lossCount) as winningRate, a.teamName, a.isTemporary, a.logoUrl, a.dateCreated,
-	            a.creatorId, a.managerId, 1 as isActive	
-	            FROM Teams a
-	            INNER JOIN 
-		            (SELECT COUNT(*)  as gameCount, teamId
-		            FROM GameTeams
-		            GROUP BY teamId) b
-	            ON a.teamId = b.teamId
-	            INNER JOIN 
-		            (SELECT COUNT(*)  as winCount, winningTeamId
-		            FROM Games
-		            GROUP BY winningTeamId) c
-	            ON a.teamId = c.winningTeamId
-	            INNER JOIN 
-		            (SELECT Count(*) as lossCount, d.teamId FROM Teams d INNER JOIN
-		            Games e
-		            ON (d.teamId = e.teamAId OR d.teamId = e.teamBId) AND e.winningTeamId IS NOT NULL AND e.winningTeamId <> d.teamId
-		            GROUP BY d.teamId) d
-	            ON a.teamId = d.teamId";
+                AS SELECT        a.teamId, b.gameCount, c.winCount, d_1.lossCount, CAST(c.winCount AS float) / (c.winCount + d_1.lossCount) AS winningRate, a.teamName, a.isTemporary, a.logoUrl, a.dateCreated, a.creatorId, a.managerId, 
+                         ISNULL(CONVERT([bit], CASE WHEN 1 > 1 THEN 1 ELSE 0 END), 0) AS isActive
+                FROM            dbo.Teams AS a INNER JOIN
+                             (SELECT        COUNT(*) AS gameCount, teamId
+                               FROM            dbo.GameTeams
+                               GROUP BY teamId) AS b ON a.teamId = b.teamId INNER JOIN
+                             (SELECT        COUNT(*) AS winCount, winningTeamId
+                               FROM            dbo.Games
+                               GROUP BY winningTeamId) AS c ON a.teamId = c.winningTeamId INNER JOIN
+                             (SELECT        COUNT(*) AS lossCount, d.teamId
+                               FROM            dbo.Teams AS d INNER JOIN
+                                                         dbo.Games AS e ON (d.teamId = e.teamAId OR
+                                                         d.teamId = e.teamBId) AND e.winningTeamId IS NOT NULL AND e.winningTeamId <> d.teamId
+                               GROUP BY d.teamId) AS d_1 ON a.teamId = d_1.teamId";
 
             Sql(str1);
 
             string str2 = @"CREATE VIEW dbo.UserViews
-                AS SELECT a.Id as userId, a.UserName as userName, a.Email as email, 1 as isActive 
-                FROM AspNetUsers a;";
+                AS SELECT        Id AS userId, UserName, Email, ISNULL(CONVERT([bit], CASE WHEN 1 = 1 THEN 1 ELSE 0 END), 0) AS isActive
+                FROM            dbo.AspNetUsers AS a";
 
             Sql(str2);
 
