@@ -203,6 +203,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CitiesController.cs" />
     <Compile Include="Controllers\PlayerProfilesController.cs" />
+    <Compile Include="Controllers\TeamsController.cs" />
     <Compile Include="Controllers\UserProfilesController.cs" />
     <Compile Include="Entities\ApplicationDbContext.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -220,7 +221,7 @@
     <Compile Include="Entities\PlayerListItem.cs" />
     <Compile Include="Entities\PlayerProfile.cs" />
     <Compile Include="Entities\Team.cs" />
-    <Compile Include="Entities\TeamFullDetails.cs" />
+    <Compile Include="Entities\FullDetailedTeam.cs" />
     <Compile Include="Entities\TeamPlayer.cs" />
     <Compile Include="Entities\UserProfile.cs" />
     <Compile Include="Entities\UserView.cs" />
@@ -310,6 +311,14 @@
     <Compile Include="Migrations\201706041542046_AddedClassesUserViewAndFullDetailedTeam.Designer.cs">
       <DependentUpon>201706041542046_AddedClassesUserViewAndFullDetailedTeam.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706071031156_AddedCityIdHomeCourtIdAndCoachIdToTeamClass.cs" />
+    <Compile Include="Migrations\201706071031156_AddedCityIdHomeCourtIdAndCoachIdToTeamClass.Designer.cs">
+      <DependentUpon>201706071031156_AddedCityIdHomeCourtIdAndCoachIdToTeamClass.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706071059470_AddedCityIdHomeCourtIdAndCoachIdToFullDetailedTeamClass.cs" />
+    <Compile Include="Migrations\201706071059470_AddedCityIdHomeCourtIdAndCoachIdToFullDetailedTeamClass.Designer.cs">
+      <DependentUpon>201706071059470_AddedCityIdHomeCourtIdAndCoachIdToFullDetailedTeamClass.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Entities\Court.cs" />
     <Compile Include="Models\BindingModels.cs" />
@@ -330,6 +339,7 @@
     <Compile Include="Repositories\FileRepository.cs" />
     <Compile Include="Repositories\GameRepository.cs" />
     <Compile Include="Repositories\PlayerRepository.cs" />
+    <Compile Include="Repositories\TeamRepository.cs" />
     <Compile Include="Repositories\UserProfileRepository.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -415,6 +425,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706041542046_AddedClassesUserViewAndFullDetailedTeam.resx">
       <DependentUpon>201706041542046_AddedClassesUserViewAndFullDetailedTeam.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706071031156_AddedCityIdHomeCourtIdAndCoachIdToTeamClass.resx">
+      <DependentUpon>201706071031156_AddedCityIdHomeCourtIdAndCoachIdToTeamClass.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706071059470_AddedCityIdHomeCourtIdAndCoachIdToFullDetailedTeamClass.resx">
+      <DependentUpon>201706071059470_AddedCityIdHomeCourtIdAndCoachIdToFullDetailedTeamClass.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

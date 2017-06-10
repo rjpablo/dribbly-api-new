@@ -35,6 +35,15 @@ namespace DribblyAPI.Entities
 
         public bool isActive { get; set; }
 
+        [ForeignKey("city")]
+        public int cityId { get; set; }
+
+        [ForeignKey("homeCourt")]
+        public int? homeCourtId { get; set; }
+
+        [ForeignKey("coach")]
+        public string coachId { get; set; }
+
         /** Fields from Team class - End **/
 
         public int winCount { get; set; }
@@ -48,6 +57,12 @@ namespace DribblyAPI.Entities
         public UserView creator { get; set; }
 
         public UserView manager { get; set; }
+
+        public City city { get; set; }
+
+        public Court homeCourt { get; set; }
+
+        public UserView coach { get; set; }
 
     }
 }

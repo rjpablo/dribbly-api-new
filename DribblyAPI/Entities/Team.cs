@@ -22,13 +22,20 @@ namespace DribblyAPI.Entities
 
         public DateTime dateCreated { get; set; }
         
-        [Required(ErrorMessage ="Creator Id is required but is missing.")]
+        [Required(ErrorMessage ="Creator is required but is missing.")]
         public string creatorId { get; set; }
 
-        [Required(ErrorMessage = "Manager Id is required but is missing.")]
+        [Required(ErrorMessage = "Manager is required but is missing.")]
         public string managerId { get; set; }
 
         public bool isActive { get; set; }
+
+        [Required(ErrorMessage = "City is required but is missing.")]
+        public int cityId { get; set; }
+
+        public int? homeCourtId { get; set; }
+
+        public int? coachId { get; set; }
 
     }
 }
