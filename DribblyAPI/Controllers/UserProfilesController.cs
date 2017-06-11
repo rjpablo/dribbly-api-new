@@ -144,8 +144,8 @@ namespace DribblyAPI.Controllers
             }
         }
 
-        [Route("UploadProfilePic/{userId}")]
-        public IHttpActionResult UploadProfilePic([FromUri]string userId)
+        [Route("UploadPhoto/{userId}/{setAsProfilePic?}")]
+        public IHttpActionResult UploadProfilePic([FromUri]string userId, [FromUri] bool setAsProfilePic = false)
         {
             string uploadedFileName = "";
 
@@ -159,7 +159,10 @@ namespace DribblyAPI.Controllers
                     UserPhoto photo = new UserPhoto() { fileName = uploadedFileName, userId = userId, uploadDate = DateTime.Now };
                     _userPhotoRepo.Add(photo);
                     _userPhotoRepo.Save();
-                    _repo.UpdateProfilePic(userId, photo.id);
+                    if (setAsProfilePic)
+                    {
+                        _repo.UpdateProfilePic(userId, photo.id);
+                    }
                     return Ok(photo);
                 }
                 catch (Exception ex)
