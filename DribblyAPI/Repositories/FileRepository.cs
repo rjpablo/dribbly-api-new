@@ -97,6 +97,19 @@ namespace DribblyAPI.Repositories
             }
         }
 
+        public bool deleteUserPhoto(string fileName, string userId)
+        {
+            try
+            {
+                File.Delete(uploadBasePath + userId + "/photos/" + fileName);
+                return true;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public void Dispose()
         {
             //throw new NotImplementedException();

@@ -22,6 +22,8 @@ namespace DribblyAPI.Controllers
         private ApplicationDbContext djb = new ApplicationDbContext();
         private UserProfileRepository _repo = new UserProfileRepository(new ApplicationDbContext());
         private CityRepository _cityRepo = new CityRepository(new ApplicationDbContext());
+        private FileRepository _fileRepo = new FileRepository();
+        private UserPhotoRepository _userPhotoRepo = new UserPhotoRepository(new ApplicationDbContext());
 
         // GET: api/UserProfiles
         public IHttpActionResult GetUserProfiles()
@@ -80,10 +82,17 @@ namespace DribblyAPI.Controllers
 
             try
             {
-                City tmpCity;
-                tmpCity = _cityRepo.AddOrGet(userProfile.city);
-                userProfile.cityId = tmpCity.cityId;
-                userProfile.city = null;
+                City tmpCity = null;
+                if (userProfile.city != null)
+                {
+                    tmpCity = _cityRepo.AddOrGet(userProfile.city);
+                    userProfile.cityId = tmpCity.cityId;
+                    userProfile.city = null;
+                }else
+                {
+                    userProfile.cityId = null;
+                }
+                
                 _repo.Edit(userProfile);
                 _repo.Save();
                 userProfile.city = tmpCity;
@@ -103,60 +112,66 @@ namespace DribblyAPI.Controllers
             return Ok(userProfile);
         }
 
-        /**
-
-        // POST: api/UserProfiles
-        [ResponseType(typeof(UserProfile))]
-        public IHttpActionResult PostUserProfile(UserProfile userProfile)
+        [HttpPut]
+        [Route("UpdateProfilePic/{userId}/{photoId}")]
+        public IHttpActionResult UpdatePrimaryPhoto(string userId, int photoId)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            db.UserProfiles.Add(userProfile);
-
             try
             {
-                db.SaveChanges();
+                _repo.UpdateProfilePic(userId, photoId);
+                return Ok();
             }
-            catch (DbUpdateException)
+            catch (DribblyException ex)
             {
-                if (UserProfileExists(userProfile.userId))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
+                ex.UserMessage = "Failed to update primary photo";
+                return InternalServerError(ex);
             }
-
-            return CreatedAtRoute("DefaultApi", new { id = userProfile.userId }, userProfile);
         }
 
-        // DELETE: api/UserProfiles/5
+        [Route("GetMainProfile/{userId}")]
         [ResponseType(typeof(UserProfile))]
-        public IHttpActionResult DeleteUserProfile(string id)
+        public IHttpActionResult GetMainProfile(string userId)
         {
-            UserProfile userProfile = db.UserProfiles.Find(id);
-            if (userProfile == null)
+            try
             {
-                return NotFound();
+                MainProfileView userProfile = _repo.GetMainProfileDetailsById(userId);
+                return Ok(userProfile);
             }
-
-            db.UserProfiles.Remove(userProfile);
-            db.SaveChanges();
-
-            return Ok(userProfile);
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "Error loading main profile.";
+                return InternalServerError(ex);
+            }
         }
 
-        private bool UserProfileExists(string id)
+        [Route("UploadProfilePic/{userId}")]
+        public IHttpActionResult UploadProfilePic([FromUri]string userId)
         {
-            return db.UserProfiles.Count(e => e.userId == id) > 0;
-        }
+            string uploadedFileName = "";
 
-        **/
+            System.Web.HttpFileCollection files = System.Web.HttpContext.Current.Request.Files;
+
+            if (files.Count > 0)
+            {
+                try
+                {
+                    uploadedFileName = _fileRepo.Upload(files[0], userId + "/photos/");
+                    UserPhoto photo = new UserPhoto() { fileName = uploadedFileName, userId = userId, uploadDate = DateTime.Now };
+                    _userPhotoRepo.Add(photo);
+                    _userPhotoRepo.Save();
+                    _repo.UpdateProfilePic(userId, photo.id);
+                    return Ok(photo);
+                }
+                catch (Exception ex)
+                {
+                    return InternalServerError(ex);
+                }
+            }
+            else
+            {
+                return BadRequest("No files to upload.");
+            }
+        }
 
         protected override void Dispose(bool disposing)
         {

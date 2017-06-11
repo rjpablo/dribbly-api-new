@@ -15,7 +15,8 @@ namespace DribblyAPI.Entities
 
         public string userName { get; set; }
 
-        public string profilePic { get; set; }
+        [ForeignKey("profilePic")]
+        public int? profilePicId { get; set; }
 
         public DateTime dateJoined { get; set; }
 
@@ -44,6 +45,8 @@ namespace DribblyAPI.Entities
         public double defensiveSkill { get; set; }
 
         public double shootingSkill { get; set; }
+
+        public UserPhoto profilePic { get; set; }
 
 
     }

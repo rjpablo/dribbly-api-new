@@ -14,7 +14,8 @@ namespace DribblyAPI.Entities
 
         public string sex { get; set; }
 
-        public string profilePic { get; set; }
+        [ForeignKey("profilePic")]
+        public int? profilePicId { get; set; }
 
         public string address { get; set; }
 
@@ -44,6 +45,8 @@ namespace DribblyAPI.Entities
         public int? cityId { get; set; }
 
         public virtual City city { get; set; }
+
+        public virtual UserPhoto profilePic { get; set; }
 
     }
 }

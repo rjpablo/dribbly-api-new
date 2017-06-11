@@ -223,6 +223,7 @@
     <Compile Include="Entities\Team.cs" />
     <Compile Include="Entities\FullDetailedTeam.cs" />
     <Compile Include="Entities\TeamPlayer.cs" />
+    <Compile Include="Entities\UserPhoto.cs" />
     <Compile Include="Entities\UserProfile.cs" />
     <Compile Include="Entities\UserView.cs" />
     <Compile Include="Global.asax.cs">
@@ -319,12 +320,29 @@
     <Compile Include="Migrations\201706071059470_AddedCityIdHomeCourtIdAndCoachIdToFullDetailedTeamClass.Designer.cs">
       <DependentUpon>201706071059470_AddedCityIdHomeCourtIdAndCoachIdToFullDetailedTeamClass.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706102010040_AddedUserPhotoClass.cs" />
+    <Compile Include="Migrations\201706102010040_AddedUserPhotoClass.Designer.cs">
+      <DependentUpon>201706102010040_AddedUserPhotoClass.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706110737487_ReplacedProfilePicWithProfilePicId.cs" />
+    <Compile Include="Migrations\201706110737487_ReplacedProfilePicWithProfilePicId.Designer.cs">
+      <DependentUpon>201706110737487_ReplacedProfilePicWithProfilePicId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706110805151_ReplacedPlayerListItemProfilePicWithProfilePicId.cs" />
+    <Compile Include="Migrations\201706110805151_ReplacedPlayerListItemProfilePicWithProfilePicId.Designer.cs">
+      <DependentUpon>201706110805151_ReplacedPlayerListItemProfilePicWithProfilePicId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706111717122_MadeSomePropertiesOfPlayerListItemAndFullDetailedTeamOptional.cs" />
+    <Compile Include="Migrations\201706111717122_MadeSomePropertiesOfPlayerListItemAndFullDetailedTeamOptional.Designer.cs">
+      <DependentUpon>201706111717122_MadeSomePropertiesOfPlayerListItemAndFullDetailedTeamOptional.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Entities\Court.cs" />
     <Compile Include="Models\BindingModels.cs" />
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\DribblyException.cs" />
     <Compile Include="Models\Enums.cs" />
+    <Compile Include="Models\MainProfileView.cs" />
     <Compile Include="Models\PlayerSearchCriteria.cs" />
     <Compile Include="Models\RefreshToken.cs" />
     <Compile Include="Models\UserModel.cs" />
@@ -340,6 +358,7 @@
     <Compile Include="Repositories\GameRepository.cs" />
     <Compile Include="Repositories\PlayerRepository.cs" />
     <Compile Include="Repositories\TeamRepository.cs" />
+    <Compile Include="Repositories\UserPhotoRepository.cs" />
     <Compile Include="Repositories\UserProfileRepository.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -431,6 +450,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706071059470_AddedCityIdHomeCourtIdAndCoachIdToFullDetailedTeamClass.resx">
       <DependentUpon>201706071059470_AddedCityIdHomeCourtIdAndCoachIdToFullDetailedTeamClass.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706102010040_AddedUserPhotoClass.resx">
+      <DependentUpon>201706102010040_AddedUserPhotoClass.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706110737487_ReplacedProfilePicWithProfilePicId.resx">
+      <DependentUpon>201706110737487_ReplacedProfilePicWithProfilePicId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706110805151_ReplacedPlayerListItemProfilePicWithProfilePicId.resx">
+      <DependentUpon>201706110805151_ReplacedPlayerListItemProfilePicWithProfilePicId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706111717122_MadeSomePropertiesOfPlayerListItemAndFullDetailedTeamOptional.resx">
+      <DependentUpon>201706111717122_MadeSomePropertiesOfPlayerListItemAndFullDetailedTeamOptional.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

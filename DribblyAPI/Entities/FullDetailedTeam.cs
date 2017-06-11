@@ -36,7 +36,7 @@ namespace DribblyAPI.Entities
         public bool isActive { get; set; }
 
         [ForeignKey("city")]
-        public int cityId { get; set; }
+        public int? cityId { get; set; }
 
         [ForeignKey("homeCourt")]
         public int? homeCourtId { get; set; }

@@ -17,6 +17,19 @@ namespace DribblyAPI
             
         }
 
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            /* PlayerListItem */
+            //modelBuilder.Entity<PlayerListItem>().Property(p => p.profilePicId).IsOptional();
+
+            /* FullDetailedTeam */
+            //modelBuilder.Entity<FullDetailedTeam>().Property(t => t.cityId).IsOptional();
+            //modelBuilder.Entity<FullDetailedTeam>().Property(t => t.coachId).IsOptional();
+            //modelBuilder.Entity<FullDetailedTeam>().Property(t => t.homeCourtId).IsOptional();
+
+            base.OnModelCreating(modelBuilder);
+        }
+
         public DbSet<Client> Clients { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<Court> Courts { get; set; }
@@ -31,6 +44,7 @@ namespace DribblyAPI
         public DbSet<GameTeam> GameTeams { get; set; }
         public DbSet<FullDetailedTeam> FullDetailedTeams { get; set; }
         public DbSet<UserView> UserViews { get; set; }
+        public DbSet<UserPhoto> UserPhotos { get; set; }
 
         public System.Data.Entity.DbSet<DribblyAPI.Entities.PlayerProfile> PlayerProfiles { get; set; }
     }

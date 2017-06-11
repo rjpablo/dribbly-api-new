@@ -126,7 +126,21 @@ namespace DribblyAPI.Controllers
             catch (Exception ex)
             {
                 return InternalServerError(ex);
-            }  
+            }
+        }
+
+        [Route("deleteUserPhoto/{fileName}/{userId}")]
+        public IHttpActionResult deleteUserPhoto(string fileName, string userId)
+        {
+            try
+            {
+                _repo.deleteUserPhoto(fileName, userId);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
         }
 
     }
