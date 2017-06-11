@@ -336,6 +336,10 @@
     <Compile Include="Migrations\201706111717122_MadeSomePropertiesOfPlayerListItemAndFullDetailedTeamOptional.Designer.cs">
       <DependentUpon>201706111717122_MadeSomePropertiesOfPlayerListItemAndFullDetailedTeamOptional.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706112022048_ChangeGamePlayerPlayerIdDataTypeToString.cs" />
+    <Compile Include="Migrations\201706112022048_ChangeGamePlayerPlayerIdDataTypeToString.Designer.cs">
+      <DependentUpon>201706112022048_ChangeGamePlayerPlayerIdDataTypeToString.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Entities\Court.cs" />
     <Compile Include="Models\BindingModels.cs" />
@@ -462,6 +466,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706111717122_MadeSomePropertiesOfPlayerListItemAndFullDetailedTeamOptional.resx">
       <DependentUpon>201706111717122_MadeSomePropertiesOfPlayerListItemAndFullDetailedTeamOptional.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706112022048_ChangeGamePlayerPlayerIdDataTypeToString.resx">
+      <DependentUpon>201706112022048_ChangeGamePlayerPlayerIdDataTypeToString.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

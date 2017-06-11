@@ -34,5 +34,8 @@ namespace DribblyAPI.Entities
 
         public bool isActive { get; set; }
 
+        [NotMapped]
+        public IEnumerable<Game> games { get; set; }
+
     }
 }

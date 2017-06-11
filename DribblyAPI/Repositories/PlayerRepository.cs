@@ -25,6 +25,27 @@ namespace DribblyAPI.Repositories
 
         }
 
+        public PlayerProfile GetPlayerProfile(string userId)
+        {
+            try
+            {
+                PlayerProfile player = FindBy(u => u.userId == userId).SingleOrDefault();
+                if (player != null)
+                {
+                    player.games = (from g in ctx.Set<Game>()
+                                    join t in ctx.Set<GameTeam>() on g.gameId equals t.gameId
+                                    join p in ctx.Set<GamePlayer>() on t.gameTeamId equals p.gameTeamId
+                                    where p.playerId == player.userId
+                                    select g).ToList<Game>();
+                }
+                return player;
+            }
+            catch (Exception)
+            {
+                throw;
+            }            
+        }
+
         public IEnumerable<PlayerListItem> SearchPlayers(PlayerSearchCriteria criteria)
         {
             IEnumerable<PlayerListItem> players = ctx.Set<PlayerListItem>().Include(p=>p.profilePic);

@@ -15,7 +15,7 @@ namespace DribblyAPI.Entities
     public class GamePlayer:BaseEntity
     {
         [Key,Column(Order =1)]
-        public int playerId { get; set; }
+        public string playerId { get; set; }
 
         [Key, Column(Order = 2)]
         public int gameTeamId { get; set; }

@@ -41,7 +41,8 @@ namespace DribblyAPI.Controllers
         {
             try
             {
-                return Ok(repo.FindBy(u => u.userId == userId).SingleOrDefault());
+                PlayerProfile player = repo.GetPlayerProfile(userId);
+                return Ok(player);
             }
             catch (DribblyException ex)
             {
