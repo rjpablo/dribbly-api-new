@@ -14,6 +14,7 @@ using DribblyAPI.Models;
 
 namespace DribblyAPI.Controllers
 {
+    [RoutePrefix("api/Teams")]
     public class TeamsController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -83,18 +84,26 @@ namespace DribblyAPI.Controllers
         }
 
         // POST: api/Teams
-        [Route("Create")]
+        [HttpPost]
+        [Route("Register")]
         public IHttpActionResult PostTeam(Team team)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                db.Teams.Add(team);
+                db.SaveChanges();
+                return Ok();
             }
-
-            db.Teams.Add(team);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = team.teamId }, team);
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "An unexpected error occurred. Please try again later.";
+                return InternalServerError(ex);
+            }
         }
 
         // DELETE: api/Teams/5
