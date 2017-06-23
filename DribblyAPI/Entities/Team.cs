@@ -30,8 +30,7 @@ namespace DribblyAPI.Entities
 
         public bool isActive { get; set; }
 
-        [Required(ErrorMessage = "City is required but is missing.")]
-        public int cityId { get; set; }
+        public int? cityId { get; set; }
 
         public int? homeCourtId { get; set; }
 

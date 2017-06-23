@@ -48,7 +48,7 @@ namespace DribblyAPI.Repositories
 
         public IEnumerable<PlayerListItem> SearchPlayers(PlayerSearchCriteria criteria)
         {
-            IEnumerable<PlayerListItem> players = ctx.Set<PlayerListItem>().Include(p=>p.profilePic);
+            IEnumerable<PlayerListItem> players = ctx.Set<PlayerListItem>().Include(p=>p.profilePic).Include(p=>p.city.country);
 
             if (criteria != null)
             {

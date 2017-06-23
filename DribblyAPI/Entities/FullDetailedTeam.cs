@@ -46,13 +46,13 @@ namespace DribblyAPI.Entities
 
         /** Fields from Team class - End **/
 
-        public int winCount { get; set; }
+        public int? winCount { get; set; }
 
-        public int lossCount { get; set; }
+        public int? lossCount { get; set; }
 
-        public int gameCount { get; set; }
+        public int? gameCount { get; set; }
 
-        public double winningRate { get; set; }
+        public double? winningRate { get; set; }
 
         public UserView creator { get; set; }
 

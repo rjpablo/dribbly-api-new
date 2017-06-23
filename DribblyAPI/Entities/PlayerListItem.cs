@@ -26,6 +26,9 @@ namespace DribblyAPI.Entities
 
         public int heightIn { get; set; }
 
+        [ForeignKey("city")]
+        public int? cityId { get; set; }
+
         public bool isActive { get; set; }
 
         public double winRate { get; set; }
@@ -47,6 +50,8 @@ namespace DribblyAPI.Entities
         public double shootingSkill { get; set; }
 
         public UserPhoto profilePic { get; set; }
+
+        public City city { get; set; }
 
 
     }

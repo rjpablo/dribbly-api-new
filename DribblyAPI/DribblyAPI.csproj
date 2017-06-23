@@ -184,6 +184,7 @@
     <Content Include="Global.asax" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <None Include="Properties\PublishProfiles\dribbly-api.pubxml" />
     <None Include="Scripts\jquery-1.10.2-vsdoc.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -340,6 +341,14 @@
     <Compile Include="Migrations\201706112022048_ChangeGamePlayerPlayerIdDataTypeToString.Designer.cs">
       <DependentUpon>201706112022048_ChangeGamePlayerPlayerIdDataTypeToString.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706220821471_Added cityId and city%28virtual%29 to PlayerListItem class.cs" />
+    <Compile Include="Migrations\201706220821471_Added cityId and city%28virtual%29 to PlayerListItem class.Designer.cs">
+      <DependentUpon>201706220821471_Added cityId and city%28virtual%29 to PlayerListItem class.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706230029378_MadeTeamCityIdNullable.cs" />
+    <Compile Include="Migrations\201706230029378_MadeTeamCityIdNullable.Designer.cs">
+      <DependentUpon>201706230029378_MadeTeamCityIdNullable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Entities\Court.cs" />
     <Compile Include="Models\BindingModels.cs" />
@@ -469,6 +478,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706112022048_ChangeGamePlayerPlayerIdDataTypeToString.resx">
       <DependentUpon>201706112022048_ChangeGamePlayerPlayerIdDataTypeToString.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706220821471_Added cityId and city%28virtual%29 to PlayerListItem class.resx">
+      <DependentUpon>201706220821471_Added cityId and city%28virtual%29 to PlayerListItem class.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706230029378_MadeTeamCityIdNullable.resx">
+      <DependentUpon>201706230029378_MadeTeamCityIdNullable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
