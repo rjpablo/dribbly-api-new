@@ -24,11 +24,26 @@ namespace DribblyAPI.Controllers
         private CityRepository _cityRepo = new CityRepository(new ApplicationDbContext());
         private FileRepository _fileRepo = new FileRepository();
         private UserPhotoRepository _userPhotoRepo = new UserPhotoRepository(new ApplicationDbContext());
+        private UserViewRepository _userViewRepo = new UserViewRepository(new ApplicationDbContext());
 
         // GET: api/UserProfiles
         public IHttpActionResult GetUserProfiles()
         {
             return Ok(_repo.GetAll().ToList<UserProfile>());
+        }
+
+        [Route("UserViews/{userName}")]
+        public IHttpActionResult GetUserViews(string userName)
+        {
+            try
+            {
+                return Ok(_userViewRepo.FindBy(u => u.userName.Contains(userName)));
+            }
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "Failed to retrieve user list.";
+                return InternalServerError(ex);
+            }
         }
 
         [Route("{userName}")]

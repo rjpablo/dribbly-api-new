@@ -21,5 +21,9 @@ namespace DribblyAPI.Entities
 
         public bool isActive { get; set; }
 
+        public string profilPic { get; set; }
+
+        public bool isPlaying { get; set; }
+
     }
 }

@@ -13,7 +13,7 @@ namespace DribblyAPI.Entities
         public int teamId { get; set; }
 
         [Required]
-        [StringLength(15,MinimumLength = 5,ErrorMessage ="Team Name must be 5 to 15 characters long.")]
+        [StringLength(30,MinimumLength = 5,ErrorMessage ="Team Name must be 5 to 30 characters long.")]
         public string teamName { get; set; }
 
         public bool isTemporary { get; set; }

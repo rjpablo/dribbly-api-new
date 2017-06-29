@@ -349,6 +349,14 @@
     <Compile Include="Migrations\201706230029378_MadeTeamCityIdNullable.Designer.cs">
       <DependentUpon>201706230029378_MadeTeamCityIdNullable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706250241248_MadeTeamNameMaxLength30.cs" />
+    <Compile Include="Migrations\201706250241248_MadeTeamNameMaxLength30.Designer.cs">
+      <DependentUpon>201706250241248_MadeTeamNameMaxLength30.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706290856165_AddedPropertiesProfilePicAndIsPlayingToUserViewClass.cs" />
+    <Compile Include="Migrations\201706290856165_AddedPropertiesProfilePicAndIsPlayingToUserViewClass.Designer.cs">
+      <DependentUpon>201706290856165_AddedPropertiesProfilePicAndIsPlayingToUserViewClass.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Entities\Court.cs" />
     <Compile Include="Models\BindingModels.cs" />
@@ -373,6 +381,7 @@
     <Compile Include="Repositories\TeamRepository.cs" />
     <Compile Include="Repositories\UserPhotoRepository.cs" />
     <Compile Include="Repositories\UserProfileRepository.cs" />
+    <Compile Include="Repositories\UserViewRepository.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -484,6 +493,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706230029378_MadeTeamCityIdNullable.resx">
       <DependentUpon>201706230029378_MadeTeamCityIdNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706250241248_MadeTeamNameMaxLength30.resx">
+      <DependentUpon>201706250241248_MadeTeamNameMaxLength30.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706290856165_AddedPropertiesProfilePicAndIsPlayingToUserViewClass.resx">
+      <DependentUpon>201706290856165_AddedPropertiesProfilePicAndIsPlayingToUserViewClass.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

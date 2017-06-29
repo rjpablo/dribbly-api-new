@@ -15,12 +15,14 @@ using DribblyAPI.Models;
 namespace DribblyAPI.Controllers
 {
     [RoutePrefix("api/Teams")]
-    public class TeamsController : ApiController
+    public class TeamsController : BaseController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         private TeamRepository _repo = new TeamRepository(new ApplicationDbContext());
+        private CityRepository _cityRepo = new CityRepository(new ApplicationDbContext());
 
         // GET: api/Teams
+        [Route("All")]
         public IHttpActionResult GetTeams()
         {
             try
@@ -35,52 +37,70 @@ namespace DribblyAPI.Controllers
             }
         }
 
-        // GET: api/Teams/5
-        [Route("GetTeam/{id:int}")]
-        public IHttpActionResult GetTeam(int id)
+        [Route("GetTeam/")]
+        public IHttpActionResult GetTeam(string teamName)
         {
-            Team team = db.Teams.Find(id);
-            if (team == null)
+            teamName = Uri.UnescapeDataString(teamName);
+            FullDetailedTeam team = _repo.getTeamByName(teamName);
+            if (team != null)
             {
-                return NotFound();
+                return Ok(team);
             }
-
-            return Ok(team);
+            else
+            {
+                return InternalServerError(new DribblyException("Team details not found"));
+            }
         }
 
         // PUT: api/Teams/5
-        [Route("Update/{id:int}")]
-        public IHttpActionResult PutTeam(int id, Team team)
+        [HttpPut]
+        [Route("Update/")]
+        public IHttpActionResult PutTeam(FullDetailedTeam tempTeam)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != team.teamId)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(team).State = EntityState.Modified;
-
             try
             {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TeamExists(id))
+                Team team = _repo.FindBy(t => t.teamId == tempTeam.teamId).FirstOrDefault();
+
+                if(team == null)
                 {
-                    return NotFound();
+                    return InternalServerError(new DribblyException("The team that you are trying to update was not found."));
+                }
+
+                City tmpCity = null;
+                if (tempTeam.city != null)
+                {
+                    string cityErr = Helper.validateCity(tempTeam.city);
+                    if (!string.IsNullOrEmpty(cityErr))
+                    {
+                        return BadRequest(cityErr);
+                    }
+
+                    tmpCity = _cityRepo.AddOrGet(tempTeam.city);
+                    tempTeam.cityId = tmpCity.cityId;
+                    tempTeam.city = null;
                 }
                 else
                 {
-                    throw;
+                    tempTeam.cityId = null;
                 }
-            }
 
-            return StatusCode(HttpStatusCode.NoContent);
+                team.cityId = tempTeam.cityId;
+                team.managerId = tempTeam.managerId;
+
+                _repo.Edit(team);
+                _repo.Save();
+                return Ok(team);
+            }
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "An error occurred while trying to update team details. Please try again later.";
+                return InternalServerError(ex);
+            }
         }
 
         // POST: api/Teams
