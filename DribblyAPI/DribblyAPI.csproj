@@ -218,6 +218,7 @@
     <Compile Include="Entities\CourtPhoto.cs" />
     <Compile Include="Entities\Game.cs" />
     <Compile Include="Entities\GameTeam.cs" />
+    <Compile Include="Entities\JoinTeamInvitation.cs" />
     <Compile Include="Entities\PlayerGame.cs" />
     <Compile Include="Entities\PlayerListItem.cs" />
     <Compile Include="Entities\PlayerProfile.cs" />
@@ -362,6 +363,10 @@
     <Compile Include="Migrations\201706291818090_AddedTeamMemberListItemClass.Designer.cs">
       <DependentUpon>201706291818090_AddedTeamMemberListItemClass.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706302050395_AddedJoinTeamInvitationClass.cs" />
+    <Compile Include="Migrations\201706302050395_AddedJoinTeamInvitationClass.Designer.cs">
+      <DependentUpon>201706302050395_AddedJoinTeamInvitationClass.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Entities\Court.cs" />
     <Compile Include="Models\BindingModels.cs" />
@@ -382,6 +387,7 @@
     <Compile Include="Repositories\CourtRepository.cs" />
     <Compile Include="Repositories\FileRepository.cs" />
     <Compile Include="Repositories\GameRepository.cs" />
+    <Compile Include="Repositories\JoinTeamInvitationRepository.cs" />
     <Compile Include="Repositories\PlayerRepository.cs" />
     <Compile Include="Repositories\TeamPlayerRepository.cs" />
     <Compile Include="Repositories\TeamRepository.cs" />
@@ -508,6 +514,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706291818090_AddedTeamMemberListItemClass.resx">
       <DependentUpon>201706291818090_AddedTeamMemberListItemClass.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706302050395_AddedJoinTeamInvitationClass.resx">
+      <DependentUpon>201706302050395_AddedJoinTeamInvitationClass.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

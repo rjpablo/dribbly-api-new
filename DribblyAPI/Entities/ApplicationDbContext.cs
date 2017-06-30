@@ -46,6 +46,7 @@ namespace DribblyAPI
         public DbSet<UserView> UserViews { get; set; }
         public DbSet<UserPhoto> UserPhotos { get; set; }
         public DbSet<TeamMemberListItem> TeamMemberListItems { get; set; }
+        public DbSet<JoinTeamInvitation> JoinTeamInvitations { get; set; }
 
         public System.Data.Entity.DbSet<DribblyAPI.Entities.PlayerProfile> PlayerProfiles { get; set; }
     }

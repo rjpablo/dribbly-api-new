@@ -21,6 +21,7 @@ namespace DribblyAPI.Controllers
         private TeamRepository _repo = new TeamRepository(new ApplicationDbContext());
         private CityRepository _cityRepo = new CityRepository(new ApplicationDbContext());
         private TeamPlayerRepository _teamPlayerRepo = new TeamPlayerRepository(new ApplicationDbContext());
+        private JoinTeamInvitationRepository _joinTeamInviteRepo = new JoinTeamInvitationRepository(new ApplicationDbContext());
 
         // GET: api/Teams
         [Route("All")]
@@ -151,7 +152,22 @@ namespace DribblyAPI.Controllers
             }
         }
 
-
+        [Route("Invite")]
+        public IHttpActionResult Invite(JoinTeamInvitation invite)
+        {
+            try
+            {
+                invite.dateInvited = DateTime.Now;
+                _joinTeamInviteRepo.Add(invite);
+                _joinTeamInviteRepo.Save();
+                return Ok(invite);
+            }
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "Sending invitation failed. Please try again.";
+                return InternalServerError(ex);
+            }
+        }
 
         // DELETE: api/Teams/5
         [Route("Delete/{id:int}")]
