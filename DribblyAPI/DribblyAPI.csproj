@@ -223,6 +223,7 @@
     <Compile Include="Entities\PlayerProfile.cs" />
     <Compile Include="Entities\Team.cs" />
     <Compile Include="Entities\FullDetailedTeam.cs" />
+    <Compile Include="Entities\TeamMemberListItem.cs" />
     <Compile Include="Entities\TeamPlayer.cs" />
     <Compile Include="Entities\UserPhoto.cs" />
     <Compile Include="Entities\UserProfile.cs" />
@@ -357,6 +358,10 @@
     <Compile Include="Migrations\201706290856165_AddedPropertiesProfilePicAndIsPlayingToUserViewClass.Designer.cs">
       <DependentUpon>201706290856165_AddedPropertiesProfilePicAndIsPlayingToUserViewClass.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706291818090_AddedTeamMemberListItemClass.cs" />
+    <Compile Include="Migrations\201706291818090_AddedTeamMemberListItemClass.Designer.cs">
+      <DependentUpon>201706291818090_AddedTeamMemberListItemClass.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Entities\Court.cs" />
     <Compile Include="Models\BindingModels.cs" />
@@ -378,6 +383,7 @@
     <Compile Include="Repositories\FileRepository.cs" />
     <Compile Include="Repositories\GameRepository.cs" />
     <Compile Include="Repositories\PlayerRepository.cs" />
+    <Compile Include="Repositories\TeamPlayerRepository.cs" />
     <Compile Include="Repositories\TeamRepository.cs" />
     <Compile Include="Repositories\UserPhotoRepository.cs" />
     <Compile Include="Repositories\UserProfileRepository.cs" />
@@ -499,6 +505,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706290856165_AddedPropertiesProfilePicAndIsPlayingToUserViewClass.resx">
       <DependentUpon>201706290856165_AddedPropertiesProfilePicAndIsPlayingToUserViewClass.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706291818090_AddedTeamMemberListItemClass.resx">
+      <DependentUpon>201706291818090_AddedTeamMemberListItemClass.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
