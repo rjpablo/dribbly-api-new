@@ -46,6 +46,12 @@ namespace DribblyAPI.Repositories
             return query;
         }
 
+        public T FindSingleBy(Expression<Func<T, bool>> predicate)
+        {
+            T entity = _dbset.FirstOrDefault(predicate);
+            return entity;
+        }
+
         public IEnumerable<T> GetAll()
         {
             return _dbset.AsEnumerable<T>();
