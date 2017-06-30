@@ -7,14 +7,14 @@ namespace DribblyAPI.Migrations
     {
         public override void Up()
         {
-        string str1 = @"CREATE VIEW TeamMemberListItems
-                AS SELECT        TeamPlayers.playerId, TeamPlayers.teamId, UserPhotos.fileName AS profilePic, AspNetUsers.UserName AS userName, TeamPlayers.hasLeft, TeamPlayers.dateJoined, 
-                         TeamPlayers.dateLeft
-                FROM            Teams INNER JOIN
-                                         TeamPlayers ON Teams.teamId = TeamPlayers.teamId INNER JOIN
-                                         UserPhotos LEFT JOIN
-                                         UserProfiles ON UserPhotos.id = UserProfiles.profilePicId ON TeamPlayers.playerId = UserProfiles.userId INNER JOIN
-                                         AspNetUsers ON UserProfiles.userId = AspNetUsers.Id";
+            string str1 = @"CREATE VIEW TeamMemberListItems
+                AS SELECT        TOP (100) PERCENT dbo.TeamPlayers.playerId, dbo.TeamPlayers.teamId, dbo.UserPhotos.fileName AS profilePic, dbo.AspNetUsers.UserName, dbo.TeamPlayers.hasLeft, dbo.TeamPlayers.dateJoined, 
+                         dbo.TeamPlayers.dateLeft
+                FROM            dbo.Teams INNER JOIN
+                         dbo.TeamPlayers ON dbo.Teams.teamId = dbo.TeamPlayers.teamId INNER JOIN
+                         dbo.UserProfiles ON dbo.UserProfiles.userId = dbo.TeamPlayers.playerId INNER JOIN
+                         dbo.AspNetUsers ON dbo.UserProfiles.userId = dbo.AspNetUsers.Id LEFT OUTER JOIN
+                         dbo.UserPhotos ON dbo.UserPhotos.id = dbo.UserProfiles.profilePicId";
 
             Sql(str1);
 
