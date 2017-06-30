@@ -169,6 +169,51 @@ namespace DribblyAPI.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("RespondToInvitation/{invitationId}/{accept}")]
+        public IHttpActionResult RespondToInvitation(int invitationId, bool accept)
+        {
+            try
+            {
+                JoinTeamInvitation invite = _joinTeamInviteRepo.FindSingleBy(i => i.id == invitationId);
+                if(invite != null)
+                {
+                    if (accept)
+                    {
+                        TeamPlayer p = new TeamPlayer() {
+                            dateJoined = DateTime.Now,
+                            playerId = invite.playerId,
+                            teamId = invite.teamId
+                        };
+
+                        _teamPlayerRepo.Add(p);
+                        _teamPlayerRepo.Save();
+
+                        //TODO: Notify team owner
+
+                    }else
+                    {
+                        //TODO: Notify team owner
+                    }
+
+                    _joinTeamInviteRepo.Delete(invite);
+                    _joinTeamInviteRepo.Save();
+
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest("Invitation not found.");
+                }
+                
+            }
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "Sending invitation failed. Please try again.";
+                return InternalServerError(ex);
+            }
+        }
+
         // DELETE: api/Teams/5
         [Route("Delete/{id:int}")]
         public IHttpActionResult DeleteTeam(int id)
