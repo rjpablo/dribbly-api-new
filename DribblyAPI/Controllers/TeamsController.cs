@@ -20,6 +20,7 @@ namespace DribblyAPI.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
         private TeamRepository _repo = new TeamRepository(new ApplicationDbContext());
         private CityRepository _cityRepo = new CityRepository(new ApplicationDbContext());
+        private TeamPlayerRepository _teamPlayerRepo = new TeamPlayerRepository(new ApplicationDbContext());
 
         // GET: api/Teams
         [Route("All")]
@@ -33,6 +34,20 @@ namespace DribblyAPI.Controllers
             catch (DribblyException ex)
             {
                 ex.UserMessage = "Could not retrieve list of teams. Please try again later.";
+                return InternalServerError(ex);
+            }
+        }
+        [Route("Members/{teamId}")]
+        public IHttpActionResult GetMembers(int teamId)
+        {
+            try
+            {
+                List<TeamMemberListItem> members = _repo.getMembers(teamId);
+                return Ok(members);
+            }
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "Could not retrieve current members";
                 return InternalServerError(ex);
             }
         }
@@ -110,14 +125,24 @@ namespace DribblyAPI.Controllers
         {
             try
             {
-                if (!ModelState.IsValid)
+                if(team != null)
                 {
-                    return BadRequest(ModelState);
-                }
+                    team.dateCreated = DateTime.Now;
 
-                db.Teams.Add(team);
-                db.SaveChanges();
-                return Ok();
+                    if (!ModelState.IsValid)
+                    {
+                        return BadRequest(ModelState);
+                    }
+
+                    db.Teams.Add(team);
+                    db.SaveChanges();
+                    return Ok(team);
+                }
+                else
+                {
+                    return BadRequest("No team details provided.");
+                }
+                
             }
             catch (DribblyException ex)
             {
@@ -125,6 +150,8 @@ namespace DribblyAPI.Controllers
                 return InternalServerError(ex);
             }
         }
+
+
 
         // DELETE: api/Teams/5
         [Route("Delete/{id:int}")]

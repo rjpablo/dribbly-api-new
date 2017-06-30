@@ -23,9 +23,9 @@ namespace DribblyAPI.Entities
 
         public DateTime? dateLeft { get; set; }
 
-        public virtual Team team { get; set; }
+        public Team team { get; set; }
 
-        public virtual PlayerProfile player { get; set; }
+        public PlayerProfile player { get; set; }
 
     }
 }
