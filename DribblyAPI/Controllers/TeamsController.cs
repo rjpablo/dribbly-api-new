@@ -184,12 +184,12 @@ namespace DribblyAPI.Controllers
         }
 
         [HttpPost]
-        [Route("RespondToInvitation/{invitationId}/{accept}")]
-        public IHttpActionResult RespondToInvitation(int invitationId, bool accept)
+        [Route("RespondToInvitation/{teamId}/{playerId}/{accept}")]
+        public IHttpActionResult RespondToInvitation(int teamId, string playerid, bool accept)
         {
             try
             {
-                JoinTeamInvitation invite = _joinTeamInviteRepo.FindSingleBy(i => i.id == invitationId);
+                JoinTeamInvitation invite = _joinTeamInviteRepo.FindSingleBy(i => i.teamId == teamId && i.playerId == playerid);
                 if(invite != null)
                 {
                     if (accept)
