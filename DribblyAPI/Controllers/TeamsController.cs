@@ -68,6 +68,20 @@ namespace DribblyAPI.Controllers
             }
         }
 
+        [Route("GetUserToTeamRelation/{teamId}/{userId}")]
+        public IHttpActionResult GetUserToTeamRelation(int teamId, string userId)
+        {
+            try
+            {
+                return Ok(_repo.getUserToTeamRelation(teamId, userId));
+            }
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "An unexpected error occurred.";
+                return InternalServerError(ex);
+            }
+        }
+
         // PUT: api/Teams/5
         [HttpPut]
         [Route("Update/")]

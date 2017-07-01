@@ -4,6 +4,8 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using DribblyAPI.Entities;
+using DribblyAPI.Models;
+using System.Data.SqlClient;
 
 namespace DribblyAPI.Repositories
 {
@@ -33,5 +35,18 @@ namespace DribblyAPI.Repositories
             }
             
         }
+
+        public UserToTeamRelation getUserToTeamRelation(int teamId, string userId)
+        {
+            var teamIdParam = new SqlParameter("@teamId", teamId);
+            var userIdParam = new SqlParameter("@userId", userId);
+
+            var result = ctx.Database
+                .SqlQuery<UserToTeamRelation>("GetUserToTeamRelation @userId, @teamId", userIdParam, teamIdParam)
+                .SingleOrDefault();
+
+            return result;
+        }
+
     }
 }
