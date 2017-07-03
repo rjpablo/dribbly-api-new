@@ -16,14 +16,14 @@ namespace DribblyAPI.Models
 
         public int teamId { get; set; }
 
-        public bool? isOwner { get; set; }
+        public bool isOwner { get; set; }
 
-        public bool? isMember { get; set; }
+        public bool isMember { get; set; }
 
-        public bool? isCurrentMember { get; set; }
+        public bool isCurrentMember { get; set; }
 
-        public bool? isInvited { get; set; }
+        public bool isInvited { get; set; }
 
-        public bool? hasRequested { get; set; }
+        public bool hasRequested { get; set; }
     }
 }

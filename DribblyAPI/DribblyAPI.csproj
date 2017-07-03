@@ -230,6 +230,7 @@
     <Compile Include="Entities\UserPhoto.cs" />
     <Compile Include="Entities\UserProfile.cs" />
     <Compile Include="Entities\UserView.cs" />
+    <Compile Include="Enums\TeamActions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

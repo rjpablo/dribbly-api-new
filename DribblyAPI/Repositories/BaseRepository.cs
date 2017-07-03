@@ -52,6 +52,11 @@ namespace DribblyAPI.Repositories
             return entity;
         }
 
+        public bool Exists(Expression<Func<T, bool>> predicate)
+        {
+            return _dbset.Count(predicate) > 0;
+        }
+
         public IEnumerable<T> GetAll()
         {
             return _dbset.AsEnumerable<T>();

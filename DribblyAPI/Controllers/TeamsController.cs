@@ -11,6 +11,7 @@ using System.Web.Http.Description;
 using DribblyAPI.Repositories;
 using DribblyAPI.Entities;
 using DribblyAPI.Models;
+using DribblyAPI.Enums;
 
 namespace DribblyAPI.Controllers
 {
@@ -66,6 +67,28 @@ namespace DribblyAPI.Controllers
             else
             {
                 return InternalServerError(new DribblyException("Team details not found"));
+            }
+        }
+
+        [Route("GetRequests/{teamId}")]
+        public IHttpActionResult GetRequests(int teamId)
+        {
+            try
+            {
+                var requests = _joinTeamRequestRepo.FindBy(r => r.teamId == teamId);
+                if (requests != null)
+                {
+                    return Ok(requests);
+                }
+                else
+                {
+                    return InternalServerError(new DribblyException("Team details not found"));
+                }
+            }
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "An error occurred while retrieving membership requests.";
+                return InternalServerError(ex);
             }
         }
 
@@ -231,9 +254,7 @@ namespace DribblyAPI.Controllers
                 else
                 {
                     return BadRequest("Team not found.");
-                }
-
-                
+                }                
             }
             catch (DribblyException ex)
             {
@@ -244,45 +265,86 @@ namespace DribblyAPI.Controllers
 
         [HttpPost]
         [Route("RespondToInvitation/{teamId}/{playerId}/{accept}")]
-        public IHttpActionResult RespondToInvitation(int teamId, string playerid, bool accept)
+        public IHttpActionResult RespondToInvitation(int teamId, string playerId, bool accept)
         {
             try
             {
-                JoinTeamInvitation invite = _joinTeamInviteRepo.FindSingleBy(i => i.teamId == teamId && i.playerId == playerid);
-                if(invite != null)
+                UserToTeamRelation relation;
+                string validationError = validateTeamAction(teamId, playerId, TeamActions.respondToInvitation, out relation);
+                if (validationError.Length > 0)
                 {
-                    if (accept)
+                    return BadRequest(validationError);
+                }
+
+                JoinTeamInvitation invite = _joinTeamInviteRepo.FindSingleBy(i => i.teamId == teamId && i.playerId == playerId);
+
+                if (accept)
+                {
+                    TeamPlayer p = new TeamPlayer()
                     {
-                        TeamPlayer p = new TeamPlayer() {
-                            dateJoined = DateTime.Now,
-                            playerId = invite.playerId,
-                            teamId = invite.teamId
-                        };
+                        dateJoined = DateTime.Now,
+                        playerId = invite.playerId,
+                        teamId = invite.teamId
+                    };
 
-                        _teamPlayerRepo.Add(p);
-                        _teamPlayerRepo.Save();
+                    _teamPlayerRepo.Add(p);
+                    _teamPlayerRepo.Save();
 
-                        //TODO: Notify team owner
+                    //TODO: Notify team owner
 
-                    }else
-                    {
-                        //TODO: Notify team owner
-                    }
-
-                    _joinTeamInviteRepo.Delete(invite);
-                    _joinTeamInviteRepo.Save();
-
-                    return Ok();
                 }
                 else
                 {
-                    return BadRequest("Invitation not found.");
+                    //TODO: Notify team owner
                 }
-                
+
+                _joinTeamInviteRepo.Delete(invite);
+                _joinTeamInviteRepo.Save();
+
+                return Ok();
+
             }
             catch (DribblyException ex)
             {
                 ex.UserMessage = "Sending invitation failed. Please try again.";
+                return InternalServerError(ex);
+            }
+        }
+
+        [HttpPost]
+        [Route("RespondToRequest/{teamId}/{playerId}/{approve}")]
+        public IHttpActionResult RespondToRequest(int teamId, string playerId, bool approve)
+        {
+            try
+            {
+                UserToTeamRelation relation;
+                string validationError = validateTeamAction(teamId, playerId, TeamActions.respondToRequest, out relation);
+                if(validationError.Length > 0)
+                {
+                    return BadRequest(validationError);
+                }
+
+                JoinTeamRequest request = _joinTeamRequestRepo.FindSingleBy(i => i.teamId == teamId && i.playerId == playerId);
+
+                if (approve)
+                {
+                    _repo.addTeamPlayer(teamId, playerId);
+                    //TODO: Notify player
+                }
+                else
+                {
+                    //TODO: Notify player
+                }
+
+                _joinTeamRequestRepo.Delete(request);
+                _joinTeamRequestRepo.Save();
+
+                return Ok();
+
+            }
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "Failed to process request. Please try again.";
                 return InternalServerError(ex);
             }
         }
@@ -303,6 +365,8 @@ namespace DribblyAPI.Controllers
             return Ok(team);
         }
 
+        #region Helper Functions
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -312,9 +376,84 @@ namespace DribblyAPI.Controllers
             base.Dispose(disposing);
         }
 
-        private bool TeamExists(int id)
+        private string validateTeamAction(int teamId, string userId, TeamActions action, out UserToTeamRelation r)
         {
-            return db.Teams.Count(e => e.teamId == id) > 0;
+            string errMsg = "";
+            r = null;
+
+            if (!_repo.Exists(t=>t.teamId == teamId))
+            {
+                return "Team does not exist";
+            }
+
+            if(!_teamPlayerRepo.Exists(p=>p.playerId == userId))
+            {
+                return "Team does not exist";
+            }
+
+            r = _repo.getUserToTeamRelation(teamId, userId);
+
+            switch (action)
+            {
+                case TeamActions.join:
+                    if (r.isMember && r.isCurrentMember)
+                    {
+                        return "You're already a member of this team.";
+                    }
+                    else if (r.hasRequested)
+                    {
+                        return "You have already sent a request to join this team.";
+                    }
+                    break;
+
+                case TeamActions.invite:
+                    if (r.isMember && r.isCurrentMember)
+                    {
+                        return "This player is already a member of this team.";
+                    }
+                    else if (r.isInvited)
+                    {
+                        return "You have already sent an invitation to this user.";
+                    }
+                    break;
+
+                case TeamActions.respondToInvitation:
+                    if (r.isMember && r.isCurrentMember)
+                    {
+                        return "This player is already a member of this team.";
+                    }
+                    else if (!r.isInvited)
+                    {
+                        return "No invitation was found. It might have been cancelled.";
+                    }
+                    break;
+
+                case TeamActions.respondToRequest:
+                    if (r.isMember && r.isCurrentMember)
+                    {
+                        return "This player is already a member of this team.";
+                    }
+                    else if (!r.hasRequested)
+                    {
+                        return "Request was not found. It might have been cancelled.";
+                    }
+                    break;
+
+                case TeamActions.leave:
+                    if (r.isMember && r.isCurrentMember)
+                    {
+                        return "You are not currently a member of this team.";
+                    }
+                    break;
+
+                case TeamActions.block:
+
+                    break;
+            }
+
+            return errMsg;
         }
+
+        #endregion
     }
 }
