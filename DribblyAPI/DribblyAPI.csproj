@@ -219,6 +219,7 @@
     <Compile Include="Entities\Game.cs" />
     <Compile Include="Entities\GameTeam.cs" />
     <Compile Include="Entities\JoinTeamInvitation.cs" />
+    <Compile Include="Entities\JoinTeamRequest.cs" />
     <Compile Include="Entities\PlayerGame.cs" />
     <Compile Include="Entities\PlayerListItem.cs" />
     <Compile Include="Entities\PlayerProfile.cs" />
@@ -371,6 +372,10 @@
     <Compile Include="Migrations\201707011602454_AddedSProcUserToTeamRelation.Designer.cs">
       <DependentUpon>201707011602454_AddedSProcUserToTeamRelation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201707021000085_AddedJoinTeamRequestClass.cs" />
+    <Compile Include="Migrations\201707021000085_AddedJoinTeamRequestClass.Designer.cs">
+      <DependentUpon>201707021000085_AddedJoinTeamRequestClass.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Entities\Court.cs" />
     <Compile Include="Models\BindingModels.cs" />
@@ -393,6 +398,7 @@
     <Compile Include="Repositories\FileRepository.cs" />
     <Compile Include="Repositories\GameRepository.cs" />
     <Compile Include="Repositories\JoinTeamInvitationRepository.cs" />
+    <Compile Include="Repositories\JoinTeamRequestRepository.cs" />
     <Compile Include="Repositories\PlayerRepository.cs" />
     <Compile Include="Repositories\TeamPlayerRepository.cs" />
     <Compile Include="Repositories\TeamRepository.cs" />
@@ -525,6 +531,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201707011602454_AddedSProcUserToTeamRelation.resx">
       <DependentUpon>201707011602454_AddedSProcUserToTeamRelation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707021000085_AddedJoinTeamRequestClass.resx">
+      <DependentUpon>201707021000085_AddedJoinTeamRequestClass.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

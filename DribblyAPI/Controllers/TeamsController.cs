@@ -22,6 +22,7 @@ namespace DribblyAPI.Controllers
         private CityRepository _cityRepo = new CityRepository(new ApplicationDbContext());
         private TeamPlayerRepository _teamPlayerRepo = new TeamPlayerRepository(new ApplicationDbContext());
         private JoinTeamInvitationRepository _joinTeamInviteRepo = new JoinTeamInvitationRepository(new ApplicationDbContext());
+        private JoinTeamRequestRepository _joinTeamRequestRepo = new JoinTeamRequestRepository(new ApplicationDbContext());
 
         // GET: api/Teams
         [Route("All")]
@@ -171,14 +172,72 @@ namespace DribblyAPI.Controllers
         {
             try
             {
-                invite.dateInvited = DateTime.Now;
-                _joinTeamInviteRepo.Add(invite);
-                _joinTeamInviteRepo.Save();
-                return Ok(invite);
+                var existingInvite = _joinTeamInviteRepo.FindSingleBy(i => i.playerId == invite.playerId && i.teamId == invite.teamId);
+                if(existingInvite == null)
+                {
+                    invite.dateInvited = DateTime.Now;
+                    _joinTeamInviteRepo.Add(invite);
+                    _joinTeamInviteRepo.Save();
+                    return Ok(invite);
+                }
+                else
+                {
+                    return BadRequest("An invitation has already been sent.");
+                }                
             }
             catch (DribblyException ex)
             {
                 ex.UserMessage = "Sending invitation failed. Please try again.";
+                return InternalServerError(ex);
+            }
+        }
+
+        [Route("JoinTeam/{playerId}/{teamId}")]
+        public IHttpActionResult Join(string playerId, int teamId)
+        {
+            try
+            {
+                JoinTeamRequest request = new JoinTeamRequest()
+                {
+                    playerId = playerId,
+                    teamId = teamId
+                };
+
+                Team team = _repo.FindSingleBy(t => t.teamId == teamId);
+
+                if (team != null)
+                {
+                    if (team.creatorId != playerId)
+                    {
+                        var existingInvite = _joinTeamRequestRepo.FindSingleBy(r => r.playerId == request.playerId && r.teamId == request.teamId);
+                        if (existingInvite == null)
+                        {
+                            request.dateRequested = DateTime.Now;
+                            _joinTeamRequestRepo.Add(request);
+                            _joinTeamRequestRepo.Save();
+                            return Ok();
+                        }
+                        else
+                        {
+                            return BadRequest("A request has already been sent.");
+                        }
+                    }
+                    else
+                    { //if requestor is also the owner, add as player immediately
+                        _repo.addTeamPlayer(teamId, playerId);
+                        return Ok();
+                    }                    
+                }
+                else
+                {
+                    return BadRequest("Team not found.");
+                }
+
+                
+            }
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "Sending request failed. Please try again.";
                 return InternalServerError(ex);
             }
         }

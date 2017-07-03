@@ -48,5 +48,32 @@ namespace DribblyAPI.Repositories
             return result;
         }
 
+        public bool addTeamPlayer(int teamId, string playerId)
+        {
+            using(TeamPlayerRepository tpRepo = new TeamPlayerRepository(new ApplicationDbContext()))
+            {
+                try
+                {
+                    TeamPlayer player = new TeamPlayer()
+                    {
+                        playerId = playerId,
+                        teamId = teamId,
+                        dateJoined = DateTime.Now
+                    };
+
+                    tpRepo.Add(player);
+                    tpRepo.Save();
+
+                    return true;
+                }
+                catch (DribblyException ex)
+                {
+                    ex.UserMessage = "Failed to add player to team";
+                    throw (ex);
+                }
+                
+            }
+        }
+
     }
 }
