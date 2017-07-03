@@ -7,11 +7,12 @@ namespace DribblyAPI.Enums
 {
     public enum TeamActions
     {
-        join = 0,
-        invite = 1,
-        respondToRequest = 2,
-        respondToInvitation = 3,
-        leave = 4,
-        block = 5
+        join,
+        invite,
+        respondToRequest,
+        respondToInvitation,
+        cancelRequest,
+        leave,
+        block
     }
 }

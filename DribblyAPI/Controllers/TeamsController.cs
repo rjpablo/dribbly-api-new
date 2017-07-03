@@ -263,6 +263,32 @@ namespace DribblyAPI.Controllers
             }
         }
 
+        [Route("CancelRequest/{playerId}/{teamId}")]
+        public IHttpActionResult CancelRequest(string playerId, int teamId)
+        {
+            try
+            {
+                UserToTeamRelation relation;
+                string validationError = validateTeamAction(teamId, playerId, TeamActions.cancelRequest, out relation);
+                if (validationError.Length > 0)
+                {
+                    return BadRequest(validationError);
+                }
+
+                JoinTeamRequest request = _joinTeamRequestRepo.FindSingleBy(i => i.teamId == teamId && i.playerId == playerId);
+
+                _joinTeamRequestRepo.Delete(request);
+                _joinTeamRequestRepo.Save();
+
+                return Ok();
+            }
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "Failed to cancel request. Please try again.";
+                return InternalServerError(ex);
+            }
+        }
+
         [HttpPost]
         [Route("RespondToInvitation/{teamId}/{playerId}/{accept}")]
         public IHttpActionResult RespondToInvitation(int teamId, string playerId, bool accept)
