@@ -376,6 +376,10 @@
     <Compile Include="Migrations\201707021000085_AddedJoinTeamRequestClass.Designer.cs">
       <DependentUpon>201707021000085_AddedJoinTeamRequestClass.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201707030413498_UpdatedSProcGetUserToTeamRelationToReflectCorrectValueForHasRequestedColumn.cs" />
+    <Compile Include="Migrations\201707030413498_UpdatedSProcGetUserToTeamRelationToReflectCorrectValueForHasRequestedColumn.Designer.cs">
+      <DependentUpon>201707030413498_UpdatedSProcGetUserToTeamRelationToReflectCorrectValueForHasRequestedColumn.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Entities\Court.cs" />
     <Compile Include="Models\BindingModels.cs" />
@@ -534,6 +538,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201707021000085_AddedJoinTeamRequestClass.resx">
       <DependentUpon>201707021000085_AddedJoinTeamRequestClass.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707030413498_UpdatedSProcGetUserToTeamRelationToReflectCorrectValueForHasRequestedColumn.resx">
+      <DependentUpon>201707030413498_UpdatedSProcGetUserToTeamRelationToReflectCorrectValueForHasRequestedColumn.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
