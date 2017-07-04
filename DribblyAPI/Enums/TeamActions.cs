@@ -13,6 +13,7 @@ namespace DribblyAPI.Enums
         respondToInvitation,
         cancelRequest,
         leave,
-        block
+        block,
+        dismiss
     }
 }

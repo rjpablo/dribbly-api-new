@@ -19,7 +19,7 @@ namespace DribblyAPI.Entities
 
         public string userName { get; set; }
 
-        public bool hasLeft { get; set; }
+        public bool isCurrentMember { get; set; }
 
         public DateTime? dateJoined { get; set; }
 

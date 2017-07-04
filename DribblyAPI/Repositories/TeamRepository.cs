@@ -58,8 +58,9 @@ namespace DribblyAPI.Repositories
                     {
                         playerId = playerId,
                         teamId = teamId,
-                        dateJoined = DateTime.Now
-                    };
+                        dateJoined = DateTime.Now,
+                        isCurrentMember = true
+                };
 
                     tpRepo.Add(player);
                     tpRepo.Save();

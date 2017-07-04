@@ -195,18 +195,18 @@ namespace DribblyAPI.Controllers
         {
             try
             {
-                var existingInvite = _joinTeamInviteRepo.FindSingleBy(i => i.playerId == invite.playerId && i.teamId == invite.teamId);
-                if(existingInvite == null)
+                UserToTeamRelation relation;
+                string validationError = validateTeamAction(invite.teamId, invite.playerId, TeamActions.invite, out relation);
+                if (validationError.Length > 0)
                 {
-                    invite.dateInvited = DateTime.Now;
-                    _joinTeamInviteRepo.Add(invite);
-                    _joinTeamInviteRepo.Save();
-                    return Ok(invite);
+                    return BadRequest(validationError);
                 }
-                else
-                {
-                    return BadRequest("An invitation has already been sent.");
-                }                
+
+                invite.dateInvited = DateTime.Now;
+                _joinTeamInviteRepo.Add(invite);
+                _joinTeamInviteRepo.Save();
+                return Ok(invite);
+
             }
             catch (DribblyException ex)
             {
@@ -220,45 +220,93 @@ namespace DribblyAPI.Controllers
         {
             try
             {
-                JoinTeamRequest request = new JoinTeamRequest()
+                UserToTeamRelation relation;
+                string validationError = validateTeamAction(teamId, playerId, TeamActions.join, out relation);
+                if (validationError.Length > 0)
                 {
-                    playerId = playerId,
-                    teamId = teamId
-                };
+                    return BadRequest(validationError);
+                }
 
-                Team team = _repo.FindSingleBy(t => t.teamId == teamId);
-
-                if (team != null)
+                if (!relation.isOwner)
                 {
-                    if (team.creatorId != playerId)
+                    JoinTeamRequest request = new JoinTeamRequest()
                     {
-                        var existingInvite = _joinTeamRequestRepo.FindSingleBy(r => r.playerId == request.playerId && r.teamId == request.teamId);
-                        if (existingInvite == null)
-                        {
-                            request.dateRequested = DateTime.Now;
-                            _joinTeamRequestRepo.Add(request);
-                            _joinTeamRequestRepo.Save();
-                            return Ok();
-                        }
-                        else
-                        {
-                            return BadRequest("A request has already been sent.");
-                        }
-                    }
-                    else
-                    { //if requestor is also the owner, add as player immediately
-                        _repo.addTeamPlayer(teamId, playerId);
-                        return Ok();
-                    }                    
+                        playerId = playerId,
+                        teamId = teamId
+                    };
+
+                    request.dateRequested = DateTime.Now;
+                    _joinTeamRequestRepo.Add(request);
+                    _joinTeamRequestRepo.Save();
+                    return Ok();
                 }
                 else
-                {
-                    return BadRequest("Team not found.");
-                }                
+                { //if requestor is also the owner, add as player immediately
+                    _repo.addTeamPlayer(teamId, playerId);
+                    return Ok();
+                }
             }
             catch (DribblyException ex)
             {
                 ex.UserMessage = "Sending request failed. Please try again.";
+                return InternalServerError(ex);
+            }
+        }
+
+        [Route("LeaveTeam/{playerId}/{teamId}")]
+        public IHttpActionResult Leave(string playerId, int teamId)
+        {
+            try
+            {
+                UserToTeamRelation relation;
+                string validationError = validateTeamAction(teamId, playerId, TeamActions.leave, out relation);
+                if (validationError.Length > 0)
+                {
+                    return BadRequest(validationError);
+                }
+
+                TeamPlayer player = _teamPlayerRepo.FindSingleBy(p => p.playerId == playerId && p.teamId == teamId);
+                player.isCurrentMember = false;
+                player.dateLeft = DateTime.Now;
+
+                _teamPlayerRepo.Edit(player);
+                _teamPlayerRepo.Save();
+
+                return Ok();
+                
+            }
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "Failed to leave team. Please try again later.";
+                return InternalServerError(ex);
+            }
+        }
+
+        [Route("DismissPlayer/{playerId}/{teamId}")]
+        public IHttpActionResult Dismiss(string playerId, int teamId)
+        {
+            try
+            {
+                UserToTeamRelation relation;
+                string validationError = validateTeamAction(teamId, playerId, TeamActions.dismiss, out relation);
+                if (validationError.Length > 0)
+                {
+                    return BadRequest(validationError);
+                }
+
+                TeamPlayer player = _teamPlayerRepo.FindSingleBy(p => p.playerId == playerId && p.teamId == teamId);
+                player.isCurrentMember = false;
+                player.dateLeft = DateTime.Now;
+
+                _teamPlayerRepo.Edit(player);
+                _teamPlayerRepo.Save();
+
+                return Ok();
+
+            }
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "Failed to dismiss player. Please try again later.";
                 return InternalServerError(ex);
             }
         }
@@ -414,7 +462,7 @@ namespace DribblyAPI.Controllers
 
             if(!_teamPlayerRepo.Exists(p=>p.playerId == userId))
             {
-                return "Team does not exist";
+                return "Player not found";
             }
 
             r = _repo.getUserToTeamRelation(teamId, userId);
@@ -422,7 +470,7 @@ namespace DribblyAPI.Controllers
             switch (action)
             {
                 case TeamActions.join:
-                    if (r.isMember && r.isCurrentMember)
+                    if (r.isCurrentMember)
                     {
                         return "You're already a member of this team.";
                     }
@@ -433,7 +481,7 @@ namespace DribblyAPI.Controllers
                     break;
 
                 case TeamActions.invite:
-                    if (r.isMember && r.isCurrentMember)
+                    if (r.isCurrentMember)
                     {
                         return "This player is already a member of this team.";
                     }
@@ -444,7 +492,7 @@ namespace DribblyAPI.Controllers
                     break;
 
                 case TeamActions.respondToInvitation:
-                    if (r.isMember && r.isCurrentMember)
+                    if (r.isCurrentMember)
                     {
                         return "This player is already a member of this team.";
                     }
@@ -455,7 +503,7 @@ namespace DribblyAPI.Controllers
                     break;
 
                 case TeamActions.respondToRequest:
-                    if (r.isMember && r.isCurrentMember)
+                    if (r.isCurrentMember)
                     {
                         return "This player is already a member of this team.";
                     }
@@ -466,9 +514,16 @@ namespace DribblyAPI.Controllers
                     break;
 
                 case TeamActions.leave:
-                    if (r.isMember && r.isCurrentMember)
+                    if (!r.isCurrentMember)
                     {
                         return "You are not currently a member of this team.";
+                    }
+                    break;
+
+                case TeamActions.dismiss:
+                    if (!r.isCurrentMember)
+                    {
+                        return "Player is not currently a member of this team.";
                     }
                     break;
 

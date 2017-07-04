@@ -381,6 +381,14 @@
     <Compile Include="Migrations\201707030413498_UpdatedSProcGetUserToTeamRelationToReflectCorrectValueForHasRequestedColumn.Designer.cs">
       <DependentUpon>201707030413498_UpdatedSProcGetUserToTeamRelationToReflectCorrectValueForHasRequestedColumn.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201707040801344_ReplaceTeamPlayerHasLeftToIsCurrentPlayer.cs" />
+    <Compile Include="Migrations\201707040801344_ReplaceTeamPlayerHasLeftToIsCurrentPlayer.Designer.cs">
+      <DependentUpon>201707040801344_ReplaceTeamPlayerHasLeftToIsCurrentPlayer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707040824074_ReplacesTeamMemberListItemHasLeftToIsCurrentPlayer.cs" />
+    <Compile Include="Migrations\201707040824074_ReplacesTeamMemberListItemHasLeftToIsCurrentPlayer.Designer.cs">
+      <DependentUpon>201707040824074_ReplacesTeamMemberListItemHasLeftToIsCurrentPlayer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Entities\Court.cs" />
     <Compile Include="Models\BindingModels.cs" />
@@ -542,6 +550,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201707030413498_UpdatedSProcGetUserToTeamRelationToReflectCorrectValueForHasRequestedColumn.resx">
       <DependentUpon>201707030413498_UpdatedSProcGetUserToTeamRelationToReflectCorrectValueForHasRequestedColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707040801344_ReplaceTeamPlayerHasLeftToIsCurrentPlayer.resx">
+      <DependentUpon>201707040801344_ReplaceTeamPlayerHasLeftToIsCurrentPlayer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707040824074_ReplacesTeamMemberListItemHasLeftToIsCurrentPlayer.resx">
+      <DependentUpon>201707040824074_ReplacesTeamMemberListItemHasLeftToIsCurrentPlayer.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

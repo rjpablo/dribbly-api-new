@@ -17,7 +17,7 @@ namespace DribblyAPI.Entities
         [ForeignKey("team")]
         public int teamId { get; set; }
         
-        public bool hasLeft { get; set; }
+        public bool isCurrentMember { get; set; }
 
         public DateTime? dateJoined { get; set; }
 
