@@ -36,6 +36,24 @@ namespace DribblyAPI.Repositories
             
         }
 
+        public List<JoinTeamRequestListItem> getMemberRequests(int teamId)
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                var requests = db.JoinTeamRequestListItems.Where(r=>r.teamId == teamId).ToList();
+                return requests;
+            }
+        }
+
+        public List<JoinTeamInvitationListItem> getMemberInvites(int teamId)
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                var invites = db.JoinTeamInvitationListItems.Where(r => r.teamId == teamId).ToList();
+                return invites;
+            }
+        }
+
         public UserToTeamRelation getUserToTeamRelation(int teamId, string userId)
         {
             var teamIdParam = new SqlParameter("@teamId", teamId);

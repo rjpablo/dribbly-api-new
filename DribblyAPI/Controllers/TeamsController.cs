@@ -40,6 +40,7 @@ namespace DribblyAPI.Controllers
                 return InternalServerError(ex);
             }
         }
+
         [Route("Members/{teamId}")]
         public IHttpActionResult GetMembers(int teamId)
         {
@@ -51,6 +52,36 @@ namespace DribblyAPI.Controllers
             catch (DribblyException ex)
             {
                 ex.UserMessage = "Could not retrieve current members";
+                return InternalServerError(ex);
+            }
+        }
+
+        [Route("GetMemberRequests/{teamId}")]
+        public IHttpActionResult GetMemberRequests(int teamId)
+        {
+            try
+            {
+                List<JoinTeamRequestListItem> members = _repo.getMemberRequests(teamId);
+                return Ok(members);
+            }
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "Could not retrieve member requests.";
+                return InternalServerError(ex);
+            }
+        }
+
+        [Route("GetMemberInvitations/{teamId}")]
+        public IHttpActionResult GetMemberInvitations(int teamId)
+        {
+            try
+            {
+                IEnumerable<JoinTeamInvitationListItem> invites = _repo.getMemberInvites(teamId);
+                return Ok(invites);
+            }
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "Could not retrieve member requests.";
                 return InternalServerError(ex);
             }
         }
@@ -402,7 +433,20 @@ namespace DribblyAPI.Controllers
 
                 if (approve)
                 {
-                    _repo.addTeamPlayer(teamId, playerId);
+                    if (!relation.isMember)
+                    {
+                        _repo.addTeamPlayer(teamId, playerId);
+                    }
+                    else
+                    {
+                        TeamPlayer player = _teamPlayerRepo.FindSingleBy(p => p.playerId == playerId && p.teamId == teamId);
+                        player.isCurrentMember = true;
+                        player.dateLeft = null;
+                        player.dateJoined = DateTime.Now;
+                        _teamPlayerRepo.Edit(player);
+                        _teamPlayerRepo.Save();
+                    }
+                    
                     //TODO: Notify player
                 }
                 else

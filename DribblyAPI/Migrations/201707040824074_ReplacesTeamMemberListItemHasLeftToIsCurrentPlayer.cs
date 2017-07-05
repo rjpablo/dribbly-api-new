@@ -8,7 +8,7 @@ namespace DribblyAPI.Migrations
         public override void Up()
         {
             string str1 = @"ALTER VIEW TeamMemberListItems
-                AS SELECT        TOP (100) PERCENT dbo.TeamPlayers.playerId, dbo.TeamPlayers.teamId, dbo.UserPhotos.fileName AS profilePic, dbo.AspNetUsers.UserName, dbo.TeamPlayers.isCurrentMember, dbo.TeamPlayers.dateJoined, 
+                AS SELECT dbo.TeamPlayers.playerId, dbo.TeamPlayers.teamId, dbo.UserPhotos.fileName AS profilePic, dbo.AspNetUsers.UserName, dbo.TeamPlayers.isCurrentMember, dbo.TeamPlayers.dateJoined, 
                          dbo.TeamPlayers.dateLeft
                 FROM            dbo.Teams INNER JOIN
                          dbo.TeamPlayers ON dbo.Teams.teamId = dbo.TeamPlayers.teamId INNER JOIN
@@ -22,7 +22,7 @@ namespace DribblyAPI.Migrations
         public override void Down()
         {
             string str1 = @"ALTER VIEW TeamMemberListItems
-                AS SELECT        TOP (100) PERCENT dbo.TeamPlayers.playerId, dbo.TeamPlayers.teamId, dbo.UserPhotos.fileName AS profilePic, dbo.AspNetUsers.UserName, dbo.TeamPlayers.hasLeft, dbo.TeamPlayers.dateJoined, 
+                AS SELECT dbo.TeamPlayers.playerId, dbo.TeamPlayers.teamId, dbo.UserPhotos.fileName AS profilePic, dbo.AspNetUsers.UserName, dbo.TeamPlayers.hasLeft, dbo.TeamPlayers.dateJoined, 
                          dbo.TeamPlayers.dateLeft
                 FROM            dbo.Teams INNER JOIN
                          dbo.TeamPlayers ON dbo.Teams.teamId = dbo.TeamPlayers.teamId INNER JOIN
