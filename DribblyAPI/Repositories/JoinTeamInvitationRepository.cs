@@ -7,7 +7,7 @@ using System.Data.Entity;
 
 namespace DribblyAPI.Repositories
 {
-    public class JoinTeamInvitationRepository : BaseRepository<JoinTeamInvitation>
+    public class JoinTeamInvitationRepository : BaseRepository<MemberInvitation>
     {
         public JoinTeamInvitationRepository(ApplicationDbContext _ctx) : base(_ctx)
         {

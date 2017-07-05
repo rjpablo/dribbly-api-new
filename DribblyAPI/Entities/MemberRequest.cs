@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Web;
 
 namespace DribblyAPI.Entities
 {
-    public class JoinTeamRequestListItem:BaseEntity
+    public class MemberRequest:BaseEntity
     {
-        [Key, Column(Order = 0)]
+        [Key, Column(Order =0)]
         public string playerId { get; set; }
 
         [Key, Column(Order = 1)]
@@ -15,8 +18,6 @@ namespace DribblyAPI.Entities
         public int? position { get; set; }
 
         public DateTime dateRequested { get; set; }
-
-        public string profilePic { get; set; }
 
     }
 }

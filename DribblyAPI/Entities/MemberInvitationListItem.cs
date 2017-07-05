@@ -4,13 +4,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DribblyAPI.Entities
 {
-    public class JoinTeamInvitationListItem:BaseEntity
+    public class MemberInvitationListItem:BaseEntity
     {
         [Key, Column(Order = 0)]
         public string playerId { get; set; }
 
         [Key, Column(Order = 1)]
         public int teamId { get; set; }
+
+        public string userName { get; set; }
 
         public int? position { get; set; }
 

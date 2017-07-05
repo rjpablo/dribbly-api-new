@@ -36,7 +36,7 @@ namespace DribblyAPI.Repositories
             
         }
 
-        public List<JoinTeamRequestListItem> getMemberRequests(int teamId)
+        public List<MemberRequestListItem> getMemberRequests(int teamId)
         {
             using (var db = new ApplicationDbContext())
             {
@@ -45,7 +45,7 @@ namespace DribblyAPI.Repositories
             }
         }
 
-        public List<JoinTeamInvitationListItem> getMemberInvites(int teamId)
+        public List<MemberInvitationListItem> getMemberInvites(int teamId)
         {
             using (var db = new ApplicationDbContext())
             {
@@ -66,21 +66,33 @@ namespace DribblyAPI.Repositories
             return result;
         }
 
-        public bool addTeamPlayer(int teamId, string playerId)
+        public bool addOrUpdateTeamPlayer(int teamId, string playerId)
         {
             using(TeamPlayerRepository tpRepo = new TeamPlayerRepository(new ApplicationDbContext()))
             {
                 try
                 {
-                    TeamPlayer player = new TeamPlayer()
-                    {
-                        playerId = playerId,
-                        teamId = teamId,
-                        dateJoined = DateTime.Now,
-                        isCurrentMember = true
-                };
+                    TeamPlayer player;
+                    TeamPlayer existingPlayer = tpRepo.FindSingleBy(p => p.playerId == playerId && p.teamId == teamId);
 
-                    tpRepo.Add(player);
+                    if(existingPlayer != null)
+                    {
+                        player = existingPlayer;
+                        player.isCurrentMember = true;
+                        player.dateJoined = DateTime.Now;
+                        player.dateLeft = null;
+                    }else
+                    {
+                        player = new TeamPlayer()
+                        {
+                            playerId = playerId,
+                            teamId = teamId,
+                            dateJoined = DateTime.Now,
+                            isCurrentMember = true
+                        };
+                        tpRepo.Add(player);
+                    }
+
                     tpRepo.Save();
 
                     return true;

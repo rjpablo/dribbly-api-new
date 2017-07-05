@@ -218,10 +218,10 @@
     <Compile Include="Entities\CourtPhoto.cs" />
     <Compile Include="Entities\Game.cs" />
     <Compile Include="Entities\GameTeam.cs" />
-    <Compile Include="Entities\JoinTeamInvitation.cs" />
-    <Compile Include="Entities\JoinTeamInvitationListItem.cs" />
-    <Compile Include="Entities\JoinTeamRequest.cs" />
-    <Compile Include="Entities\JoinTeamRequestListItem.cs" />
+    <Compile Include="Entities\MemberInvitation.cs" />
+    <Compile Include="Entities\MemberInvitationListItem.cs" />
+    <Compile Include="Entities\MemberRequest.cs" />
+    <Compile Include="Entities\MemberRequestListItem.cs" />
     <Compile Include="Entities\PlayerGame.cs" />
     <Compile Include="Entities\PlayerListItem.cs" />
     <Compile Include="Entities\PlayerProfile.cs" />
@@ -395,6 +395,10 @@
     <Compile Include="Migrations\201707040924491_AddedJoinTeamInvitationListItemAndJoinTeamRequestListItem.Designer.cs">
       <DependentUpon>201707040924491_AddedJoinTeamInvitationListItemAndJoinTeamRequestListItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201707050708328_RenamedJoinTeamToMember_AddedUsernameToMemberInvitationListIteamAndMemberRequestListItem.cs" />
+    <Compile Include="Migrations\201707050708328_RenamedJoinTeamToMember_AddedUsernameToMemberInvitationListIteamAndMemberRequestListItem.Designer.cs">
+      <DependentUpon>201707050708328_RenamedJoinTeamToMember_AddedUsernameToMemberInvitationListIteamAndMemberRequestListItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Entities\Court.cs" />
     <Compile Include="Models\BindingModels.cs" />
@@ -565,6 +569,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201707040924491_AddedJoinTeamInvitationListItemAndJoinTeamRequestListItem.resx">
       <DependentUpon>201707040924491_AddedJoinTeamInvitationListItemAndJoinTeamRequestListItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707050708328_RenamedJoinTeamToMember_AddedUsernameToMemberInvitationListIteamAndMemberRequestListItem.resx">
+      <DependentUpon>201707050708328_RenamedJoinTeamToMember_AddedUsernameToMemberInvitationListIteamAndMemberRequestListItem.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

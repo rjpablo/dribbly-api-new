@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DribblyAPI.Entities
 {
-    public class JoinTeamInvitation:BaseEntity
+    public class MemberInvitation:BaseEntity
     {
         [Key]
         public int id { get; set; }

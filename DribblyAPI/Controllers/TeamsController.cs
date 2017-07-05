@@ -61,7 +61,7 @@ namespace DribblyAPI.Controllers
         {
             try
             {
-                List<JoinTeamRequestListItem> members = _repo.getMemberRequests(teamId);
+                List<MemberRequestListItem> members = _repo.getMemberRequests(teamId);
                 return Ok(members);
             }
             catch (DribblyException ex)
@@ -76,7 +76,7 @@ namespace DribblyAPI.Controllers
         {
             try
             {
-                IEnumerable<JoinTeamInvitationListItem> invites = _repo.getMemberInvites(teamId);
+                IEnumerable<MemberInvitationListItem> invites = _repo.getMemberInvites(teamId);
                 return Ok(invites);
             }
             catch (DribblyException ex)
@@ -222,7 +222,7 @@ namespace DribblyAPI.Controllers
         }
 
         [Route("Invite")]
-        public IHttpActionResult Invite(JoinTeamInvitation invite)
+        public IHttpActionResult Invite(MemberInvitation invite)
         {
             try
             {
@@ -260,7 +260,7 @@ namespace DribblyAPI.Controllers
 
                 if (!relation.isOwner)
                 {
-                    JoinTeamRequest request = new JoinTeamRequest()
+                    MemberRequest request = new MemberRequest()
                     {
                         playerId = playerId,
                         teamId = teamId
@@ -273,7 +273,7 @@ namespace DribblyAPI.Controllers
                 }
                 else
                 { //if requestor is also the owner, add as player immediately
-                    _repo.addTeamPlayer(teamId, playerId);
+                    _repo.addOrUpdateTeamPlayer(teamId, playerId);
                     return Ok();
                 }
             }
@@ -354,7 +354,7 @@ namespace DribblyAPI.Controllers
                     return BadRequest(validationError);
                 }
 
-                JoinTeamRequest request = _joinTeamRequestRepo.FindSingleBy(i => i.teamId == teamId && i.playerId == playerId);
+                MemberRequest request = _joinTeamRequestRepo.FindSingleBy(i => i.teamId == teamId && i.playerId == playerId);
 
                 _joinTeamRequestRepo.Delete(request);
                 _joinTeamRequestRepo.Save();
@@ -381,7 +381,7 @@ namespace DribblyAPI.Controllers
                     return BadRequest(validationError);
                 }
 
-                JoinTeamInvitation invite = _joinTeamInviteRepo.FindSingleBy(i => i.teamId == teamId && i.playerId == playerId);
+                MemberInvitation invite = _joinTeamInviteRepo.FindSingleBy(i => i.teamId == teamId && i.playerId == playerId);
 
                 if (accept)
                 {
@@ -429,13 +429,13 @@ namespace DribblyAPI.Controllers
                     return BadRequest(validationError);
                 }
 
-                JoinTeamRequest request = _joinTeamRequestRepo.FindSingleBy(i => i.teamId == teamId && i.playerId == playerId);
+                MemberRequest request = _joinTeamRequestRepo.FindSingleBy(i => i.teamId == teamId && i.playerId == playerId);
 
                 if (approve)
                 {
                     if (!relation.isMember)
                     {
-                        _repo.addTeamPlayer(teamId, playerId);
+                        _repo.addOrUpdateTeamPlayer(teamId, playerId);
                     }
                     else
                     {
