@@ -81,7 +81,7 @@ namespace DribblyAPI.Controllers
             }
             catch (DribblyException ex)
             {
-                ex.UserMessage = "Could not retrieve member requests.";
+                ex.UserMessage = "Could not retrieve member invitations.";
                 return InternalServerError(ex);
             }
         }
@@ -342,6 +342,31 @@ namespace DribblyAPI.Controllers
             }
         }
 
+        [Route("CancelInvitation/{teamId}/{playerId}")]
+        public IHttpActionResult CancelInvitation(int teamId, string playerId)
+        {
+            try
+            {
+                UserToTeamRelation relation;
+                string validationError = validateTeamAction(teamId, playerId, TeamActions.cancelInvitation, out relation);
+                if (validationError.Length > 0)
+                {
+                    return BadRequest(validationError);
+                }
+
+                MemberInvitation invite = _joinTeamInviteRepo.FindSingleBy(i => i.teamId == teamId && i.playerId == playerId);
+                _joinTeamInviteRepo.Delete(invite);
+                _joinTeamInviteRepo.Save();
+
+                return Ok();
+            }
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "Failed to cancel invitations. Please try again.";
+                return InternalServerError(ex);
+            }
+        }
+
         [Route("CancelRequest/{playerId}/{teamId}")]
         public IHttpActionResult CancelRequest(string playerId, int teamId)
         {
@@ -568,6 +593,20 @@ namespace DribblyAPI.Controllers
                     if (!r.isCurrentMember)
                     {
                         return "Player is not currently a member of this team.";
+                    }
+                    break;
+
+                case TeamActions.cancelInvitation:
+                    if (!r.isInvited)
+                    {
+                        return "No invitaions was found.";
+                    }
+                    break;
+
+                case TeamActions.cancelRequest:
+                    if (!r.hasRequested)
+                    {
+                        return "No request was found.";
                     }
                     break;
 

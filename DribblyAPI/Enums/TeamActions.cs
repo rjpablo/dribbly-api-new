@@ -12,6 +12,7 @@ namespace DribblyAPI.Enums
         respondToRequest,
         respondToInvitation,
         cancelRequest,
+        cancelInvitation,
         leave,
         block,
         dismiss
