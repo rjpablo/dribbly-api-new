@@ -221,19 +221,24 @@ namespace DribblyAPI.Controllers
             }
         }
 
-        [Route("Invite")]
-        public IHttpActionResult Invite(MemberInvitation invite)
+        [Route("InvitePlayer/{playerId}/{teamId}")]
+        public IHttpActionResult Invite(string playerId, int teamId)
         {
             try
             {
                 UserToTeamRelation relation;
-                string validationError = validateTeamAction(invite.teamId, invite.playerId, TeamActions.invite, out relation);
+                string validationError = validateTeamAction(teamId, playerId, TeamActions.invite, out relation);
                 if (validationError.Length > 0)
                 {
                     return BadRequest(validationError);
                 }
 
-                invite.dateInvited = DateTime.Now;
+                MemberInvitation invite = new MemberInvitation() {
+                    teamId = teamId,
+                    playerId = playerId,
+                    dateInvited = DateTime.Now
+                };
+
                 _joinTeamInviteRepo.Add(invite);
                 _joinTeamInviteRepo.Save();
                 return Ok(invite);
@@ -410,18 +415,8 @@ namespace DribblyAPI.Controllers
 
                 if (accept)
                 {
-                    TeamPlayer p = new TeamPlayer()
-                    {
-                        dateJoined = DateTime.Now,
-                        playerId = invite.playerId,
-                        teamId = invite.teamId
-                    };
-
-                    _teamPlayerRepo.Add(p);
-                    _teamPlayerRepo.Save();
-
+                    _repo.addOrUpdateTeamPlayer(invite.teamId, invite.playerId);
                     //TODO: Notify team owner
-
                 }
                 else
                 {
