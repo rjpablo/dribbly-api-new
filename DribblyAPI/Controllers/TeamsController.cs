@@ -538,6 +538,10 @@ namespace DribblyAPI.Controllers
                     {
                         return "You're already a member of this team.";
                     }
+                    else if (r.isInvited)
+                    {
+                        return "You already have an invitation to join this team. Please respond to the invitation instead.";
+                    }
                     else if (r.hasRequested)
                     {
                         return "You have already sent a request to join this team.";
@@ -553,12 +557,16 @@ namespace DribblyAPI.Controllers
                     {
                         return "You have already sent an invitation to this user.";
                     }
+                    else if (r.hasRequested)
+                    {
+                        return "This player has sent a request to join this team. Please respond to the request instead.";
+                    }
                     break;
 
                 case TeamActions.respondToInvitation:
                     if (r.isCurrentMember)
                     {
-                        return "This player is already a member of this team.";
+                        return "You are already a member of this team.";
                     }
                     else if (!r.isInvited)
                     {
