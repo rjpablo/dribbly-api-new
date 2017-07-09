@@ -227,6 +227,11 @@
     <Compile Include="Entities\PlayerProfile.cs" />
     <Compile Include="Entities\Team.cs" />
     <Compile Include="Entities\FullDetailedTeam.cs" />
+    <Compile Include="Migrations\201707071127007_AddedSProcGetTeamGames.cs" />
+    <Compile Include="Migrations\201707071127007_AddedSProcGetTeamGames.Designer.cs">
+      <DependentUpon>201707071127007_AddedSProcGetTeamGames.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TeamGame.cs" />
     <Compile Include="Entities\TeamMemberListItem.cs" />
     <Compile Include="Entities\TeamPlayer.cs" />
     <Compile Include="Entities\UserPhoto.cs" />
@@ -572,6 +577,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201707050708328_RenamedJoinTeamToMember_AddedUsernameToMemberInvitationListIteamAndMemberRequestListItem.resx">
       <DependentUpon>201707050708328_RenamedJoinTeamToMember_AddedUsernameToMemberInvitationListIteamAndMemberRequestListItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707071127007_AddedSProcGetTeamGames.resx">
+      <DependentUpon>201707071127007_AddedSProcGetTeamGames.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

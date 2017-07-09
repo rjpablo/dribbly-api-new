@@ -41,6 +41,42 @@ namespace DribblyAPI.Controllers
             }
         }
 
+        [Route("GetTeamGames/{teamId}/{filter}")]
+        public IHttpActionResult GetTeamGames(int teamId, string filter)
+        {
+            try
+            {
+                var tmpGames = _repo.getTeamGames(teamId);
+                List<TeamGame> teamGames;
+
+                switch (filter)
+                {
+                    case "upcoming":
+                        teamGames = tmpGames.Where(g => g.schedule > DateTime.Now).ToList();
+                        break;
+                    case "won":
+                        teamGames = tmpGames.Where(g => g.isWon != null && (bool)g.isWon).ToList();
+                        break;
+                    case "lost":
+                        teamGames = tmpGames.Where(g => g.isWon != null && !(bool)g.isWon).ToList();
+                        break;
+                    case "all":
+                        teamGames = tmpGames.ToList();
+                        break;
+                    default:
+                        //invalid filer
+                        return BadRequest("An internal error occurred. Please try again later.");
+                }
+                
+                return Ok(teamGames);
+            }
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "Unable to retrieve team games. Please try again later.";
+                return InternalServerError(ex);
+            }
+        }
+
         [Route("Members/{teamId}")]
         public IHttpActionResult GetMembers(int teamId)
         {

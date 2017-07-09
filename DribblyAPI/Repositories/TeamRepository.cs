@@ -11,7 +11,6 @@ namespace DribblyAPI.Repositories
 {
     public class TeamRepository : BaseRepository<Team>
     {
-
         public TeamRepository(ApplicationDbContext _ctx) : base(_ctx)
         {
         }
@@ -62,6 +61,16 @@ namespace DribblyAPI.Repositories
             var result = ctx.Database
                 .SqlQuery<UserToTeamRelation>("GetUserToTeamRelation @userId, @teamId", userIdParam, teamIdParam)
                 .SingleOrDefault();
+
+            return result;
+        }
+
+        public IEnumerable<TeamGame> getTeamGames(int teamId)
+        {
+            var teamIdParam = new SqlParameter("@teamId", teamId);
+
+            var result = ctx.Database
+                .SqlQuery<TeamGame>("GetTeamGames  @teamId", teamIdParam);
 
             return result;
         }
