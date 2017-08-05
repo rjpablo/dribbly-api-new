@@ -26,7 +26,7 @@ namespace DribblyAPI.Controllers
             
             try
             {
-                return Ok(_repo.GetAll());
+                return Ok(_repo.GetGames());
             }
             catch (DribblyException ex)
             {
@@ -35,16 +35,16 @@ namespace DribblyAPI.Controllers
             }
         }
 
-        [Route("{id:int}")]
+        [Route("GetGameDetails/{gameId}")]
         [ResponseType(typeof(Game))]
-        public IHttpActionResult GetGame(int id)
+        public IHttpActionResult GetGame(int gameId)
         {
             try
             {
-                Game game = _repo.FindBy(g => g.gameId == id).SingleOrDefault();
+                Game game = _repo.GetGameDetails(gameId);
                 if (game == null)
                 {
-                    return NotFound();
+                    return InternalServerError(new DribblyException("Game details not found."));
                 }
 
                 return Ok(game);
@@ -54,7 +54,6 @@ namespace DribblyAPI.Controllers
                 ex.UserMessage = "Failed to retrieve game details. Please try again later.";
                 return InternalServerError(ex);
             }
-            
 
         }
 

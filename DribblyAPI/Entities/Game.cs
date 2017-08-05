@@ -40,13 +40,13 @@ namespace DribblyAPI.Entities
 
         public DateTime dateCreated { get; set; }
 
-        public virtual Court court { get; set; }
+        public Court court { get; set; }
 
-        public virtual Team teamA { get; set; }
+        public Team teamA { get; set; }
 
-        public virtual Team teamB { get; set; }
+        public Team teamB { get; set; }
 
-        public virtual Team winningTeam { get; set; }
+        public Team winningTeam { get; set; }
 
     }
 }

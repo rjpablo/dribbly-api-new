@@ -13,5 +13,15 @@ namespace DribblyAPI.Repositories
         {
 
         }
+
+        public List<Game> GetGames()
+        {
+            return ctx.Set<Game>().Include(g => g.teamA).Include(g => g.teamB).Include(g => g.court).ToList();
+        }
+
+        public Game GetGameDetails(int gameId)
+        {
+            return ctx.Set<Game>().Include(g => g.teamA).Include(g => g.teamB).Include(g => g.court).Where(g=>g.gameId == gameId).SingleOrDefault();
+        }
     }
 }
