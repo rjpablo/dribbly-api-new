@@ -94,7 +94,7 @@ namespace DribblyAPI.Controllers
         }
 
         // POST: api/Games
-        [Route("Add")]
+        [Route("Create")]
         public IHttpActionResult PostGame(Game game)
         {
             if (!ModelState.IsValid)

@@ -231,6 +231,14 @@
     <Compile Include="Migrations\201707071127007_AddedSProcGetTeamGames.Designer.cs">
       <DependentUpon>201707071127007_AddedSProcGetTeamGames.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201708121855172_addedGamePasswordAttribute.cs" />
+    <Compile Include="Migrations\201708121855172_addedGamePasswordAttribute.Designer.cs">
+      <DependentUpon>201708121855172_addedGamePasswordAttribute.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708121915092_addedGameIsProtectedAttribute.cs" />
+    <Compile Include="Migrations\201708121915092_addedGameIsProtectedAttribute.Designer.cs">
+      <DependentUpon>201708121915092_addedGameIsProtectedAttribute.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\TeamGame.cs" />
     <Compile Include="Entities\TeamMemberListItem.cs" />
     <Compile Include="Entities\TeamPlayer.cs" />
@@ -580,6 +588,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201707071127007_AddedSProcGetTeamGames.resx">
       <DependentUpon>201707071127007_AddedSProcGetTeamGames.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708121855172_addedGamePasswordAttribute.resx">
+      <DependentUpon>201708121855172_addedGamePasswordAttribute.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708121915092_addedGameIsProtectedAttribute.resx">
+      <DependentUpon>201708121915092_addedGameIsProtectedAttribute.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

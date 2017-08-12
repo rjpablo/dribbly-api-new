@@ -40,6 +40,14 @@ namespace DribblyAPI.Entities
 
         public DateTime dateCreated { get; set; }
 
+        [MaxLength(15)]
+        public string password { get; set; }
+
+        /// <summary>
+        /// Whether the game is password-protected
+        /// </summary>
+        public bool isProtected { get; set; }
+
         public Court court { get; set; }
 
         public Team teamA { get; set; }
