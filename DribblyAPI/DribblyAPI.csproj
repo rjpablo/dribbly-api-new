@@ -241,6 +241,10 @@
     <Compile Include="Migrations\201708121915092_addedGameIsProtectedAttribute.Designer.cs">
       <DependentUpon>201708121915092_addedGameIsProtectedAttribute.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201708211716134_addedGamePlayerRequestAndGameTeamRequestEntities.cs" />
+    <Compile Include="Migrations\201708211716134_addedGamePlayerRequestAndGameTeamRequestEntities.Designer.cs">
+      <DependentUpon>201708211716134_addedGamePlayerRequestAndGameTeamRequestEntities.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\TeamGame.cs" />
     <Compile Include="Entities\Team\TeamMemberListItem.cs" />
     <Compile Include="Entities\Team\TeamPlayer.cs" />
@@ -597,6 +601,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708121915092_addedGameIsProtectedAttribute.resx">
       <DependentUpon>201708121915092_addedGameIsProtectedAttribute.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708211716134_addedGamePlayerRequestAndGameTeamRequestEntities.resx">
+      <DependentUpon>201708211716134_addedGamePlayerRequestAndGameTeamRequestEntities.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
