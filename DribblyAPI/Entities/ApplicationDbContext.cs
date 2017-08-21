@@ -50,6 +50,8 @@ namespace DribblyAPI
         public DbSet<MemberRequest> JoinTeamRequests { get; set; }
         public DbSet<MemberRequestListItem> JoinTeamRequestListItems { get; set; }
         public DbSet<MemberInvitationListItem> JoinTeamInvitationListItems { get; set; }
+        public DbSet<GamePlayerRequest> GamePlayerRequests { get; set; }
+        public DbSet<GameTeamRequest> GameTeamRequests { get; set; }
 
         public System.Data.Entity.DbSet<DribblyAPI.Entities.PlayerProfile> PlayerProfiles { get; set; }
     }

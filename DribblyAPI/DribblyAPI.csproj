@@ -213,6 +213,8 @@
     <Compile Include="Controllers\GamesController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
+    <Compile Include="Entities\Game\GamePlayerRequest.cs" />
+    <Compile Include="Entities\Game\GameTeamRequest.cs" />
     <Compile Include="Entities\Helpers\Cities.cs" />
     <Compile Include="Entities\Helpers\Country.cs" />
     <Compile Include="Entities\Court\CourtPhoto.cs" />
