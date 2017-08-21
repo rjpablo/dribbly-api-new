@@ -32,6 +32,11 @@ namespace DribblyAPI.Controllers
             return Ok(_repo.GetAll().ToList<UserProfile>());
         }
 
+        /// <summary>
+        /// The method used to get list of users for autocompletion
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
         [Route("UserViews/{userName}")]
         public IHttpActionResult GetUserViews(string userName)
         {
