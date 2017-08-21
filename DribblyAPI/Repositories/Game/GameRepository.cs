@@ -9,7 +9,7 @@ namespace DribblyAPI.Repositories
 {
     public class GameRepository : BaseRepository<Game>
     {
-        public GameRepository(DbContext _ctx) : base(_ctx)
+        public GameRepository(ApplicationDbContext _ctx) : base(_ctx)
         {
 
         }

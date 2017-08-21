@@ -10,7 +10,7 @@ namespace DribblyAPI.Repositories
 {
     public class CourtRepository : BaseRepository<Court>
     {
-        public CourtRepository(DbContext _ctx) : base(_ctx)
+        public CourtRepository(ApplicationDbContext _ctx) : base(_ctx)
         {
 
         }
