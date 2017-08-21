@@ -213,20 +213,20 @@
     <Compile Include="Controllers\GamesController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
-    <Compile Include="Entities\Cities.cs" />
-    <Compile Include="Entities\Country.cs" />
-    <Compile Include="Entities\CourtPhoto.cs" />
-    <Compile Include="Entities\Game.cs" />
-    <Compile Include="Entities\GameTeam.cs" />
-    <Compile Include="Entities\MemberInvitation.cs" />
-    <Compile Include="Entities\MemberInvitationListItem.cs" />
-    <Compile Include="Entities\MemberRequest.cs" />
-    <Compile Include="Entities\MemberRequestListItem.cs" />
-    <Compile Include="Entities\PlayerGame.cs" />
-    <Compile Include="Entities\PlayerListItem.cs" />
-    <Compile Include="Entities\PlayerProfile.cs" />
-    <Compile Include="Entities\Team.cs" />
-    <Compile Include="Entities\FullDetailedTeam.cs" />
+    <Compile Include="Entities\Helpers\Cities.cs" />
+    <Compile Include="Entities\Helpers\Country.cs" />
+    <Compile Include="Entities\Court\CourtPhoto.cs" />
+    <Compile Include="Entities\Game\Game.cs" />
+    <Compile Include="Entities\Game\GameTeam.cs" />
+    <Compile Include="Entities\Team\MemberInvitation.cs" />
+    <Compile Include="Entities\Team\MemberInvitationListItem.cs" />
+    <Compile Include="Entities\Team\MemberRequest.cs" />
+    <Compile Include="Entities\Team\MemberRequestListItem.cs" />
+    <Compile Include="Entities\Player\PlayerGame.cs" />
+    <Compile Include="Entities\Player\PlayerListItem.cs" />
+    <Compile Include="Entities\Player\PlayerProfile.cs" />
+    <Compile Include="Entities\Team\Team.cs" />
+    <Compile Include="Entities\Team\FullDetailedTeam.cs" />
     <Compile Include="Migrations\201707071127007_AddedSProcGetTeamGames.cs" />
     <Compile Include="Migrations\201707071127007_AddedSProcGetTeamGames.Designer.cs">
       <DependentUpon>201707071127007_AddedSProcGetTeamGames.cs</DependentUpon>
@@ -240,11 +240,11 @@
       <DependentUpon>201708121915092_addedGameIsProtectedAttribute.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\TeamGame.cs" />
-    <Compile Include="Entities\TeamMemberListItem.cs" />
-    <Compile Include="Entities\TeamPlayer.cs" />
-    <Compile Include="Entities\UserPhoto.cs" />
-    <Compile Include="Entities\UserProfile.cs" />
-    <Compile Include="Entities\UserView.cs" />
+    <Compile Include="Entities\Team\TeamMemberListItem.cs" />
+    <Compile Include="Entities\Team\TeamPlayer.cs" />
+    <Compile Include="Entities\User\UserPhoto.cs" />
+    <Compile Include="Entities\User\UserProfile.cs" />
+    <Compile Include="Entities\User\UserView.cs" />
     <Compile Include="Enums\TeamActions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -413,7 +413,7 @@
       <DependentUpon>201707050708328_RenamedJoinTeamToMember_AddedUsernameToMemberInvitationListIteamAndMemberRequestListItem.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Entities\Court.cs" />
+    <Compile Include="Entities\Court\Court.cs" />
     <Compile Include="Models\BindingModels.cs" />
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\DribblyException.cs" />
@@ -422,6 +422,7 @@
     <Compile Include="Models\PlayerSearchCriteria.cs" />
     <Compile Include="Models\RefreshToken.cs" />
     <Compile Include="Models\UserModel.cs" />
+    <Compile Include="Models\UserToGameRelationship.cs" />
     <Compile Include="Models\UserToTeamRelation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\AuthorizationServerProvider.cs" />
