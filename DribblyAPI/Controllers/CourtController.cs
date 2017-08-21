@@ -30,6 +30,21 @@ namespace DribblyAPI.Controllers
             repo = new CourtRepository(new ApplicationDbContext());
         }
 
+        [HttpGet]
+        [Route("FindCourtsByName/{courtName}")]
+        public IHttpActionResult FindCourtsByName(string courtName)
+        {
+            try
+            {
+                return Ok(repo.FindBy(c=> c.name.Contains(courtName)));
+            }
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "Failed to retrieve court list.";
+                return InternalServerError(ex);
+            }
+        }
+
         [HttpPost]
         [Route("delete/{courtId:int?}")]
         public IHttpActionResult Delete(int courtId = -1)

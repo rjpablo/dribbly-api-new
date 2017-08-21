@@ -105,7 +105,8 @@ namespace DribblyAPI.Controllers
             try
             {
                 _repo.Add(game);
-                return Ok();
+                _repo.Save();
+                return Ok(game);
             }
             catch (DribblyException ex)
             {
