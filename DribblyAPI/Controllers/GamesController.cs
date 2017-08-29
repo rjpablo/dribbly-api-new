@@ -19,6 +19,7 @@ namespace DribblyAPI.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         private GameRepository _repo = new GameRepository(new ApplicationDbContext());
+        private GamePlayerRequestRepository _gamePlayerReqRepo = new GamePlayerRequestRepository(new ApplicationDbContext());
 
         // GET: api/Games
         public IHttpActionResult GetGames()
@@ -52,6 +53,84 @@ namespace DribblyAPI.Controllers
             catch (DribblyException ex)
             {
                 ex.UserMessage = "Failed to retrieve game details. Please try again later.";
+                return InternalServerError(ex);
+            }
+
+        }
+
+        [Route("JoinGameAsPlayer/{playerId}/{teamId}/{gameId}/")]
+        public IHttpActionResult JoinGameAsPlayer(string playerId, int teamId, int gameId)
+        {
+            try
+            {
+                GamePlayerRequest request = _gamePlayerReqRepo.FindSingleBy(r => r.gameId == gameId && r.playerId == playerId);
+
+                if(request != null)
+                {
+                    if (request.isBanned)
+                    {
+                        return BadRequest("You can't join this game because you are banned.");
+                    }
+                    else if (request.teamId != teamId)
+                    {
+                        return BadRequest("You can't join this game because you have requested to join the other team." +
+                            " You need to cancel your first request before you can join this team.");
+                    }
+                    else
+                    {
+                        return BadRequest("You've already sent a request to join this game.");
+                    }
+
+                }else
+                {
+                    request = new GamePlayerRequest();
+                    request.gameId = gameId;
+                    request.playerId = playerId;
+                    request.dateRequested = DateTime.Now;
+                    request.isBanned = false;
+                    request.teamId = teamId;
+
+                    _gamePlayerReqRepo.Add(request);
+                    _gamePlayerReqRepo.Save();
+
+                    //TODO: Send notif to game creator
+                }
+
+                return Ok(request);
+            }
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "Failed to send request.";
+                return InternalServerError(ex);
+            }
+
+        }
+
+        [Route("CancelJoinGameAsPlayer/{playerId}/{teamId}/{gameId}/")]
+        public IHttpActionResult CancelJoinGameAsPlayer(string playerId, int teamId, int gameId)
+        {
+            try
+            {
+                GamePlayerRequest request = _gamePlayerReqRepo.FindSingleBy(r => r.gameId == gameId && r.playerId == playerId && r.teamId == teamId);
+
+                if (request != null)
+                {
+                    _gamePlayerReqRepo.Delete(request);
+                    _gamePlayerReqRepo.Save();
+
+                    //TODO: Send notif to game creator and team manager
+
+                    return Ok(request);
+                }
+                else
+                {
+                    return BadRequest("You do not have a request to join this game.");
+                }
+
+            }
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "Failed to cancel request.";
                 return InternalServerError(ex);
             }
 

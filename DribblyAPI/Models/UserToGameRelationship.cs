@@ -5,6 +5,9 @@ using System.Web;
 
 namespace DribblyAPI.Models
 {
+    /// <summary>
+    /// A class that represents a user's relation to a game.
+    /// </summary>
     public class UserToGameRelationship
     {
 
@@ -32,5 +35,6 @@ namespace DribblyAPI.Models
         /// Whether or not the user has been approved to play in the game.
         /// </summary>
         public bool isPlaying { get; set; }
+
     }
 }
