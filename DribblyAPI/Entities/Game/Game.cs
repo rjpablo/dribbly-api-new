@@ -56,5 +56,15 @@ namespace DribblyAPI.Entities
 
         public Team winningTeam { get; set; }
 
+        /// <summary>
+        /// Who is allowed to join Team A? Can be 0(individual players only) or 1(teams only)
+        /// </summary>
+        public int allowedToJoinTeamA { get; set; }
+
+        /// <summary>
+        /// Who is allowed to join Team B? Can be 0(individual players only) or 1(teams only)
+        /// </summary>
+        public int allowedToJoinTeamB { get; set; }
+
     }
 }

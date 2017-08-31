@@ -180,6 +180,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="Documents\Migration Details.txt" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\bootstrap.js" />
@@ -244,6 +245,10 @@
     <Compile Include="Migrations\201708211716134_addedGamePlayerRequestAndGameTeamRequestEntities.cs" />
     <Compile Include="Migrations\201708211716134_addedGamePlayerRequestAndGameTeamRequestEntities.Designer.cs">
       <DependentUpon>201708211716134_addedGamePlayerRequestAndGameTeamRequestEntities.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708310802293_addedPropertiesToClassesGameAndTeam.cs" />
+    <Compile Include="Migrations\201708310802293_addedPropertiesToClassesGameAndTeam.Designer.cs">
+      <DependentUpon>201708310802293_addedPropertiesToClassesGameAndTeam.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\TeamGame.cs" />
     <Compile Include="Entities\Team\TeamMemberListItem.cs" />
@@ -606,6 +611,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708211716134_addedGamePlayerRequestAndGameTeamRequestEntities.resx">
       <DependentUpon>201708211716134_addedGamePlayerRequestAndGameTeamRequestEntities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708310802293_addedPropertiesToClassesGameAndTeam.resx">
+      <DependentUpon>201708310802293_addedPropertiesToClassesGameAndTeam.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
