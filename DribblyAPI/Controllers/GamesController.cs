@@ -106,6 +106,34 @@ namespace DribblyAPI.Controllers
 
         }
 
+        [Route("GetUserToGameTeamRelation/{playerId}/{teamId}/{gameId}/")]
+        public IHttpActionResult GetUserToGameTeamRelation(string playerId, int teamId, int gameId)
+        {
+            try
+            {
+                if(_repo.Exists(g=>g.gameId == gameId))
+                {
+                    UserToGameTeamRelation rel = _repo.getUserToGameTeamRelation(playerId, teamId, gameId);
+                    if(rel == null)
+                    {
+                        return BadRequest("Team is not registered to game.");
+                    }
+                    return Ok(rel);
+                }
+                else
+                {
+                    return BadRequest("Game does not exist.");
+                }
+                
+            }
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "Something went wrong please try again.";
+                return InternalServerError(ex);
+            }
+
+        }
+
         [Route("CancelJoinGameAsPlayer/{playerId}/{teamId}/{gameId}/")]
         public IHttpActionResult CancelJoinGameAsPlayer(string playerId, int teamId, int gameId)
         {
