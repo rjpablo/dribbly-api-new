@@ -20,6 +20,8 @@ namespace DribblyAPI.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
         private GameRepository _repo = new GameRepository(new ApplicationDbContext());
         private GamePlayerRequestRepository _gamePlayerReqRepo = new GamePlayerRequestRepository(new ApplicationDbContext());
+        private TeamRepository _teamRepo = new TeamRepository(new ApplicationDbContext());
+        private GameTeamRepository _gameTeamRepo = new GameTeamRepository(new ApplicationDbContext());
 
         // GET: api/Games
         public IHttpActionResult GetGames()
@@ -58,49 +60,62 @@ namespace DribblyAPI.Controllers
 
         }
 
-        [Route("JoinGameAsPlayer/{playerId}/{teamId}/{gameId}/")]
-        public IHttpActionResult JoinGameAsPlayer(string playerId, int teamId, int gameId)
+        [Route("JoinGameAsPlayer")]
+        public IHttpActionResult JoinGameAsPlayer(JoinGameAsPlayerCredentials credentials)
         {
             try
             {
-                GamePlayerRequest request = _gamePlayerReqRepo.FindSingleBy(r => r.gameId == gameId && r.playerId == playerId);
+                #region validations
 
-                if(request != null)
+                Team team = _teamRepo.FindSingleBy(t => t.teamId == credentials.teamId);
+                if(team == null)
                 {
-                    if (request.isBanned)
-                    {
-                        return BadRequest("You can't join this game because you are banned.");
-                    }
-                    else if (request.teamId != teamId)
-                    {
-                        return BadRequest("You can't join this game because you have requested to join the other team." +
-                            " You need to cancel your first request before you can join this team.");
-                    }
-                    else
-                    {
-                        return BadRequest("You've already sent a request to join this game.");
-                    }
-
-                }else
-                {
-                    request = new GamePlayerRequest();
-                    request.gameId = gameId;
-                    request.playerId = playerId;
-                    request.dateRequested = DateTime.Now;
-                    request.isBanned = false;
-                    request.teamId = teamId;
-
-                    _gamePlayerReqRepo.Add(request);
-                    _gamePlayerReqRepo.Save();
-
-                    //TODO: Send notif to game creator
+                    return BadRequest("Team does not exist.");
                 }
 
-                return Ok(request);
+                Game game = _repo.FindSingleBy(g => g.gameId == credentials.gameId);
+                if(game == null)
+                {
+                    return BadRequest("Game does not exist. It may have been cancelled.");
+                }
+
+                GameTeam gameTeam = _gameTeamRepo.FindSingleBy(gt => gt.gameId == credentials.gameId && gt.teamId == credentials.teamId);
+                if(gameTeam == null)
+                {
+                    return BadRequest("Team is not registered to game.");
+                }
+
+                if (!team.isTemporary)
+                {
+                    return BadRequest("You have to go to this team's page to join.");
+                }
+                else if (team.requiresPassword && team.password != credentials.password)
+                {
+                    return BadRequest("Incorrect password");
+                }
+
+                #endregion validations
+
+                //Add player to team members
+                _teamRepo.addOrUpdateTeamPlayer(credentials.teamId, credentials.playerId);
+
+                GamePlayer player = new GamePlayer();
+
+                player.playerId = credentials.playerId;
+                player.gameTeamId = gameTeam.gameTeamId;
+
+                using(GamePlayerRepository gpRepo = new GamePlayerRepository(new ApplicationDbContext()))
+                {
+                    gpRepo.Add(player);
+                    gpRepo.Save();
+                }
+
+                return Ok();
+
             }
             catch (DribblyException ex)
             {
-                ex.UserMessage = "Failed to send request.";
+                ex.UserMessage = "Something went wrong. Please try again later.";
                 return InternalServerError(ex);
             }
 
@@ -209,15 +224,94 @@ namespace DribblyAPI.Controllers
                 return BadRequest(ModelState);
             }
 
+            if(game.allowedToJoinTeamA == 0)
+            { //If only individual players are allowed to join team A
+                Team team = new Team();
+                team.dateCreated = DateTime.Now;
+                team.isTemporary = true;
+                team.teamName = "(No name)";
+                team.creatorId = game.creatorId;
+                team.managerId = game.creatorId;
+                team.isActive = true;
+
+                if(game.teamA != null && game.teamA.requiresPassword)
+                {
+                    team.requiresPassword = true;
+                    team.password = game.teamA.password;
+                }
+
+                using(TeamRepository _tRepo = new TeamRepository(new ApplicationDbContext()))
+                {
+                    _tRepo.Add(team);
+                    _tRepo.Save();
+                }
+                game.teamA = null;
+                game.teamAId = team.teamId;
+
+            }
+
+            if (game.allowedToJoinTeamB == 0)
+            { //If only individual players are allowed to join team B
+                Team team = new Team();
+                team.dateCreated = DateTime.Now;
+                team.isTemporary = true;
+                team.teamName = "(No name)";
+                team.creatorId = game.creatorId;
+                team.managerId = game.creatorId;
+                team.isActive = true;
+
+                if (game.teamB != null && game.teamB.requiresPassword)
+                {
+                    team.requiresPassword = true;
+                    team.password = game.teamB.password;
+                }
+
+                using (TeamRepository _tRepo = new TeamRepository(new ApplicationDbContext()))
+                {
+                    _tRepo.Add(team);
+                    _tRepo.Save();
+                }
+
+                game.teamB = null;
+                game.teamBId = team.teamId;
+            }
+
             try
             {
                 _repo.Add(game);
                 _repo.Save();
+
+                if (game.allowedToJoinTeamA == 0 || game.allowedToJoinTeamB == 0)
+                {
+                    //Create entries in GameTeam table
+                    using (GameTeamRepository _gtRepo = new GameTeamRepository(new ApplicationDbContext()))
+                    {
+                        if (game.allowedToJoinTeamA == 0)
+                        {
+                            GameTeam gtA = new GameTeam();
+                            gtA.teamId = (int)game.teamAId;
+                            gtA.gameId = game.gameId;
+                            _gtRepo.Add(gtA);
+                        }
+
+                        if (game.allowedToJoinTeamB == 0)
+                        {
+                            GameTeam gtB = new GameTeam();
+                            gtB.teamId = (int)game.teamBId;
+                            gtB.gameId = game.gameId;
+                            _gtRepo.Add(gtB);
+                        }
+
+                        _gtRepo.Save();
+
+                    }
+                }
+
                 return Ok(game);
             }
             catch (DribblyException ex)
             {
-                ex.UserMessage = "An internal error occurred while trying to same game details. Please try again later.";
+                ex.UserMessage = "An internal error occurred while trying to save game details. Please try again later.";
                 return InternalServerError(ex);
             }
         }
