@@ -73,6 +73,26 @@ namespace DribblyAPI.Controllers
                     return BadRequest("Team does not exist.");
                 }
 
+                UserToTeamRelation r = _teamRepo.getUserToTeamRelation(credentials.teamId, credentials.playerId);
+                if (r.isCurrentMember)
+                {
+                    return BadRequest("You're already a member of this team.");
+                }
+                
+                if (!team.isTemporary)
+                {
+                    if (r.hasRequested)
+                    {
+                        return BadRequest("You have already sent a request to join this team awaiting approval.");
+                    }
+                    else if (r.isInvited)
+                    {
+                        //TODO: Provide an option for the user to accept the invite without going to team's page.
+                        return BadRequest("You have already been invited to join this team. Go to the team's page to accept the invitation.");
+                    }
+                }
+
+
                 Game game = _repo.FindSingleBy(g => g.gameId == credentials.gameId);
                 if(game == null)
                 {
@@ -149,34 +169,67 @@ namespace DribblyAPI.Controllers
 
         }
 
-        [Route("CancelJoinGameAsPlayer/{playerId}/{teamId}/{gameId}/")]
-        public IHttpActionResult CancelJoinGameAsPlayer(string playerId, int teamId, int gameId)
+        [Route("leaveGameAsPlayer/{playerId}/{teamId}/{gameId}/")]
+        public IHttpActionResult LeaveGameAsPlayer(string playerId, int teamId, int gameId)
         {
             try
             {
-                GamePlayerRequest request = _gamePlayerReqRepo.FindSingleBy(r => r.gameId == gameId && r.playerId == playerId && r.teamId == teamId);
-
-                if (request != null)
+                Team team = _teamRepo.FindSingleBy(t => t.teamId == teamId);
+                if (team == null)
                 {
-                    _gamePlayerReqRepo.Delete(request);
-                    _gamePlayerReqRepo.Save();
-
-                    //TODO: Send notif to game creator and team manager
-
-                    return Ok(request);
-                }
-                else
+                    return BadRequest("Team does not exist.");
+                }else if (!team.isTemporary)
                 {
-                    return BadRequest("You do not have a request to join this game.");
+                    return BadRequest("To leave this team, go to its page and select the 'Leave' option.");
                 }
 
+                Game game = _repo.FindSingleBy(g => g.gameId == gameId);
+                if (game == null)
+                {
+                    return BadRequest("Game does not exist. It may have been cancelled.");
+                }
+
+                GameTeam gameTeam = _gameTeamRepo.FindSingleBy(gt => gt.gameId == gameId && gt.teamId == teamId);
+                if (gameTeam == null)
+                {
+                    return BadRequest("The team is not registered to this game.");
+                }
+                
+                GamePlayer gamePlayer;
+
+                using (GamePlayerRepository gpRepo = new GamePlayerRepository(new ApplicationDbContext()))
+                {
+                    gamePlayer = gpRepo.FindSingleBy(p => p.gameTeamId == gameTeam.gameTeamId && p.playerId == playerId);
+                    if(gamePlayer != null)
+                    {
+                        gpRepo.Delete(gamePlayer);
+                        TeamPlayer tp;
+                        using (TeamPlayerRepository _tpRepo = new TeamPlayerRepository(new ApplicationDbContext()))
+                        {
+                            tp = _tpRepo.FindSingleBy(p => p.playerId == playerId && p.teamId == teamId);
+                            if (tp != null)
+                            {
+                                _tpRepo.Delete(tp);
+                                _tpRepo.Save();
+                            }
+                        }
+                        gpRepo.Save();
+                        if (tp == null)
+                        {
+                            return BadRequest("You are not a member of this team.");
+                        }
+                        return Ok();
+                    }else
+                    {
+                        return BadRequest("You are not currently registered to this game.");
+                    }
+                }
             }
             catch (DribblyException ex)
             {
                 ex.UserMessage = "Failed to cancel request.";
                 return InternalServerError(ex);
             }
-
         }
 
         // PUT: api/Games/5
