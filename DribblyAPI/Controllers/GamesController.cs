@@ -65,7 +65,29 @@ namespace DribblyAPI.Controllers
         {
             try
             {
+                int? otherTeamId = null; //the Id of the opponent team
+                Team otherTeam = null; //the opponent team
+
                 #region validations
+
+                Game game = _repo.FindSingleBy(g => g.gameId == credentials.gameId);
+                if (game == null)
+                {
+                    return BadRequest("Game does not exist. It may have been cancelled.");
+                }
+
+                if(game.teamAId == credentials.teamId && game.teamBId != null) //player is joining team A
+                {
+                    otherTeamId = game.teamBId;
+                }else if (game.teamBId == credentials.teamId && game.teamAId != null) //player is joining team B
+                {
+                    otherTeamId = game.teamAId;
+                }
+
+                if(otherTeamId != null)
+                {
+                    otherTeam = _teamRepo.FindSingleBy(t => t.teamId == otherTeamId);
+                }
 
                 Team team = _teamRepo.FindSingleBy(t => t.teamId == credentials.teamId);
                 if(team == null)
@@ -73,31 +95,51 @@ namespace DribblyAPI.Controllers
                     return BadRequest("Team does not exist.");
                 }
 
-                UserToTeamRelation r = _teamRepo.getUserToTeamRelation(credentials.teamId, credentials.playerId);
-                if (r.isCurrentMember)
+                #region Check the relationship of the player and the team he's joining
+
+                UserToTeamRelation rel1 = _teamRepo.getUserToTeamRelation(credentials.teamId, credentials.playerId);
+                if (rel1.isCurrentMember)
                 {
                     return BadRequest("You're already a member of this team.");
                 }
-                
+
                 if (!team.isTemporary)
                 {
-                    if (r.hasRequested)
+                    if (rel1.hasRequested)
                     {
                         return BadRequest("You have already sent a request to join this team awaiting approval.");
                     }
-                    else if (r.isInvited)
+                    else if (rel1.isInvited)
                     {
                         //TODO: Provide an option for the user to accept the invite without going to team's page.
                         return BadRequest("You have already been invited to join this team. Go to the team's page to accept the invitation.");
                     }
                 }
 
+                #endregion
 
-                Game game = _repo.FindSingleBy(g => g.gameId == credentials.gameId);
-                if(game == null)
+                #region Check the relationship of the player and the opponent team
+                if(otherTeam != null)
                 {
-                    return BadRequest("Game does not exist. It may have been cancelled.");
+                    UserToTeamRelation rel = _teamRepo.getUserToTeamRelation(otherTeam.teamId, credentials.playerId);
+                    if(rel!= null)
+                    {
+                        if (rel.isCurrentMember)
+                        {
+                            return BadRequest("You can't join this team because you are a member of the opponent team.");
+                        }
+
+                        if (!team.isTemporary)
+                        {
+                            if (rel.hasRequested)
+                            {
+                                return BadRequest(@"You have sent a request to join the opponent team.
+                                You need to cancel the request before you can join this team.");
+                            }
+                        }
+                    }                    
                 }
+                #endregion
 
                 GameTeam gameTeam = _gameTeamRepo.FindSingleBy(gt => gt.gameId == credentials.gameId && gt.teamId == credentials.teamId);
                 if(gameTeam == null)
