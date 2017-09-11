@@ -270,8 +270,19 @@ namespace DribblyAPI.Controllers
 
         // POST: api/Games
         [Route("Create")]
-        public IHttpActionResult PostGame(Game game)
+        public IHttpActionResult PostGame(NewGameViewModel gameVm)
         {
+            Game game = new Game();
+            game.allowedToJoinTeamA = gameVm.allowedToJoinTeamA;
+            game.allowedToJoinTeamB = gameVm.allowedToJoinTeamB;
+            game.courtId = gameVm.courtId;
+            game.creatorId = gameVm.creatorId;
+            game.dateCreated = gameVm.dateCreated;
+            game.isProtected = gameVm.isProtected;
+            game.password = gameVm.password;
+            game.schedule = gameVm.schedule;
+            game.title = gameVm.title;
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -287,10 +298,10 @@ namespace DribblyAPI.Controllers
                 team.managerId = game.creatorId;
                 team.isActive = true;
 
-                if(game.teamA != null && game.teamA.requiresPassword)
+                if(gameVm.teamAPassword!=null && gameVm.teamAPassword.Trim() != "")
                 {
                     team.requiresPassword = true;
-                    team.password = game.teamA.password;
+                    team.password = gameVm.teamAPassword.Trim();
                 }
 
                 using(TeamRepository _tRepo = new TeamRepository(new ApplicationDbContext()))
@@ -298,7 +309,7 @@ namespace DribblyAPI.Controllers
                     _tRepo.Add(team);
                     _tRepo.Save();
                 }
-                game.teamA = null;
+
                 game.teamAId = team.teamId;
 
             }
@@ -313,10 +324,10 @@ namespace DribblyAPI.Controllers
                 team.managerId = game.creatorId;
                 team.isActive = true;
 
-                if (game.teamB != null && game.teamB.requiresPassword)
+                if (gameVm.teamBPassword != null && gameVm.teamBPassword.Trim() != "")
                 {
                     team.requiresPassword = true;
-                    team.password = game.teamB.password;
+                    team.password = gameVm.teamBPassword.Trim();
                 }
 
                 using (TeamRepository _tRepo = new TeamRepository(new ApplicationDbContext()))
@@ -324,8 +335,7 @@ namespace DribblyAPI.Controllers
                     _tRepo.Add(team);
                     _tRepo.Save();
                 }
-
-                game.teamB = null;
+                
                 game.teamBId = team.teamId;
             }
 

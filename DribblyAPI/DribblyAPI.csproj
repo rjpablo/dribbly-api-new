@@ -254,6 +254,7 @@
       <DependentUpon>201709041157373_AddedSProcGetUserToGameTeamRelation.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\JoinGameAsPlayerCredentials.cs" />
+    <Compile Include="Models\NewGameViewModel.cs" />
     <Compile Include="Models\TeamGame.cs" />
     <Compile Include="Entities\Team\TeamMemberListItem.cs" />
     <Compile Include="Entities\Team\TeamPlayer.cs" />
