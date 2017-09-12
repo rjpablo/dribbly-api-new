@@ -253,6 +253,10 @@
     <Compile Include="Migrations\201709041157373_AddedSProcGetUserToGameTeamRelation.Designer.cs">
       <DependentUpon>201709041157373_AddedSProcGetUserToGameTeamRelation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201709120759292_UpdatedGameEntity.cs" />
+    <Compile Include="Migrations\201709120759292_UpdatedGameEntity.Designer.cs">
+      <DependentUpon>201709120759292_UpdatedGameEntity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\JoinGameAsPlayerCredentials.cs" />
     <Compile Include="Models\NewGameViewModel.cs" />
     <Compile Include="Models\TeamGame.cs" />
@@ -625,6 +629,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201709041157373_AddedSProcGetUserToGameTeamRelation.resx">
       <DependentUpon>201709041157373_AddedSProcGetUserToGameTeamRelation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709120759292_UpdatedGameEntity.resx">
+      <DependentUpon>201709120759292_UpdatedGameEntity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
