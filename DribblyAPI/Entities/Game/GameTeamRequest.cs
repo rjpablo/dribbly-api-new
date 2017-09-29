@@ -25,5 +25,10 @@ namespace DribblyAPI.Entities
         /// </summary>
         public bool isBanned { get; set; }
 
+        /// <summary>
+        /// Whether or not the team is ready, which also means that all of the team members are ready.
+        /// </summary>
+        public bool isReady { get; set; }
+
     }
 }

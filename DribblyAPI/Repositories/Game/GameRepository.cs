@@ -23,10 +23,10 @@ namespace DribblyAPI.Repositories
 
         public Game GetGameDetails(int gameId)
         {
-            return ctx.Set<Game>().Include(g => g.teamA).Include(g => g.teamB).Include(g => g.court).Where(g=>g.gameId == gameId).SingleOrDefault();
+            Game game = ctx.Set<Game>().Include(g => g.teamA).Include(g => g.teamB).Include(g => g.court).Where(g => g.gameId == gameId).SingleOrDefault();
+            game.creator = ctx.Set<UserView>().SingleOrDefault(u => u.userId == game.creatorId);
+            return game;
         }
-
-
 
         public UserToGameTeamRelation getUserToGameTeamRelation(string userId, int teamId, int gameId)
         {
@@ -47,7 +47,28 @@ namespace DribblyAPI.Repositories
 
                 throw ex;
             }
-            
+
+        }
+
+        public UserToGameRelationship getUserToGameRelation(string userId, int gameId)
+        {
+            try
+            {
+                var userIdParam = new SqlParameter("@userId", userId);
+                var gameIdParam = new SqlParameter("@gameId", gameId);
+
+                var result = ctx.Database
+                    .SqlQuery<UserToGameRelationship>("GetUserToGameRelation @userId, @gameId", userIdParam, gameIdParam)
+                    .SingleOrDefault();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
         }
     }
 }

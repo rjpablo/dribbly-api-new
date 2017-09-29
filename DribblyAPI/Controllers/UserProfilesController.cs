@@ -25,6 +25,7 @@ namespace DribblyAPI.Controllers
         private FileRepository _fileRepo = new FileRepository();
         private UserPhotoRepository _userPhotoRepo = new UserPhotoRepository(new ApplicationDbContext());
         private UserViewRepository _userViewRepo = new UserViewRepository(new ApplicationDbContext());
+        private TeamRepository _teamRepo = new TeamRepository(new ApplicationDbContext());
 
         // GET: api/UserProfiles
         public IHttpActionResult GetUserProfiles()
@@ -63,6 +64,21 @@ namespace DribblyAPI.Controllers
             catch (DribblyException ex)
             {
                 ex.UserMessage = "Error loading profile details.";
+                return InternalServerError(ex);
+            }
+        }
+
+        [Route("GetManagedTeams/{userId}")]
+        public IHttpActionResult GetManagedTeams(string userId)
+        {
+            try
+            {
+                IEnumerable<Team> managedTeams = _teamRepo.FindBy(t => t.managerId == userId);
+                return Ok(managedTeams);
+            }
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "Failed to retrieve managed teams.";
                 return InternalServerError(ex);
             }
         }

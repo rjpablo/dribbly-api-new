@@ -183,6 +183,87 @@ namespace DribblyAPI.Controllers
 
         }
 
+        [Route("JoinGameAsTeam")]
+        public IHttpActionResult JoinGameAsTeam(JoinGameAsTeamCredentials credentials)
+        {
+            try
+            {
+                #region validations
+
+                Game game = _repo.FindSingleBy(g => g.gameId == credentials.gameId);
+                if (game == null)
+                {
+                    return BadRequest("Game does not exist. It may have been cancelled.");
+                }
+
+                Team team = _teamRepo.FindSingleBy(t => t.teamId == credentials.teamId);
+                if (team == null)
+                {
+                    return BadRequest("Team does not exist.");
+                }
+
+                //check if the user is the manager of the team
+                if(team.managerId != credentials.userId)
+                {
+                    return BadRequest("You cannot register a team that you don't manage.");
+                }
+
+                UserToGameRelationship rel = _repo.getUserToGameRelation(credentials.userId, credentials.gameId);
+
+                if (rel.gameIsOver)
+                {
+                    return BadRequest("The game is over. Joining is no longer allowed.");
+                }
+
+                if (rel.teamCount == 2)
+                {
+                    return BadRequest("There are already two teams registered to this game. Joining is no longer allowed.");
+                }
+
+                if (rel.isBanned)
+                {
+                    return BadRequest("You are banned from joining this game.");
+                }
+
+                if (rel.isPlaying)
+                {
+                    return BadRequest("You are already playing in this game.");
+                }
+
+                #endregion validations
+
+                //TODO: Added validation based on team to game relationship
+
+                using(GameTeamRequestRepository gtrRep = new GameTeamRequestRepository(new ApplicationDbContext()))
+                {
+                    GameTeamRequest request = gtrRep.FindSingleBy(r => r.gameId == credentials.gameId && r.teamId == credentials.teamId);
+                    if(request == null)
+                    {
+                        request = new GameTeamRequest();
+                        request.gameId = credentials.gameId;
+                        request.teamId = credentials.teamId;
+                        request.dateRequested = DateTime.Now;
+
+                        gtrRep.Add(request);
+                        gtrRep.Save();
+                        return Ok();
+                    }
+                    else
+                    {
+                        return BadRequest("You have already sent a request to join this team.");
+                    }
+                    
+                }
+
+            }
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "Something went wrong. Please try again later.";
+                return InternalServerError(ex);
+            }
+
+        }
+
         [Route("GetUserToGameTeamRelation/{playerId}/{teamId}/{gameId}/")]
         public IHttpActionResult GetUserToGameTeamRelation(string playerId, int teamId, int gameId)
         {
@@ -202,6 +283,34 @@ namespace DribblyAPI.Controllers
                     return BadRequest("Game does not exist.");
                 }
                 
+            }
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "Something went wrong please try again.";
+                return InternalServerError(ex);
+            }
+
+        }
+
+        [Route("GetUserToGameRelation/{playerId}/{gameId}/")]
+        public IHttpActionResult GetUserToGameRelation(string playerId, int gameId)
+        {
+            try
+            {
+                if (_repo.Exists(g => g.gameId == gameId))
+                {
+                    UserToGameRelationship rel = _repo.getUserToGameRelation(playerId, gameId);
+                    if (rel == null)
+                    {
+                        return InternalServerError(new DribblyException("Something went wrong. Please try again."));
+                    }
+                    return Ok(rel);
+                }
+                else
+                {
+                    return BadRequest("Game does not exist.");
+                }
+
             }
             catch (DribblyException ex)
             {

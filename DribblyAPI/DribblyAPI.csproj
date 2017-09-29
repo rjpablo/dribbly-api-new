@@ -213,6 +213,8 @@
     <Compile Include="Controllers\GamesController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
+    <Compile Include="Entities\Game\GameBannedUser.cs" />
+    <Compile Include="Entities\Game\GameFollower.cs" />
     <Compile Include="Entities\Game\GamePlayerRequest.cs" />
     <Compile Include="Entities\Game\GameTeamRequest.cs" />
     <Compile Include="Entities\Helpers\Cities.cs" />
@@ -229,6 +231,10 @@
     <Compile Include="Entities\Player\PlayerProfile.cs" />
     <Compile Include="Entities\Team\Team.cs" />
     <Compile Include="Entities\Team\FullDetailedTeam.cs" />
+    <Compile Include="Entities\Team\TeamBannedUser.cs" />
+    <Compile Include="Entities\Team\TeamFollower.cs" />
+    <Compile Include="Entities\User\UserBlockedUser.cs" />
+    <Compile Include="Entities\User\UserFollower.cs" />
     <Compile Include="Migrations\201707071127007_AddedSProcGetTeamGames.cs" />
     <Compile Include="Migrations\201707071127007_AddedSProcGetTeamGames.Designer.cs">
       <DependentUpon>201707071127007_AddedSProcGetTeamGames.cs</DependentUpon>
@@ -257,7 +263,24 @@
     <Compile Include="Migrations\201709120759292_UpdatedGameEntity.Designer.cs">
       <DependentUpon>201709120759292_UpdatedGameEntity.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201709271038579_AddedIsReadyPropToGameTeamRequestEntity.cs" />
+    <Compile Include="Migrations\201709271038579_AddedIsReadyPropToGameTeamRequestEntity.Designer.cs">
+      <DependentUpon>201709271038579_AddedIsReadyPropToGameTeamRequestEntity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709280908030_AddedBannedAndBlockedEntities.cs" />
+    <Compile Include="Migrations\201709280908030_AddedBannedAndBlockedEntities.Designer.cs">
+      <DependentUpon>201709280908030_AddedBannedAndBlockedEntities.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709280923382_AddedFollowerEntities.cs" />
+    <Compile Include="Migrations\201709280923382_AddedFollowerEntities.Designer.cs">
+      <DependentUpon>201709280923382_AddedFollowerEntities.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709280957372_AddedSProcGetUserToGameRelation.cs" />
+    <Compile Include="Migrations\201709280957372_AddedSProcGetUserToGameRelation.Designer.cs">
+      <DependentUpon>201709280957372_AddedSProcGetUserToGameRelation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\JoinGameAsPlayerCredentials.cs" />
+    <Compile Include="Models\JoinGameAsTeamCredentials.cs" />
     <Compile Include="Models\NewGameViewModel.cs" />
     <Compile Include="Models\TeamGame.cs" />
     <Compile Include="Entities\Team\TeamMemberListItem.cs" />
@@ -441,6 +464,7 @@
     <Compile Include="Models\MainProfileView.cs" />
     <Compile Include="Models\PlayerSearchCriteria.cs" />
     <Compile Include="Models\RefreshToken.cs" />
+    <Compile Include="Models\TeamToGameRelationship.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Models\UserToGameRelationship.cs" />
     <Compile Include="Models\UserToGameTeamRelation.cs" />
@@ -632,6 +656,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201709120759292_UpdatedGameEntity.resx">
       <DependentUpon>201709120759292_UpdatedGameEntity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709271038579_AddedIsReadyPropToGameTeamRequestEntity.resx">
+      <DependentUpon>201709271038579_AddedIsReadyPropToGameTeamRequestEntity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709280908030_AddedBannedAndBlockedEntities.resx">
+      <DependentUpon>201709280908030_AddedBannedAndBlockedEntities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709280923382_AddedFollowerEntities.resx">
+      <DependentUpon>201709280923382_AddedFollowerEntities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709280957372_AddedSProcGetUserToGameRelation.resx">
+      <DependentUpon>201709280957372_AddedSProcGetUserToGameRelation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

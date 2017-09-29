@@ -52,6 +52,13 @@ namespace DribblyAPI
         public DbSet<MemberInvitationListItem> JoinTeamInvitationListItems { get; set; }
         public DbSet<GamePlayerRequest> GamePlayerRequests { get; set; }
         public DbSet<GameTeamRequest> GameTeamRequests { get; set; }
+        public DbSet<UserBlockedUser> UserBlockedUsers { get; set; }
+        public DbSet<GameBannedUser> GameBannedUsers { get; set; }
+        public DbSet<TeamBannedPlayer> TeamBannedPlayers { get; set; }
+        public DbSet<TeamFollower> TeamFollowers { get; set; }
+        public DbSet<GameFollower> GameFollowers { get; set; }
+        public DbSet<UserFollower> UserFollowers { get; set; }
+
 
         public System.Data.Entity.DbSet<DribblyAPI.Entities.PlayerProfile> PlayerProfiles { get; set; }
     }

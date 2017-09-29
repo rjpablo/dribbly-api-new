@@ -88,6 +88,9 @@ namespace DribblyAPI.Entities
 
         public Team winningTeam { get; set; }
 
+        [NotMapped]
+        public UserView creator { get; set; }
+
         /// <summary>
         /// Who is allowed to join Team A? Can be 0(individual players only) or 1(teams only)
         /// </summary>
