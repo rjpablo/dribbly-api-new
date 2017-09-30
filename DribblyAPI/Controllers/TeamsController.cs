@@ -122,11 +122,10 @@ namespace DribblyAPI.Controllers
             }
         }
 
-        [Route("GetTeam/")]
-        public IHttpActionResult GetTeam(string teamName)
+        [Route("GetTeam/{teamId}")]
+        public IHttpActionResult GetTeam(int teamId)
         {
-            teamName = Uri.UnescapeDataString(teamName);
-            FullDetailedTeam team = _repo.getTeamByName(teamName);
+            FullDetailedTeam team = _repo.getTeamByName(teamId);
             if (team != null)
             {
                 return Ok(team);

@@ -20,9 +20,9 @@ namespace DribblyAPI.Repositories
             return ctx.Set<FullDetailedTeam>().Include(t=> t.creator).Include(t=>t.manager).Include(t => t.city.country).Include(t => t.homeCourt);
         }
 
-        public FullDetailedTeam getTeamByName(string teamName)
+        public FullDetailedTeam getTeamByName(int teamId)
         {
-            return ctx.Set<FullDetailedTeam>().Include(t => t.creator).Include(t => t.manager).Include(t => t.city.country).Include(t => t.homeCourt).FirstOrDefault(t => t.teamName == teamName);
+            return ctx.Set<FullDetailedTeam>().Include(t => t.creator).Include(t => t.manager).Include(t => t.city.country).Include(t => t.homeCourt).FirstOrDefault(t => t.teamId == teamId);
         }
 
         public List<TeamMemberListItem> getMembers(int teamId)
