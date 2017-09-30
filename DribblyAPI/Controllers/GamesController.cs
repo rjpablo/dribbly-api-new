@@ -264,6 +264,51 @@ namespace DribblyAPI.Controllers
 
         }
 
+        [Route("CancelRequestToJoinAsTeam/{gameId}/{userId}")]
+        public IHttpActionResult CancelRequestToJoinAsTeam(int gameId, string userId)
+        {
+            try
+            {
+                Game game = _repo.FindSingleBy(g => g.gameId == gameId);
+
+                if(game == null)
+                {
+                    return BadRequest("Game details not found");
+                }
+
+                IEnumerable<Team> managedTeams = _teamRepo.FindBy(t => t.managerId == userId);
+                GameTeamRequest request = null;
+
+                if (managedTeams.Count() > 0)
+                {
+                    using (GameTeamRequestRepository gtrRep = new GameTeamRequestRepository(new ApplicationDbContext()))
+                    {
+                        foreach (Team t in managedTeams)
+                        {
+                            request = gtrRep.FindSingleBy(r => r.gameId == gameId && r.teamId == t.teamId);
+                            if (request != null)
+                            {
+                                gtrRep.Delete(request);
+                                gtrRep.Save();
+                                return Ok();
+                            }
+                        }    
+
+                    }
+                    
+                }
+
+                return BadRequest("None of the teams you manage is registered to this game.");
+
+            }
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "Something went wrong. Please try again later.";
+                return InternalServerError(ex);
+            }
+
+        }
+
         [Route("GetUserToGameTeamRelation/{playerId}/{teamId}/{gameId}/")]
         public IHttpActionResult GetUserToGameTeamRelation(string playerId, int teamId, int gameId)
         {
