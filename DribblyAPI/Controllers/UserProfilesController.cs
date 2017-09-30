@@ -73,7 +73,7 @@ namespace DribblyAPI.Controllers
         {
             try
             {
-                IEnumerable<Team> managedTeams = _teamRepo.FindBy(t => t.managerId == userId);
+                IEnumerable<Team> managedTeams = _teamRepo.FindBy(t => t.managerId == userId && !t.isTemporary);
                 return Ok(managedTeams);
             }
             catch (DribblyException ex)

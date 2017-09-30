@@ -202,8 +202,13 @@ namespace DribblyAPI.Controllers
                     return BadRequest("Team does not exist.");
                 }
 
+                if (team.isTemporary)
+                {
+                    return BadRequest("Registering with a temporary team is not allowed.");
+                }
+
                 //check if the user is the manager of the team
-                if(team.managerId != credentials.userId)
+                if (team.managerId != credentials.userId)
                 {
                     return BadRequest("You cannot register a team that you don't manage.");
                 }
@@ -217,7 +222,7 @@ namespace DribblyAPI.Controllers
 
                 if (rel.teamCount == 2)
                 {
-                    return BadRequest("There are already two teams registered to this game. Joining is no longer allowed.");
+                    return BadRequest("There are already two teams playing in this game. Joining is no longer allowed.");
                 }
 
                 if (rel.isBanned)
@@ -225,10 +230,10 @@ namespace DribblyAPI.Controllers
                     return BadRequest("You are banned from joining this game.");
                 }
 
-                if (rel.isPlaying)
-                {
-                    return BadRequest("You are already playing in this game.");
-                }
+                //if (rel.isPlaying)
+                //{
+                //    return BadRequest("You are already playing in this game.");
+                //}
 
                 #endregion validations
 
