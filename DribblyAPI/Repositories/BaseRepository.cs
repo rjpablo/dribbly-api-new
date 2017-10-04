@@ -11,10 +11,10 @@ namespace DribblyAPI.Repositories
 {
     public class BaseRepository<T>: IDisposable, IBaseRepository<T> where T: BaseEntity
     {
-        protected DbContext ctx;
+        protected ApplicationDbContext ctx;
         protected readonly IDbSet<T> _dbset;
 
-        public BaseRepository(DbContext _ctx)
+        public BaseRepository(ApplicationDbContext _ctx)
         {
             ctx = _ctx;
             _dbset = _ctx.Set<T>();

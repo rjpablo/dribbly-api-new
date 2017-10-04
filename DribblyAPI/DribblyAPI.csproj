@@ -279,6 +279,7 @@
     <Compile Include="Migrations\201709280957372_AddedSProcGetUserToGameRelation.Designer.cs">
       <DependentUpon>201709280957372_AddedSProcGetUserToGameRelation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\GameTeamRequestViewModel.cs" />
     <Compile Include="Models\JoinGameAsPlayerCredentials.cs" />
     <Compile Include="Models\JoinGameAsTeamCredentials.cs" />
     <Compile Include="Models\NewGameViewModel.cs" />
@@ -472,6 +473,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\AuthorizationServerProvider.cs" />
     <Compile Include="Providers\RefreshTokenProvider.cs" />
+    <Compile Include="Repositories\Game\GameBannedUserRepository.cs" />
     <Compile Include="Repositories\Game\GamePlayerRepository.cs" />
     <Compile Include="Repositories\Game\GamePlayerRequestRepository.cs" />
     <Compile Include="Repositories\Game\GameTeamRepository.cs" />
