@@ -21,6 +21,20 @@ namespace DribblyAPI.Repositories
             return ctx.Set<Game>().Include(g => g.teamA).Include(g => g.teamB).Include(g => g.court).ToList();
         }
 
+        public void banUser(int gameId, string userId)
+        {
+            GameBannedUser user = ctx.Set<GameBannedUser>().SingleOrDefault(u => u.userId == userId && u.gameId == gameId);
+
+            if (user == null)
+            {
+                user = new GameBannedUser();
+                user.gameId = gameId;
+                user.userId = userId;
+
+                ctx.GameBannedUsers.Add(user);
+            }
+        }
+
         public Game GetGameDetails(int gameId)
         {
             Game game = ctx.Set<Game>().Include(g => g.teamA).Include(g => g.teamB).Include(g => g.court).Where(g => g.gameId == gameId).SingleOrDefault();
@@ -69,6 +83,29 @@ namespace DribblyAPI.Repositories
                 throw ex;
             }
 
+        }
+
+        public List<GameTeam> GetGameTeams(int gameId)
+        {
+            return ctx.GameTeams.Where(gt => gt.gameId == gameId).ToList<GameTeam>();
+        }
+
+        public List<GameTeamRequestViewModel> GetRequestingTeams(int gameId)
+        {
+            var requests = (from rq in ctx.Set<GameTeamRequest>()
+                            join t in ctx.Set<Team>() on rq.teamId equals t.teamId
+                            where(rq.gameId == gameId)
+                            select new GameTeamRequestViewModel {
+                                id = rq.id,
+                                gameId = rq.gameId,
+                                teamId = rq.teamId,
+                                teamName = t.teamName,
+                                teamLogoUrl = t.logoUrl,
+                                dateRequested = rq.dateRequested,
+                                isReady = rq.isReady
+                            }).ToList<GameTeamRequestViewModel>();
+
+            return requests;
         }
     }
 }

@@ -11,6 +11,8 @@ using System.Web.Http.Description;
 using DribblyAPI.Entities;
 using DribblyAPI.Repositories;
 using DribblyAPI.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace DribblyAPI.Controllers
 {
@@ -178,6 +180,207 @@ namespace DribblyAPI.Controllers
             catch (DribblyException ex)
             {
                 ex.UserMessage = "Something went wrong. Please try again later.";
+                return InternalServerError(ex);
+            }
+
+        }
+
+        [Route("GetRequestingTeams/{gameId}")]
+        public IHttpActionResult GetRequestingTeams(int gameId)
+        {
+            try
+            {
+                #region validations
+
+                //TODO: Add validation to return data only if requesting user is the game creator
+
+                Game game = _repo.FindSingleBy(g => g.gameId == gameId);
+
+                if (game == null)
+                {
+                    return BadRequest("Game details not found. The game might have been cancelled.");
+                }
+
+                #endregion validations
+
+                //TODO: Added validation based on team to game relationship
+
+                var requests = _repo.GetRequestingTeams(gameId);
+
+                return Ok(requests);
+
+            }
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "Unable to retrieve requesting teams.";
+                return InternalServerError(ex);
+            }
+
+        }
+
+        [Route("ApproveJoinAsTeamRequest/{requestId}")]
+        public IHttpActionResult ApproveJoinAsTeamRequest(int requestId)
+        {
+            try
+            {
+                GameTeamRequest request = null;
+
+                using (GameTeamRequestRepository gtrRep = new GameTeamRequestRepository(new ApplicationDbContext()))
+                {
+                    request = gtrRep.FindSingleBy(r => r.id == requestId);
+
+                    if (request == null)
+                    {
+                        return BadRequest("Request details not found");
+                    }
+
+                    Game game = _repo.FindSingleBy(g => g.gameId == request.gameId);
+
+                    if(game == null)
+                    {
+                        return BadRequest("Game details not found");
+                    }
+
+                    GameTeam team = _gameTeamRepo.FindSingleBy(t => t.gameId == request.gameId && t.teamId == request.teamId);
+
+                    if (team != null)
+                    {
+                        gtrRep.Delete(request);
+                        gtrRep.Save();
+                        return BadRequest("Team is already playing in the game.");
+                    } else
+                    {
+                        List<GameTeam> gameTeams = _repo.GetGameTeams(game.gameId);
+
+                        if (gameTeams != null && gameTeams.Count == 2)
+                        {
+                            return BadRequest("Cannot approve request. Two teams are already playing in the game.");
+                        }
+
+                        team = new GameTeam();
+                        team.teamId = request.teamId;
+                        team.gameId = request.gameId;
+
+                        _gameTeamRepo.Add(team);
+                        _gameTeamRepo.Save();
+
+                        if (game.teamAId == null)
+                        {
+                            game.teamAId = request.teamId;
+                        }else
+                        {
+                            game.teamBId = request.teamId;
+                        }
+
+                        _repo.Edit(game);
+                        _repo.Save();
+
+                    }
+
+                    gtrRep.Delete(request);
+                    gtrRep.Save();
+
+                    return Ok();
+                }
+            }
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "Failed to approve request. Please try again later.";
+                return InternalServerError(ex);
+            }
+
+        }
+
+        [Route("LeaveGameAsTeam/{gameId}/{teamId}")]
+        public IHttpActionResult LeaveGameAsTeam(int gameId, int teamId)
+        {
+            try
+            {
+                //TODO: Make sure that the current user is the manager of the team
+
+                GameTeam team = _gameTeamRepo.FindSingleBy(t => t.gameId == gameId && t.teamId == teamId);
+
+                if (team == null)
+                {
+                    return BadRequest("Team is not playing in the game.");
+                }
+
+                _gameTeamRepo.Delete(team);
+                _gameTeamRepo.Save();
+
+                Game game = _repo.FindSingleBy(g => g.gameId == gameId);
+
+                if (game == null)
+                {
+                    return BadRequest("Game details not found");
+                }
+
+                if (game.teamAId == teamId)
+                {
+                    game.teamAId = null;
+                }
+                else
+                {
+                    game.teamBId = null;
+                }
+
+                _repo.Edit(game);
+                _repo.Save();
+
+                return Ok();
+
+            }
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "Something went wrong. Please try again later.";
+                return InternalServerError(ex);
+            }
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="requestId"></param>
+        /// <param name="blockTeam">Whether or not to also ban the team manager from requesting to join the game.</param>
+        /// <returns></returns>
+        [Route("RejectJoinAsTeamRequest/{requestId}/{banUser}")]
+        public IHttpActionResult RejectJoinAsTeamRequest(int requestId, bool banUser = false)
+        {
+            try
+            {
+                GameTeamRequest request = null;
+
+                using (GameTeamRequestRepository gtrRep = new GameTeamRequestRepository(new ApplicationDbContext()))
+                {
+                    request = gtrRep.FindSingleBy(r => r.id == requestId);
+
+                    if(request == null)
+                    {
+                        return BadRequest("Request details not found");
+                    }
+
+                    gtrRep.Delete(request);
+                    gtrRep.Save();
+                }
+
+                if (banUser)
+                {
+                    Team team = _teamRepo.FindSingleBy(t => t.teamId == request.teamId);
+
+                    if (team != null)
+                    {
+                        _repo.banUser(request.gameId, team.managerId);
+                        _repo.Save();
+                    }
+                }
+
+                return Ok();
+
+            }
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "Unable to retrieve requesting teams.";
                 return InternalServerError(ex);
             }
 

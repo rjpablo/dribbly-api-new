@@ -7,7 +7,7 @@ using System.Web;
 
 namespace DribblyAPI.Entities
 {
-    public class GameBannedUser
+    public class GameBannedUser:BaseEntity
     {
         [Column(Order = 0),Key]
         public int gameId { get; set; }
