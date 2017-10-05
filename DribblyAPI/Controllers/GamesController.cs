@@ -234,7 +234,7 @@ namespace DribblyAPI.Controllers
 
                     Game game = _repo.FindSingleBy(g => g.gameId == request.gameId);
 
-                    if(game == null)
+                    if (game == null)
                     {
                         return BadRequest("Game details not found");
                     }
@@ -246,7 +246,8 @@ namespace DribblyAPI.Controllers
                         gtrRep.Delete(request);
                         gtrRep.Save();
                         return BadRequest("Team is already playing in the game.");
-                    } else
+                    }
+                    else
                     {
                         List<GameTeam> gameTeams = _repo.GetGameTeams(game.gameId);
 
@@ -262,10 +263,13 @@ namespace DribblyAPI.Controllers
                         _gameTeamRepo.Add(team);
                         _gameTeamRepo.Save();
 
+                        
+
                         if (game.teamAId == null)
                         {
                             game.teamAId = request.teamId;
-                        }else
+                        }
+                        else
                         {
                             game.teamBId = request.teamId;
                         }
@@ -284,6 +288,57 @@ namespace DribblyAPI.Controllers
             catch (DribblyException ex)
             {
                 ex.UserMessage = "Failed to approve request. Please try again later.";
+                return InternalServerError(ex);
+            }
+
+        }
+
+        [Route("KickGameTeam/{teamId}/{gameId}")]
+        public IHttpActionResult KickGameTeam(int teamId, int gameId)
+        {
+            try
+            {
+                Game game = _repo.FindSingleBy(g => g.gameId == gameId);
+                GameTeam team = _gameTeamRepo.FindSingleBy(t => t.gameId == gameId && t.teamId == teamId);
+
+                //TODO: Added checking if user is the game creator
+
+                if (game == null)
+                {
+                    _gameTeamRepo.Delete(team);
+                    _gameTeamRepo.Save();
+                    return BadRequest("Game details not found");
+                }
+
+
+                if (team == null)
+                {
+                    return BadRequest("Team is not playing in the game.");
+                }
+                else
+                {
+
+                    if (game.teamAId == team.teamId)
+                    {
+                        game.teamAId = null;
+                    }
+                    else
+                    {
+                        game.teamBId = null;
+                    }
+
+                    _repo.Edit(game);
+                    _repo.Save();
+
+                    _gameTeamRepo.Delete(team);
+                    _gameTeamRepo.Save();
+
+                    return Ok();
+                }
+            }
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "Failed to kick team from game. Please try again later.";
                 return InternalServerError(ex);
             }
 
