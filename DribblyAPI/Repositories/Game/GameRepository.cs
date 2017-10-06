@@ -108,7 +108,7 @@ namespace DribblyAPI.Repositories
             return requests;
         }
 
-        public string leaveGameAsTeam(int gameId, int teamId)
+        public string RemoveGameTeam(int gameId, int teamId)
         {
             try
             {

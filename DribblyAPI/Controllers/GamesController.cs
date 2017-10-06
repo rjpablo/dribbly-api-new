@@ -242,42 +242,18 @@ namespace DribblyAPI.Controllers
         {
             try
             {
-                Game game = _repo.FindSingleBy(g => g.gameId == gameId);
-                GameTeam team = _gameTeamRepo.FindSingleBy(t => t.gameId == gameId && t.teamId == teamId);
-
-                //TODO: Added checking if user is the game creator
-
-                if (game == null)
+                using (GameRepository repo = new GameRepository(new ApplicationDbContext()))
                 {
-                    _gameTeamRepo.Delete(team);
-                    _gameTeamRepo.Save();
-                    return BadRequest("Game details not found");
-                }
+                    string result = repo.RemoveGameTeam(gameId, teamId);
 
-
-                if (team == null)
-                {
-                    return BadRequest("Team is not playing in the game.");
-                }
-                else
-                {
-
-                    if (game.teamAId == team.teamId)
+                    if (result == "")
                     {
-                        game.teamAId = null;
+                        return Ok();
                     }
                     else
                     {
-                        game.teamBId = null;
+                        return BadRequest(result);
                     }
-
-                    _repo.Edit(game);
-                    _repo.Save();
-
-                    _gameTeamRepo.Delete(team);
-                    _gameTeamRepo.Save();
-
-                    return Ok();
                 }
             }
             catch (DribblyException ex)
@@ -296,7 +272,7 @@ namespace DribblyAPI.Controllers
                 //TODO: Make sure that the current user is the manager of the team
                 using(GameRepository repo = new GameRepository(new ApplicationDbContext()))
                 {
-                    string result = repo.leaveGameAsTeam(gameId, teamId);
+                    string result = repo.RemoveGameTeam(gameId, teamId);
 
                     if(result == "")
                     {
