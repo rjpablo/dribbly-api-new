@@ -20,5 +20,7 @@ namespace DribblyAPI.Entities
 
         public int teamId { get; set; }
 
+        public ICollection<GamePlayer> gamePlayers { get; set; }
+
     }
 }

@@ -107,5 +107,129 @@ namespace DribblyAPI.Repositories
 
             return requests;
         }
+
+        public string leaveGameAsTeam(int gameId, int teamId)
+        {
+            try
+            {
+                GameTeam team = ctx.GameTeams.Include(g=>g.gamePlayers).SingleOrDefault(t => t.gameId == gameId && t.teamId == teamId);
+
+                if (team == null)
+                {
+                    return "Team is not playing in the game.";
+                }
+
+                Game game = FindSingleBy(g => g.gameId == gameId);
+
+                if (game == null)
+                {
+                    return "Game details not found";
+                }
+
+                if (game.teamAId == teamId)
+                {
+                    game.teamAId = null;
+                }
+                else
+                {
+                    game.teamBId = null;
+                }
+                
+                ctx.GameTeams.Remove(team);
+                Edit(game);
+                Save();
+
+                return "";
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            
+        }
+
+        public string ApproveJoinAsTeamRequest(int requestId)
+        {
+            try
+            {
+                GameTeamRequest request = null;
+
+                request = ctx.GameTeamRequests.FirstOrDefault(r => r.id == requestId);
+
+                if (request == null)
+                {
+                    return "Request details not found";
+                }
+
+                Game game = ctx.Games.FirstOrDefault(g => g.gameId == request.gameId);
+
+                if (game == null)
+                {
+                    return "Game details not found";
+                }
+
+                GameTeam gameTeam = ctx.GameTeams.FirstOrDefault(t => t.gameId == request.gameId && t.teamId == request.teamId);
+
+                if (gameTeam != null)
+                {
+                    ctx.GameTeamRequests.Remove(request);
+                    ctx.SaveChanges();
+                    return "Team is already playing in the game.";
+                }
+                else
+                {
+                    List<GameTeam> gameTeams = ctx.GameTeams.Where(t=>t.gameId ==request.gameId).ToList<GameTeam>();
+
+                    if (gameTeams != null && gameTeams.Count == 2)
+                    {
+                        return "Cannot approve request. Two teams are already playing in the game.";
+                    }
+
+                    gameTeam = new GameTeam();
+                    gameTeam.teamId = request.teamId;
+                    gameTeam.gameId = request.gameId;
+
+                    #region Add gamePlayer for each team member
+
+                    List<GamePlayer> gamePlayers = new List<GamePlayer>();
+                    List<TeamPlayer> teamMembers = ctx.TeamPlayers.Where(m=>m.teamId == request.teamId).ToList<TeamPlayer>();
+                    foreach (TeamPlayer player in teamMembers)
+                    {
+                        GamePlayer gamePlayer = new GamePlayer()
+                        {
+                            playerId = player.playerId
+                        };
+                        gamePlayers.Add(gamePlayer);
+                    }
+
+                    gameTeam.gamePlayers = gamePlayers;
+
+                    #endregion
+
+                    if (game.teamAId == null)
+                    {
+                        game.teamAId = request.teamId;
+                    }
+                    else
+                    {
+                        game.teamBId = request.teamId;
+                    }
+
+                    Edit(game);
+                    ctx.GameTeams.Add(gameTeam);
+                    ctx.GameTeamRequests.Remove(request);
+                    ctx.SaveChanges();
+
+                    return "";
+
+                }
+                
+            }
+            catch (DribblyException ex)
+            {
+                throw (ex);
+            }
+
+        }
     }
 }

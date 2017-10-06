@@ -279,6 +279,10 @@
     <Compile Include="Migrations\201709280957372_AddedSProcGetUserToGameRelation.Designer.cs">
       <DependentUpon>201709280957372_AddedSProcGetUserToGameRelation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710060706357_AddedForeignKeyConstraintOnPlayerGame_GameTeam.cs" />
+    <Compile Include="Migrations\201710060706357_AddedForeignKeyConstraintOnPlayerGame_GameTeam.Designer.cs">
+      <DependentUpon>201710060706357_AddedForeignKeyConstraintOnPlayerGame_GameTeam.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\GameTeamRequestViewModel.cs" />
     <Compile Include="Models\JoinGameAsPlayerCredentials.cs" />
     <Compile Include="Models\JoinGameAsTeamCredentials.cs" />
@@ -670,6 +674,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201709280957372_AddedSProcGetUserToGameRelation.resx">
       <DependentUpon>201709280957372_AddedSProcGetUserToGameRelation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710060706357_AddedForeignKeyConstraintOnPlayerGame_GameTeam.resx">
+      <DependentUpon>201710060706357_AddedForeignKeyConstraintOnPlayerGame_GameTeam.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

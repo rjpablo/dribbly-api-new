@@ -221,76 +221,20 @@ namespace DribblyAPI.Controllers
         {
             try
             {
-                GameTeamRequest request = null;
+                string result = _repo.ApproveJoinAsTeamRequest(requestId);
 
-                using (GameTeamRequestRepository gtrRep = new GameTeamRequestRepository(new ApplicationDbContext()))
+                if(result == "")
                 {
-                    request = gtrRep.FindSingleBy(r => r.id == requestId);
-
-                    if (request == null)
-                    {
-                        return BadRequest("Request details not found");
-                    }
-
-                    Game game = _repo.FindSingleBy(g => g.gameId == request.gameId);
-
-                    if (game == null)
-                    {
-                        return BadRequest("Game details not found");
-                    }
-
-                    GameTeam team = _gameTeamRepo.FindSingleBy(t => t.gameId == request.gameId && t.teamId == request.teamId);
-
-                    if (team != null)
-                    {
-                        gtrRep.Delete(request);
-                        gtrRep.Save();
-                        return BadRequest("Team is already playing in the game.");
-                    }
-                    else
-                    {
-                        List<GameTeam> gameTeams = _repo.GetGameTeams(game.gameId);
-
-                        if (gameTeams != null && gameTeams.Count == 2)
-                        {
-                            return BadRequest("Cannot approve request. Two teams are already playing in the game.");
-                        }
-
-                        team = new GameTeam();
-                        team.teamId = request.teamId;
-                        team.gameId = request.gameId;
-
-                        _gameTeamRepo.Add(team);
-                        _gameTeamRepo.Save();
-
-                        
-
-                        if (game.teamAId == null)
-                        {
-                            game.teamAId = request.teamId;
-                        }
-                        else
-                        {
-                            game.teamBId = request.teamId;
-                        }
-
-                        _repo.Edit(game);
-                        _repo.Save();
-
-                    }
-
-                    gtrRep.Delete(request);
-                    gtrRep.Save();
-
                     return Ok();
+                }else
+                {
+                    return BadRequest(result);
                 }
             }
             catch (DribblyException ex)
             {
-                ex.UserMessage = "Failed to approve request. Please try again later.";
                 return InternalServerError(ex);
             }
-
         }
 
         [Route("KickGameTeam/{teamId}/{gameId}")]
@@ -350,38 +294,18 @@ namespace DribblyAPI.Controllers
             try
             {
                 //TODO: Make sure that the current user is the manager of the team
-
-                GameTeam team = _gameTeamRepo.FindSingleBy(t => t.gameId == gameId && t.teamId == teamId);
-
-                if (team == null)
+                using(GameRepository repo = new GameRepository(new ApplicationDbContext()))
                 {
-                    return BadRequest("Team is not playing in the game.");
+                    string result = repo.leaveGameAsTeam(gameId, teamId);
+
+                    if(result == "")
+                    {
+                        return Ok();
+                    }else
+                    {
+                        return BadRequest(result);
+                    }
                 }
-
-                _gameTeamRepo.Delete(team);
-                _gameTeamRepo.Save();
-
-                Game game = _repo.FindSingleBy(g => g.gameId == gameId);
-
-                if (game == null)
-                {
-                    return BadRequest("Game details not found");
-                }
-
-                if (game.teamAId == teamId)
-                {
-                    game.teamAId = null;
-                }
-                else
-                {
-                    game.teamBId = null;
-                }
-
-                _repo.Edit(game);
-                _repo.Save();
-
-                return Ok();
-
             }
             catch (DribblyException ex)
             {

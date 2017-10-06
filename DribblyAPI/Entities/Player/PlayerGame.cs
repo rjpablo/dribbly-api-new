@@ -18,6 +18,10 @@ namespace DribblyAPI.Entities
         public string playerId { get; set; }
 
         [Key, Column(Order = 2)]
+        [ForeignKey("gameTeam")]
         public int gameTeamId { get; set; }
+
+        public GameTeam gameTeam { get; set; }
+
     }
 }
