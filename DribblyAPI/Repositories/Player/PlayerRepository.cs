@@ -29,9 +29,11 @@ namespace DribblyAPI.Repositories
         {
             try
             {
-                PlayerProfile player = FindBy(u => u.userId == userId).SingleOrDefault();
+                PlayerProfile player = ctx.PlayerProfiles.SingleOrDefault(u => u.userId == userId);
+
                 if (player != null)
                 {
+                    player.teams = ctx.TeamPlayers.Include(t=>t.team).Where(t =>t.playerId == player.userId && !t.team.isTemporary).ToList<TeamPlayer>();
                     player.games = (from g in ctx.Set<Game>()
                                     join t in ctx.Set<GameTeam>() on g.gameId equals t.gameId
                                     join p in ctx.Set<GamePlayer>() on t.gameTeamId equals p.gameTeamId
@@ -40,9 +42,9 @@ namespace DribblyAPI.Repositories
                 }
                 return player;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }            
         }
 

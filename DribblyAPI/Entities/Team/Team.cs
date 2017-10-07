@@ -64,5 +64,7 @@ namespace DribblyAPI.Entities
             set { _requiresPassword = value; }
         }
 
+        public ICollection<TeamPlayer> players { get; set; }
+
     }
 }

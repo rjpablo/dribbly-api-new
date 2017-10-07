@@ -17,7 +17,7 @@ namespace DribblyAPI.Repositories
 
         public IEnumerable<FullDetailedTeam> getFullDetailedTeams()
         {
-            return ctx.Set<FullDetailedTeam>().Include(t=> t.creator).Include(t=>t.manager).Include(t => t.city.country).Include(t => t.homeCourt);
+            return ctx.Set<FullDetailedTeam>().Include(t => t.creator).Include(t => t.manager).Include(t => t.city.country).Include(t => t.homeCourt).Where(t => !t.isTemporary);
         }
 
         public FullDetailedTeam getTeamByName(int teamId)

@@ -37,5 +37,7 @@ namespace DribblyAPI.Entities
         [NotMapped]
         public IEnumerable<Game> games { get; set; }
 
+        public ICollection<TeamPlayer> teams { get; set; }
+
     }
 }
