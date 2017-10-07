@@ -31,12 +31,12 @@ namespace DribblyAPI.Controllers
             
             try
             {
-                return Ok(_repo.GetGames());
+                List<Game> games = _repo.GetGames();
+                return Ok(games);
             }
-            catch (DribblyException ex)
+            catch (Exception ex)
             {
-                ex.UserMessage = "Failed to retrieve list of games. Please try again later.";
-                return InternalServerError(ex);
+                return InternalServerError(new DribblyException("Failed to retrieve list of games. Please try again later."));
             }
         }
 

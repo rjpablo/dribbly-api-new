@@ -35,6 +35,35 @@ namespace DribblyAPI.Repositories
             
         }
 
+        public override Team Delete(Team entity)
+        {
+            IQueryable<Game> games = ctx.Games.Where(g => g.teamAId == entity.teamId || g.teamBId == entity.teamId || g.winningTeamId == entity.teamId);
+
+            foreach(Game game in games)
+            {
+                if(game.teamAId == entity.teamId)
+                {
+                    game.teamAId = null;
+                }else
+                {
+                    game.teamBId = null;
+                }
+
+                if(game.winningTeamId == entity.teamId)
+                {
+                    game.winningTeamId = null;
+                }
+
+                ctx.Entry(game).State = EntityState.Modified;
+            }
+
+            ctx.Teams.Remove(entity);
+
+            ctx.SaveChanges();
+
+            return entity;  
+        }
+
         public List<MemberRequestListItem> getMemberRequests(int teamId)
         {
             using (var db = new ApplicationDbContext())

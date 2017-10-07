@@ -41,6 +41,22 @@ namespace DribblyAPI.Controllers
             }
         }
 
+        [Route("Delete/{teamId}")]
+        public IHttpActionResult Delete(int teamId)
+        {
+            try
+            {
+                Team team = _repo.FindSingleBy(t => t.teamId == teamId);
+                //TODO: Only allow team creator to delete the team
+                return Ok(_repo.Delete(team));
+            }
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "Failed to delete Team.";
+                return InternalServerError(ex);
+            }
+        }
+
         [Route("GetTeamGames/{teamId}/{filter}")]
         public IHttpActionResult GetTeamGames(int teamId, string filter)
         {
@@ -522,7 +538,7 @@ namespace DribblyAPI.Controllers
         }
 
         // DELETE: api/Teams/5
-        [Route("Delete/{id:int}")]
+        [Route("DeleteTeam/{id:int}")]
         public IHttpActionResult DeleteTeam(int id)
         {
             Team team = db.Teams.Find(id);
