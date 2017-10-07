@@ -11,7 +11,7 @@ namespace DribblyAPI.Models
 
         public int teamId { get; set; }
 
-        public int opponentTeamId { get; set; }
+        public int? opponentTeamId { get; set; }
 
         public string teamName { get; set; }
 

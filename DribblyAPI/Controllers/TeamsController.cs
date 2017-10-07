@@ -70,10 +70,9 @@ namespace DribblyAPI.Controllers
                 
                 return Ok(teamGames);
             }
-            catch (DribblyException ex)
+            catch (Exception ex)
             {
-                ex.UserMessage = "Unable to retrieve team games. Please try again later.";
-                return InternalServerError(ex);
+                return InternalServerError(new DribblyException("Unable to retrieve team games. Please try again later."));
             }
         }
 

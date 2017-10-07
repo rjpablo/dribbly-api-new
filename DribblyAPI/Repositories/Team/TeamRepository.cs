@@ -67,12 +67,20 @@ namespace DribblyAPI.Repositories
 
         public IEnumerable<TeamGame> getTeamGames(int teamId)
         {
-            var teamIdParam = new SqlParameter("@teamId", teamId);
+            try
+            {
+                var teamIdParam = new SqlParameter("@teamId", teamId);
 
-            var result = ctx.Database
-                .SqlQuery<TeamGame>("GetTeamGames  @teamId", teamIdParam);
+                var result = ctx.Database
+                    .SqlQuery<TeamGame>("GetTeamGames  @teamId", teamIdParam);
 
-            return result;
+                return result;
+            }
+            catch (Exception ex)
+            { 
+                throw ex;
+            }
+            
         }
 
         public bool addOrUpdateTeamPlayer(int teamId, string playerId)
