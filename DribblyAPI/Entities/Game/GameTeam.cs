@@ -16,9 +16,15 @@ namespace DribblyAPI.Entities
         [Key]
         public int gameTeamId { get; set; }
 
+        [ForeignKey("game")]
         public int gameId { get; set; }
 
+        [ForeignKey("team")]
         public int teamId { get; set; }
+
+        public Team team { get; set; }
+
+        public Game game { get; set; }
 
         public ICollection<GamePlayer> gamePlayers { get; set; }
 

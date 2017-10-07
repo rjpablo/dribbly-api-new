@@ -88,6 +88,8 @@ namespace DribblyAPI.Entities
 
         public Team winningTeam { get; set; }
 
+        public ICollection<GameTeam> gameTeams { get; set; }
+
         [NotMapped]
         public UserView creator { get; set; }
 

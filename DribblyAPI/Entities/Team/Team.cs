@@ -66,5 +66,7 @@ namespace DribblyAPI.Entities
 
         public ICollection<TeamPlayer> players { get; set; }
 
+        public ICollection<GameTeam> gameTeams { get; set; }
+
     }
 }
