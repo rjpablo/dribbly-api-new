@@ -126,6 +126,12 @@ namespace DribblyAPI.Repositories
                     return "Game details not found";
                 }
 
+                //TODO: Allow operation only when current user is game creator
+                //if (!IsCurrentUserId(game.creatorId))
+                //{
+                //    return "Only the game creator can kick a team from the game.";
+                //}
+
                 if (game.teamAId == teamId)
                 {
                     game.teamAId = null;

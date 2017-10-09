@@ -5,6 +5,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -12,6 +13,9 @@ namespace DribblyAPI.Repositories
 {
     public class AuthRepository : IDisposable
     {
+
+        //Refer to this for the implementation of Authentication process: http://bitoftech.net/2014/06/01/token-based-authentication-asp-net-web-api-2-owin-asp-net-identity/
+
         private ApplicationDbContext _ctx;
 
         private UserManager<IdentityUser> _userManager;
@@ -20,6 +24,18 @@ namespace DribblyAPI.Repositories
         {
             _ctx = new ApplicationDbContext();
             _userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>(_ctx));
+        }
+
+        public static string GetCurrentUserName()
+        {
+            string result = HttpContext.Current.User.Identity.GetUserName();
+            return result;
+        }
+
+        public static string GetCurrentUserId()
+        {
+            string result = ((ClaimsIdentity)HttpContext.Current.User.Identity).Claims.FirstOrDefault(x => x.Type == "id").Value;
+            return result;
         }
 
         public async Task<IdentityResult> RegisterUser(UserModel userModel)

@@ -13,11 +13,15 @@ namespace DribblyAPI
 {
     public class Startup
     {
+        
+        //Refer to this for the implementation of Authentication process: http://bitoftech.net/2014/06/01/token-based-authentication-asp-net-web-api-2-owin-asp-net-identity/
+
         public void Configuration(IAppBuilder app)
         {
             ConfigureOAuth(app);
             HttpConfiguration config = new HttpConfiguration();
             WebApiConfig.Register(config);
+            //allows CORS
             app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
             app.UseWebApi(config);
         }

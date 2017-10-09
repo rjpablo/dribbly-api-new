@@ -17,6 +17,7 @@ namespace DribblyAPI.Providers
 
         string userId = string.Empty;
 
+        //responsible for validating the “Client”,
         public override Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
 
@@ -79,6 +80,8 @@ namespace DribblyAPI.Providers
             return Task.FromResult<object>(null);
         }
 
+
+        //responsible to validate the username and password sent to the authorization server’s token endpoint
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
             userId = string.Empty;
@@ -104,9 +107,11 @@ namespace DribblyAPI.Providers
             }
 
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
+            //identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
             identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
             identity.AddClaim(new Claim("sub", context.UserName));
             identity.AddClaim(new Claim("role", "user"));
+            identity.AddClaim(new Claim("id", userId));
 
             var props = new AuthenticationProperties(new Dictionary<string, string>
                 {

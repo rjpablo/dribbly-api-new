@@ -6,6 +6,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Linq.Expressions;
+using System.Security.Claims;
 
 namespace DribblyAPI.Repositories
 {
@@ -66,5 +67,12 @@ namespace DribblyAPI.Repositories
         {
             ctx.Dispose();
         }
+
+        public bool IsCurrentUserId(string userId)
+        {
+            string currUserId = ((ClaimsIdentity)HttpContext.Current.User.Identity).Claims.FirstOrDefault(x => x.Type == "id").Value;
+            return userId.ToLower() == currUserId.ToLower();
+        }
+
     }
 }
