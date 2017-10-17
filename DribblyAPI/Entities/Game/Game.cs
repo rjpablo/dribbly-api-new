@@ -11,11 +11,11 @@ namespace DribblyAPI.Entities
     {
         #region Default Values (IMPORTANT: Update migration files accordingly when changing default values)
 
-        private bool _isClosed = false;
         private bool _isOver = false;
         private bool _isProtected = false;
         private int _allowedToJoinTeamA = 0;
         private int _allowedToJoinTeamB = 0;
+        private Enums.GameStatus _status;
 
         #endregion
 
@@ -63,21 +63,17 @@ namespace DribblyAPI.Entities
         }
 
         /// <summary>
-        /// Whether or not the game has been closed.
-        /// </summary>
-        public bool isClosed
-        {
-            get { return _isClosed; }
-            set { _isClosed = value; }
-        }
-
-        /// <summary>
         /// Whether or not the game is over.
         /// </summary>
         public bool isOver
         {
             get { return _isOver; }
             set { _isOver = value; }
+        }
+
+        public Enums.GameStatus status {
+            get { return _status; }
+            set { _status = value; }
         }
 
         public Court court { get; set; }

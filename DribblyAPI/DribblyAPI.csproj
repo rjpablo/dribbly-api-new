@@ -235,6 +235,7 @@
     <Compile Include="Entities\Team\TeamFollower.cs" />
     <Compile Include="Entities\User\UserBlockedUser.cs" />
     <Compile Include="Entities\User\UserFollower.cs" />
+    <Compile Include="Enums\GameStatus.cs" />
     <Compile Include="Migrations\201707071127007_AddedSProcGetTeamGames.cs" />
     <Compile Include="Migrations\201707071127007_AddedSProcGetTeamGames.Designer.cs">
       <DependentUpon>201707071127007_AddedSProcGetTeamGames.cs</DependentUpon>
@@ -286,6 +287,10 @@
     <Compile Include="Migrations\201710071114308_AddedFKconstraintOnGameTeam_gameIdAndTeamId.cs" />
     <Compile Include="Migrations\201710071114308_AddedFKconstraintOnGameTeam_gameIdAndTeamId.Designer.cs">
       <DependentUpon>201710071114308_AddedFKconstraintOnGameTeam_gameIdAndTeamId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710170652299_removedGameIsClosedPropAndAddedStatusProp.cs" />
+    <Compile Include="Migrations\201710170652299_removedGameIsClosedPropAndAddedStatusProp.Designer.cs">
+      <DependentUpon>201710170652299_removedGameIsClosedPropAndAddedStatusProp.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\GameTeamRequestViewModel.cs" />
     <Compile Include="Models\JoinGameAsPlayerCredentials.cs" />
@@ -684,6 +689,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710071114308_AddedFKconstraintOnGameTeam_gameIdAndTeamId.resx">
       <DependentUpon>201710071114308_AddedFKconstraintOnGameTeam_gameIdAndTeamId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710170652299_removedGameIsClosedPropAndAddedStatusProp.resx">
+      <DependentUpon>201710170652299_removedGameIsClosedPropAndAddedStatusProp.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

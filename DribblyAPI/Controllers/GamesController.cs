@@ -589,6 +589,47 @@ namespace DribblyAPI.Controllers
             }
         }
 
+        [Route("SetGameStatus/{gameId}/{status}")]
+        public IHttpActionResult SetGameStatus(int gameId, int status)
+        {
+            Game game = _repo.FindSingleBy(g => g.gameId == gameId);
+
+            if (game != null)
+            {
+                if(status > 1)
+                {
+                    return BadRequest("Unable to update game status due to invalid status value");
+                }
+
+                game.status = (Enums.GameStatus)status;
+
+            }
+            else
+            {
+                return BadRequest("Game details not found.");
+            }
+
+            db.Entry(game).State = EntityState.Modified;
+
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!GameExists(gameId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
         // PUT: api/Games/5
         [Route("Update/{id:int}")]
         [ResponseType(typeof(void))]
