@@ -70,8 +70,16 @@ namespace DribblyAPI.Repositories
 
         public bool IsCurrentUserId(string userId)
         {
-            string currUserId = ((ClaimsIdentity)HttpContext.Current.User.Identity).Claims.FirstOrDefault(x => x.Type == "id").Value;
-            return userId.ToLower() == currUserId.ToLower();
+            try
+            {
+                string currUserId = ((ClaimsIdentity)HttpContext.Current.User.Identity).Claims.FirstOrDefault(x => x.Type == "id").Value;
+                return userId.ToLower() == currUserId.ToLower();
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            
         }
 
     }

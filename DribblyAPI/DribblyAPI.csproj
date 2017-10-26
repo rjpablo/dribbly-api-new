@@ -292,6 +292,7 @@
     <Compile Include="Migrations\201710170652299_removedGameIsClosedPropAndAddedStatusProp.Designer.cs">
       <DependentUpon>201710170652299_removedGameIsClosedPropAndAddedStatusProp.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\GameResult.cs" />
     <Compile Include="Models\GameTeamRequestViewModel.cs" />
     <Compile Include="Models\JoinGameAsPlayerCredentials.cs" />
     <Compile Include="Models\JoinGameAsTeamCredentials.cs" />

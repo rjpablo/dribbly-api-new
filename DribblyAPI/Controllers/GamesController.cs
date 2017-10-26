@@ -630,6 +630,100 @@ namespace DribblyAPI.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        [HttpPost]
+        [Route("PostGameResult/{isEdit?}")]
+        public IHttpActionResult PostGameResult(GameResult result, bool isEdit = false)
+        {
+            Game game = _repo.FindSingleBy(g => g.gameId == result.gameId);
+
+            if (game == null)
+            {
+                return BadRequest("Game details not found.");
+            }
+
+            if (!_repo.IsCurrentUserId(game.creatorId))
+            {
+                BadRequest("You need to log in to the game creator's account to post the result for this game.");
+            }
+
+            if (game.isOver && !isEdit)
+            {
+                return BadRequest("The result for this game has already been posted.");
+            }
+
+            if(game.status == Enums.GameStatus.open)
+            {
+                return BadRequest("Cannot post result for an open game. Please close the game first");
+            }
+
+            if(game.schedule > DateTime.Now)
+            {
+                return BadRequest("Cannot post result for a game before its scheduled start.");
+            }
+
+            if (!(game.teamAId == result.winningTeamId || game.teamBId == result.winningTeamId))
+            {
+                return BadRequest("The selected winning team does not play in the game");
+            }
+
+            game.teamAScore = result.teamAScore;
+            game.teamBScore = result.teamBScore;
+            game.winningTeamId = result.winningTeamId;
+            game.isOver = true;
+
+            _repo.Edit(game);
+
+            try
+            {
+                _repo.Save();
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(new DribblyException("Failed to post game results. Please try again later"));
+            }
+
+            return Ok();
+        }
+
+        [Route("RemoveGameResult/{gameId}")]
+        public IHttpActionResult RemoveGameResult(int gameId)
+        {
+            Game game = _repo.FindSingleBy(g => g.gameId == gameId);
+
+            if (game == null)
+            {
+                return BadRequest("Game details not found.");
+            }
+
+            if (!_repo.IsCurrentUserId(game.creatorId))
+            {
+                BadRequest("You need to log in to the game creator's account to post the result for this game.");
+            }
+
+            if (!game.isOver)
+            {
+                return BadRequest("Game result has not yet been posted.");
+            }
+
+            game.teamAScore = 0;
+            game.teamBScore = 0;
+            game.winningTeamId = null;
+            game.isOver = false;
+
+            _repo.Edit(game);
+
+            try
+            {
+                _repo.Save();
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(new DribblyException("Failed to remove game results. Please try again later"));
+            }
+
+            return Ok();
+        }
+
         // PUT: api/Games/5
         [Route("Update/{id:int}")]
         [ResponseType(typeof(void))]
