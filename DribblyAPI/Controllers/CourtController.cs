@@ -114,27 +114,13 @@ namespace DribblyAPI.Controllers
         {
             try
             {
-                using (ApplicationDbContext db = new ApplicationDbContext())
-                {
-                    repo.Edit(CourtDetails);
+                var result = repo.EditCourt(CourtDetails);
 
-                    repo.Save();
-
-                    return Ok(CourtDetails);
-
-                }
+                return handleRepoMethodResult(result);
             }
-            catch (DribblyException ex)
+            catch (Exception ex)
             {
-                if (!repo.Exists(CourtDetails.userId))
-                {
-                    return BadRequest("Could not find court record");
-                }
-                else
-                {
-                    ex.UserMessage = "Court registration failed. Please try again later.";
-                    return InternalServerError(ex);
-                }
+                return handleRepoMethodException(ex, "Failed to update court details. Please try again later.");
             }
         }
 
@@ -163,20 +149,13 @@ namespace DribblyAPI.Controllers
             {
                 using (ApplicationDbContext DbContext = new ApplicationDbContext())
                 {
-                    Court court = repo.GetCourtFullDetails(courtId);
-                    if(court != null)
-                    {
-                        return Ok(court);
-                    }else
-                    {
-                        return BadRequest("Court details not found.");
-                    }
+                    RepoMethodResult result = repo.GetCourtFullDetails(courtId);
+                    return handleRepoMethodResult(result);
                 }
             }
-            catch (DribblyException ex)
+            catch (Exception ex)
             {
-                ex.UserMessage = "Unable to find requested court details.";
-                return InternalServerError(ex);
+                return handleRepoMethodException(ex, "Failed to retrieve court details");
             }
 
         }
@@ -185,99 +164,27 @@ namespace DribblyAPI.Controllers
         [Route("~/api/courts")]
         public IHttpActionResult GetCourts(CourtSearchCriteria criteria)
         {
-            bool useTestData = false;
-
             try
             {
-                if (!useTestData)
+                using (ApplicationDbContext dbContext = new ApplicationDbContext())
                 {
-                    using (ApplicationDbContext dbContext = new ApplicationDbContext())
+                    IEnumerable<Court> courts;
+
+                    if (criteria != null)
                     {
-                        IEnumerable<Court> courts;
-
-                        if (criteria != null)
-                        {
-                            courts = repo.Search(criteria);
-                        }
-                        else
-                        {
-                            //courts = dbContext.Courts.ToList<Court>();
-                            courts = repo.GetAll().OrderBy(x => x.dateRegistered).ToList<Court>();
-                        }
-
+                        var result = repo.Search(criteria);
+                        return handleRepoMethodResult(result);
+                    }
+                    else
+                    {
+                        courts = repo.GetAll().OrderBy(x => x.dateRegistered).ToList<Court>();
                         return Ok(courts);
                     }
                 }
-                else
-                {
-                    string imageUploadPath = WebConfigurationManager.AppSettings["imageUploadPath"];
-
-                    #region Creating dummy courts
-
-                    courts.Add(new Court()
-                    {
-                        id = 1,
-                        name = "ABC Basketball Court",
-                        description = "Just some long long long description.",
-                        address = "#123 Kanto St. Sampaloc Manila",
-                        contactNo = "0923-765-9876",
-                        rate = 100.00,
-                        imagePath = "1.jpg"
-                    });
-
-                    courts.Add(new Court()
-                    {
-                        id = 2,
-                        name = "Monster Ballers Basketball Court",
-                        description = "Just some long long long description.",
-                        address = "#12 Ben Harrison St. Brgy. Pio del Pilar, Makati City, Metro Manila",
-                        contactNo = "0923-765-9876",
-                        rate = 100.00,
-                        imagePath = "2.jpg"
-                    });
-
-                    courts.Add(new Court()
-                    {
-                        id = 3,
-                        name = "Monster Ballers Basketball Court",
-                        description = "Just some long long long description.",
-                        address = "#12 Don Juan St. Brgy. Palanan, Makati City, Metro Manila",
-                        contactNo = "0923-765-9854",
-                        rate = 100.00,
-                        imagePath = "3.jpg"
-                    });
-
-                    courts.Add(new Court()
-                    {
-                        id = 4,
-                        name = "Monster Ballers Basketball Court",
-                        description = "Just some long long long description.",
-                        address = "#12 Ben Harrison St. Brgy. Pio del Pilar, Makati City, Metro Manila",
-                        contactNo = "0923-765-9876",
-                        rate = 100.00,
-                        imagePath = "4.jpg"
-                    });
-
-                    courts.Add(new Court()
-                    {
-                        id = 5,
-                        name = "Monster Ballers Basketball Court",
-                        description = "Just some long long long description.",
-                        address = "#12 Ben Harrison St. Brgy. Pio del Pilar, Makati City, Metro Manila",
-                        contactNo = "0923-765-9876",
-                        rate = 100.00,
-                        imagePath = "5.jpg"
-                    });
-
-                    #endregion
-
-                    return Ok(courts);
-                }
             }
-            catch (DribblyException ex)
+            catch (Exception ex)
             {
-                ex.UserMessage = "Failed to retrieve list of courts. Please try again later.";
-                return InternalServerError(ex);
+                return handleRepoMethodException(ex, "Failed to retrieve list of courts. Please try again later.");
             }
         }
 

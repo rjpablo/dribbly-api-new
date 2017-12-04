@@ -5,56 +5,123 @@ using System.Linq;
 using System.Web;
 using System.Data.Entity;
 using DribblyAPI.Models;
+using NLog;
+using Newtonsoft.Json;
 
 namespace DribblyAPI.Repositories
 {
     public class CourtRepository : BaseRepository<Court>
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public CourtRepository(ApplicationDbContext _ctx) : base(_ctx)
         {
 
         }
 
-        public Court GetCourtFullDetails(int courtId)
+        public RepoMethodResult GetCourtFullDetails(int courtId)
         {
-            Court court = ctx.Set<Court>().Include(x => x.photos).Include(x => x.owner).FirstOrDefault(x => x.id == courtId);
-            if (court != null && court.owner != null)
+            try
             {
-                //remove sensitive data
-                court.owner.Claims.Clear();
-                court.owner.PasswordHash = "";
-                court.owner.SecurityStamp = "";
-                court.owner.Logins.Clear();
-                court.owner.PhoneNumber = "";
-                court.owner.Email = "";
-                court.owner.Roles.Clear();
+                logger.Info(FormatLogMessage("Requested details for court with court id = " + courtId));
+
+                RepoMethodResult result = new RepoMethodResult();
+                Court court = ctx.Set<Court>().Include(x => x.photos).Include(x => x.owner).FirstOrDefault(x => x.id == courtId);
+                if (court != null && court.owner != null)
+                {
+                    //remove sensitive data
+                    court.owner.Claims.Clear();
+                    court.owner.PasswordHash = "";
+                    court.owner.SecurityStamp = "";
+                    court.owner.Logins.Clear();
+                    court.owner.PhoneNumber = "";
+                    court.owner.Email = "";
+                    court.owner.Roles.Clear();
+
+                    result.Content = court;
+
+                }
+                else
+                {
+                    result.ResultType = RepoMethodResultType.Failed;
+                    result.UserMessage = "Court details not found";
+                }
+
+                return result;
             }
-            return court;
+            catch (Exception ex)
+            {
+                logger.Error(ex, FormatLogMessage("Failed to get court details, court id = " + courtId));
+                throw ex;
+            }
+            
         }
 
-        public IEnumerable<Court> Search(CourtSearchCriteria criteria)
+        public RepoMethodResult Search(CourtSearchCriteria criteria)
         {
-            IQueryable<Court> courts = ctx.Set<Court>();
-
-            if (criteria.courtName != null && criteria.courtName.Trim() != "")
+            try
             {
-                courts = courts.Where(c => c.name.Contains(criteria.courtName));
-            }
+                RepoMethodResult result = new RepoMethodResult();
+                IQueryable<Court> courts = ctx.Set<Court>();
 
-            if (criteria.address != null && criteria.address.Trim() != "")
+                if (criteria.courtName != null && criteria.courtName.Trim() != "")
+                {
+                    courts = courts.Where(c => c.name.Contains(criteria.courtName));
+                }
+
+                if (criteria.address != null && criteria.address.Trim() != "")
+                {
+                    courts = courts.Where(c => c.address.Contains(criteria.address));
+                }
+
+                courts = courts.Where(c => c.rate >= criteria.rangeMin && c.rate <= criteria.rangeMax);
+                result.Content = courts.ToList<Court>();
+                return result;
+            }
+            catch (Exception ex)
             {
-                courts = courts.Where(c => c.address.Contains(criteria.address));
-            }
-
-            courts = courts.Where(c => c.rate >= criteria.rangeMin && c.rate <= criteria.rangeMax);
-
-            return courts.ToList<Court>();
+                logger.Error(ex, FormatLogMessage("Failed to retrieve seach result, criteria: " + JsonConvert.SerializeObject(criteria)));
+                throw ex;
+            }           
 
         }
 
-        public bool Exists(string userId)
+        public bool Exists(int courtId)
         {
-            return ctx.Set<Court>().Count(u => u.userId == userId) > 0;
+            try
+            {
+                return ctx.Set<Court>().Count(u => u.id == courtId) > 0;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public RepoMethodResult EditCourt(Court entity)
+        {
+            try
+            {
+                RepoMethodResult result = new RepoMethodResult();
+                if (Exists(entity.id))
+                {
+                    Edit(entity);
+                    Save();
+                }
+                else
+                {
+                    result.SetResult(RepoMethodResultType.Failed, "Court details not found");
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, FormatLogMessage("Failed to update court, court: " + JsonConvert.SerializeObject(entity)));
+                throw ex;
+            }
+            
         }
     }
 }

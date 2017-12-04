@@ -16,9 +16,21 @@ namespace DribblyAPI.Repositories
 
         }
 
-        public List<Game> GetGames()
+        public RepoMethodResult GetGames()
         {
-            return ctx.Set<Game>().Include(g => g.teamA).Include(g => g.teamB).Include(g => g.court).ToList();
+            RepoMethodResult result = new RepoMethodResult();
+
+            try
+            {                
+                result.Content = ctx.Set<Game>().Include(g => g.teamA).Include(g => g.teamB).Include(g => g.court).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return result;
+            
         }
 
         public void banUser(int gameId, string userId)
@@ -35,11 +47,62 @@ namespace DribblyAPI.Repositories
             }
         }
 
-        public Game GetGameDetails(int gameId)
+        public RepoMethodResult GetGameDetails(int gameId)
         {
-            Game game = ctx.Set<Game>().Include(g => g.teamA).Include(g => g.teamB).Include(g => g.court).Where(g => g.gameId == gameId).SingleOrDefault();
-            game.creator = ctx.Set<UserView>().SingleOrDefault(u => u.userId == game.creatorId);
-            return game;
+            try
+            {
+                RepoMethodResult result = new RepoMethodResult();
+                Game game = ctx.Set<Game>().Include(g => g.teamA).Include(g => g.teamB).Include(g => g.court).Where(g => g.gameId == gameId).SingleOrDefault();
+                
+                if(game != null)
+                {
+                    game.creator = ctx.Set<UserView>().SingleOrDefault(u => u.userId == game.creatorId);
+                    result.Content = game;
+                }else
+                {
+                    result.SetResult(RepoMethodResultType.Failed, "Game details not found");
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            
+        }
+
+        public RepoMethodResult CancelGame(Game game)
+        {
+            try
+            {
+                RepoMethodResult result = new RepoMethodResult();
+
+                #region Validations
+
+                if (game.isOver)
+                {
+                    result.SetResult(RepoMethodResultType.Failed, "The game is over. It can no longer be cancelled.");
+                }
+
+                #endregion
+
+                if (IsCurrentUserId(game.creatorId))
+                {
+                    ctx.Games.Remove(game);
+                }
+                else
+                {
+                    result.SetResult(RepoMethodResultType.Failed, "You must be logged in using the game creator's account to cancel this game.");
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public UserToGameTeamRelation getUserToGameTeamRelation(string userId, int teamId, int gameId)

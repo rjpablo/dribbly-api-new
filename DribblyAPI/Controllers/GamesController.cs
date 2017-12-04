@@ -17,7 +17,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 namespace DribblyAPI.Controllers
 {
     [RoutePrefix("api/Games")]
-    public class GamesController : ApiController
+    public class GamesController : BaseController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         private GameRepository _repo = new GameRepository(new ApplicationDbContext());
@@ -31,8 +31,8 @@ namespace DribblyAPI.Controllers
             
             try
             {
-                List<Game> games = _repo.GetGames();
-                return Ok(games);
+                RepoMethodResult result = _repo.GetGames();
+                return handleRepoMethodResult(result);
             }
             catch (Exception ex)
             {
@@ -46,13 +46,8 @@ namespace DribblyAPI.Controllers
         {
             try
             {
-                Game game = _repo.GetGameDetails(gameId);
-                if (game == null)
-                {
-                    return InternalServerError(new DribblyException("Game details not found."));
-                }
-
-                return Ok(game);
+                RepoMethodResult result = _repo.GetGameDetails(gameId);
+                return handleRepoMethodResult(result);
             }
             catch (DribblyException ex)
             {
@@ -211,6 +206,45 @@ namespace DribblyAPI.Controllers
             catch (DribblyException ex)
             {
                 ex.UserMessage = "Unable to retrieve requesting teams.";
+                return InternalServerError(ex);
+            }
+
+        }
+
+        [Route("CancelGame/{gameId}")]
+        public IHttpActionResult CancelGame(int gameId)
+        {
+            try
+            {
+                #region validations
+
+                //TODO: Add validation to return data only if requesting user is the game creator
+
+                Game game = _repo.FindSingleBy(g => g.gameId == gameId);
+
+                if (game == null)
+                {
+                    return BadRequest("Game details not found. The game might have been cancelled.");
+                }
+
+                #endregion validations
+
+                RepoMethodResult result = _repo.CancelGame(game);
+
+                if (result.ResultType == RepoMethodResultType.Success)
+                {
+                    _repo.Save();
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest(result.UserMessage);
+                }                
+
+            }
+            catch (DribblyException ex)
+            {
+                ex.UserMessage = "Unable to cancel game. Please try again later.";
                 return InternalServerError(ex);
             }
 

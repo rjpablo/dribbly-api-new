@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Linq.Expressions;
 using System.Security.Claims;
+using NLog;
 
 namespace DribblyAPI.Repositories
 {
@@ -80,6 +81,30 @@ namespace DribblyAPI.Repositories
                 return false;
             }
             
+        }
+
+        public string GetCurrentUserId()
+        {
+            try
+            {
+                string currUserId = ((ClaimsIdentity)HttpContext.Current.User.Identity).Claims.FirstOrDefault(x => x.Type == "id").Value;
+                return currUserId;
+            }
+            catch (Exception ex)
+            {
+                return "";
+            }
+        }
+
+        /// <summary>
+        /// Adds general information to log messages, such as userId
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public String FormatLogMessage(String message)
+        {
+            message = message + ", userId: " + GetCurrentUserId();
+            return message;
         }
 
     }

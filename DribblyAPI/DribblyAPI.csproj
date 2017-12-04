@@ -100,6 +100,10 @@
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.4.12\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
       <Private>True</Private>
@@ -180,10 +184,16 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Properties\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\PublishProfiles\dribbly-api.pubxml" />
     <None Include="Scripts\jquery-1.10.2-vsdoc.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -236,6 +246,7 @@
     <Compile Include="Entities\User\UserBlockedUser.cs" />
     <Compile Include="Entities\User\UserFollower.cs" />
     <Compile Include="Enums\GameStatus.cs" />
+    <Compile Include="Helpers\DribblyLogger.cs" />
     <Compile Include="Migrations\201707071127007_AddedSProcGetTeamGames.cs" />
     <Compile Include="Migrations\201707071127007_AddedSProcGetTeamGames.Designer.cs">
       <DependentUpon>201707071127007_AddedSProcGetTeamGames.cs</DependentUpon>
@@ -297,6 +308,7 @@
     <Compile Include="Models\JoinGameAsPlayerCredentials.cs" />
     <Compile Include="Models\JoinGameAsTeamCredentials.cs" />
     <Compile Include="Models\NewGameViewModel.cs" />
+    <Compile Include="Models\RepoMethodResult.cs" />
     <Compile Include="Models\TeamGame.cs" />
     <Compile Include="Entities\Team\TeamMemberListItem.cs" />
     <Compile Include="Entities\Team\TeamPlayer.cs" />
@@ -515,9 +527,9 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\web.config" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Properties\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Properties\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Properties\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -527,7 +539,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="App_Start\App_Data\" />
     <Folder Include="Views\Account\" />
     <Folder Include="Views\Base\" />
   </ItemGroup>
