@@ -214,6 +214,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CitiesController.cs" />
     <Compile Include="Controllers\PlayerProfilesController.cs" />
+    <Compile Include="Controllers\RefreshTokensController.cs" />
     <Compile Include="Controllers\TeamsController.cs" />
     <Compile Include="Controllers\UserProfilesController.cs" />
     <Compile Include="Entities\ApplicationDbContext.cs" />
@@ -487,7 +488,7 @@
     <Compile Include="Models\BindingModels.cs" />
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\DribblyException.cs" />
-    <Compile Include="Models\Enums.cs" />
+    <Compile Include="Enums\ApplicationTypes.cs" />
     <Compile Include="Models\MainProfileView.cs" />
     <Compile Include="Models\PlayerSearchCriteria.cs" />
     <Compile Include="Models\RefreshToken.cs" />

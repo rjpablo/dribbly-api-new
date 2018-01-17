@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
-using static DribblyAPI.Models.Enums;
+using DribblyAPI.Enums;
 
 namespace DribblyAPI.Models
 {

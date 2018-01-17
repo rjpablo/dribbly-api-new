@@ -60,9 +60,24 @@ namespace DribblyAPI.Providers
             throw new NotImplementedException();
         }
 
-        public Task ReceiveAsync(AuthenticationTokenReceiveContext context)
+        public async Task ReceiveAsync(AuthenticationTokenReceiveContext context)
         {
-            throw new NotImplementedException();
+            var allowedOrigin = context.OwinContext.Get<string>("as:clientAllowedOrigin");
+            context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
+
+            string hashedTokenId = Helper.GetHash(context.Token);
+
+            using (AuthRepository _repo = new AuthRepository())
+            {
+                var refreshToken = await _repo.FindRefreshToken(hashedTokenId);
+
+                if (refreshToken != null)
+                {
+                    //Get protectedTicket from refreshToken class
+                    context.DeserializeTicket(refreshToken.ProtectedTicket);
+                    var result = await _repo.RemoveRefreshToken(hashedTokenId);
+                }
+            }
         }
     }
 }

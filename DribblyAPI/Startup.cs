@@ -32,7 +32,7 @@ namespace DribblyAPI
             {
                 AllowInsecureHttp = true,
                 TokenEndpointPath = new PathString("/token"),
-                AccessTokenExpireTimeSpan = TimeSpan.FromDays(1),
+                AccessTokenExpireTimeSpan = TimeSpan.FromSeconds(30),
                 Provider = new AuthorizationServerProvider(),
                 RefreshTokenProvider = new RefreshTokenProvider()
             };
