@@ -200,14 +200,14 @@ namespace DribblyAPI.Controllers
             return parsedToken;
         }
 
-        private JObject GenerateLocalAccessTokenResponse(string userName)
+        private JObject GenerateLocalAccessTokenResponse(IdentityUser user)
         {
 
             var tokenExpiration = TimeSpan.FromDays(1);
 
             ClaimsIdentity identity = new ClaimsIdentity(OAuthDefaults.AuthenticationType);
 
-            identity.AddClaim(new Claim(ClaimTypes.Name, userName));
+            identity.AddClaim(new Claim(ClaimTypes.Name, user.UserName));
             identity.AddClaim(new Claim("role", "user"));
 
             var props = new AuthenticationProperties()
@@ -221,12 +221,13 @@ namespace DribblyAPI.Controllers
             var accessToken = Startup.OAuthBearerOptions.AccessTokenFormat.Protect(ticket);
 
             JObject tokenResponse = new JObject(
-                                        new JProperty("userName", userName),
+                                        new JProperty("userName", user.UserName),
                                         new JProperty("access_token", accessToken),
                                         new JProperty("token_type", "bearer"),
                                         new JProperty("expires_in", tokenExpiration.TotalSeconds.ToString()),
                                         new JProperty(".issued", ticket.Properties.IssuedUtc.ToString()),
-                                        new JProperty(".expires", ticket.Properties.ExpiresUtc.ToString())
+                                        new JProperty(".expires", ticket.Properties.ExpiresUtc.ToString()),
+                                        new JProperty("userId", user.Id)
         );
 
             return tokenResponse;
@@ -277,8 +278,20 @@ namespace DribblyAPI.Controllers
                 return GetErrorResult(result);
             }
 
+            using (UserProfileRepository userProfileRepository = new UserProfileRepository(new ApplicationDbContext()))
+            {
+                UserProfile userProfile = new UserProfile()
+                {
+                    dateJoined = DateTime.Now,
+                    userId = user.Id
+                };
+
+                userProfileRepository.Add(userProfile);
+                userProfileRepository.Save();
+            }
+
             //generate access token response
-            var accessTokenResponse = GenerateLocalAccessTokenResponse(model.UserName);
+            var accessTokenResponse = GenerateLocalAccessTokenResponse(user);
 
             return Ok(accessTokenResponse);
         }
@@ -310,7 +323,7 @@ namespace DribblyAPI.Controllers
             }
 
             //generate access token response
-            var accessTokenResponse = GenerateLocalAccessTokenResponse(user.UserName);
+            var accessTokenResponse = GenerateLocalAccessTokenResponse(user);
 
             return Ok(accessTokenResponse);
 
